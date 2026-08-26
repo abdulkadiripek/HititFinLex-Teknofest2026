@@ -1,0 +1,110 @@
+{
+  "train": {
+    "original_records": 957,
+    "added_records": 292,
+    "dropped_duplicate_records": 145,
+    "total_records": 1104,
+    "added_entity_counts": {
+      "EKSPERTIZ_UCRETI": 35,
+      "FINANSMAN_TUTARI": 35,
+      "HARCAMA_UST_LIMITI": 32,
+      "IPOTEK_TESIS_UCRETI": 35,
+      "ISLEM_ALT_LIMITI": 32,
+      "ISLEM_UST_LIMITI": 32,
+      "KAR_PAYI_ORANI": 33,
+      "MINIMUM_BAKIYE": 32,
+      "TAHSIS_UCRETI": 36
+    },
+    "total_entity_counts": {
+      "EKSPERTIZ_UCRETI": 37,
+      "FINANSMAN_TUTARI": 74,
+      "HARCAMA_ESIGI": 77,
+      "HARCAMA_UST_LIMITI": 51,
+      "INDIRIM_ORANI": 98,
+      "INDIRIM_TUTARI": 47,
+      "IPOTEK_TESIS_UCRETI": 37,
+      "ISLEM_ALT_LIMITI": 34,
+      "ISLEM_UST_LIMITI": 37,
+      "KAMPANYA_TARIH_ARALIGI": 63,
+      "KAR_PAYI_ORANI": 36,
+      "KAR_PAYLASIM_ORANI": 15,
+      "MINIMUM_BAKIYE": 33,
+      "ODUL_TUTARI": 109,
+      "TAHSIS_UCRETI": 38,
+      "TAKSIT_SAYISI": 393,
+      "VADE_SURESI": 421
+    }
+  },
+  "validation": {
+    "original_records": 158,
+    "added_records": 38,
+    "dropped_duplicate_records": 27,
+    "total_records": 169,
+    "added_entity_counts": {
+      "EKSPERTIZ_UCRETI": 5,
+      "FINANSMAN_TUTARI": 6,
+      "HARCAMA_UST_LIMITI": 4,
+      "IPOTEK_TESIS_UCRETI": 5,
+      "ISLEM_ALT_LIMITI": 4,
+      "ISLEM_UST_LIMITI": 4,
+      "KAR_PAYI_ORANI": 5,
+      "MINIMUM_BAKIYE": 4,
+      "TAHSIS_UCRETI": 5
+    },
+    "total_entity_counts": {
+      "EKSPERTIZ_UCRETI": 5,
+      "FINANSMAN_TUTARI": 17,
+      "HARCAMA_ESIGI": 22,
+      "HARCAMA_UST_LIMITI": 13,
+      "INDIRIM_ORANI": 14,
+      "INDIRIM_TUTARI": 10,
+      "IPOTEK_TESIS_UCRETI": 5,
+      "ISLEM_ALT_LIMITI": 4,
+      "ISLEM_UST_LIMITI": 4,
+      "KAMPANYA_TARIH_ARALIGI": 18,
+      "KAR_PAYI_ORANI": 5,
+      "KAR_PAYLASIM_ORANI": 4,
+      "MINIMUM_BAKIYE": 5,
+      "ODUL_TUTARI": 27,
+      "TAHSIS_UCRETI": 5,
+      "TAKSIT_SAYISI": 43,
+      "VADE_SURESI": 42
+    }
+  },
+  "test": {
+    "original_records": 142,
+    "added_records": 47,
+    "dropped_duplicate_records": 38,
+    "total_records": 151,
+    "added_entity_counts": {
+      "EKSPERTIZ_UCRETI": 6,
+      "FINANSMAN_TUTARI": 7,
+      "HARCAMA_UST_LIMITI": 5,
+      "IPOTEK_TESIS_UCRETI": 6,
+      "ISLEM_ALT_LIMITI": 5,
+      "ISLEM_UST_LIMITI": 5,
+      "KAR_PAYI_ORANI": 6,
+      "MINIMUM_BAKIYE": 5,
+      "TAHSIS_UCRETI": 6
+    },
+    "total_entity_counts": {
+      "EKSPERTIZ_UCRETI": 6,
+      "FINANSMAN_TUTARI": 9,
+      "HARCAMA_ESIGI": 22,
+      "HARCAMA_UST_LIMITI": 7,
+      "INDIRIM_ORANI": 23,
+      "INDIRIM_TUTARI": 14,
+      "IPOTEK_TESIS_UCRETI": 6,
+      "ISLEM_ALT_LIMITI": 6,
+      "ISLEM_UST_LIMITI": 8,
+      "KAMPANYA_TARIH_ARALIGI": 8,
+      "KAR_PAYI_ORANI": 8,
+      "KAR_PAYLASIM_ORANI": 1,
+      "MINIMUM_BAKIYE": 7,
+      "ODUL_TUTARI": 15,
+      "TAHSIS_UCRETI": 6,
+      "TAKSIT_SAYISI": 37,
+      "VADE_SURESI": 22
+    }
+  }
+}

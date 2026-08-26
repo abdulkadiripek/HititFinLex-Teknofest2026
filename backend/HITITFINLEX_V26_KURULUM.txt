@@ -1,0 +1,49 @@
+HITITFINLEX V2.6 - URUNE OZEL BANKA KARSILASTIRMASI
+===================================================
+
+Bu paket V2.5 dashboard ve katalog API'sini korur. Ek olarak:
+
+- GET  /dashboard/overview
+- POST /catalog/search
+- GET  /documents/{document_id}
+- POST /comparison belgeleri banka bazinda dengeli secer
+
+Frontend, urun turune uygun alanlari otomatik secer ve her banka icin
+birden fazla belgeyi tek kaynakli sutunda birlestirir.
+
+1. API'yi Ctrl+C ile durdurun.
+
+2. Proje klasorunde mevcut dosyalari yedekleyin:
+
+   copy api.py api_v25_backup.py
+
+3. Bu paketteki tum Python dosyalarini
+   C:\Users\PC\Documents\katilim_finans_app
+   klasorune kopyalayin.
+
+4. Testi calistirin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_dashboard_v26.py
+
+Beklenen:
+
+   HititFinLex dashboard V2.6 API: OK
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Tarayicida kontrol edin:
+
+   http://127.0.0.1:8000/dashboard/overview
+   http://127.0.0.1:8000/docs
+
+7. Frontend'i ayri CMD penceresinde baslatin:
+
+   cd /d C:\Users\PC\Documents\HititFinLex
+   npm run dev
+
+   http://localhost:3000

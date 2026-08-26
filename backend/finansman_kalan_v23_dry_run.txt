@@ -1,0 +1,404 @@
+Pipeline: ner_v4_rules_v2_3
+Mode: DRY_RUN
+Selected documents: 121
+Unchanged documents skipped: 0
+[1/121] document=105 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9926 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.4936 | 36 | duration_entity_missing_unit
+    EVIDENCE | evre Tatil finansmanı, ihtiyaçlarınız için 36 aya varan ödeme seçenekleriyle kullanabileceğiniz bir kredidir.
+[2/121] document=107 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[3/121] document=108 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9261 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=4
+  REJECTED FINANSMAN_TUTARI             0.6227 | 6.500 TL | fact_not_in_evidence
+    EVIDENCE | .500 TL
+  REJECTED FINANSMAN_TUTARI             0.9022 | 16.500 TL | fact_not_in_evidence
+    EVIDENCE | 6.500 TL
+  REJECTED VADE_SURESI                  0.9712 | 2 ay | fact_not_in_evidence
+    EVIDENCE | ay
+  REJECTED VADE_SURESI                  0.9967 | 6 ay | fact_not_in_evidence
+    EVIDENCE | ay
+[4/121] document=177 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9935 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[5/121] document=178 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9932 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[6/121] document=179 old_type=FINANSMAN classified=DIGER score=0.9947 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[7/121] document=183 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9939 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[8/121] document=185 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.4619 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[9/121] document=187 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[10/121] document=188 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9942 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=3 accepted=0 review=0 rejected=0
+[11/121] document=189 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9946 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[12/121] document=190 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9944 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[13/121] document=191 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9932 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[14/121] document=192 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9940 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[15/121] document=193 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[16/121] document=204 old_type=FINANSMAN classified=YATIRIM_URUNU score=0.9942 decision=ACCEPTED
+  NER_RESULT bank=Dünya Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=1
+  REJECTED KAR_PAYLASIM_ORANI           0.5096 | 995/1000 | percent_entity_missing_marker
+    EVIDENCE | epolanan altınlar 995/1000 saflıkta muhafaza edilmektedir.
+[17/121] document=207 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.8065 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9973 | 3 | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Xiaomi mağazalarında 3 aya varan taksit fırsatı Bana Bunu Al İş Ortağımda!
+  REJECTED FINANSMAN_TUTARI             0.4675 | 40.000TL | money_entity_missing_currency
+    EVIDENCE | ampanya üst limiti 40.000TL'dir.
+[18/121] document=214 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9837 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 3 | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Troy mağazalarında 3 aya varan taksit fırsatı Bana Bunu Al İş Ortağımda!
+  REJECTED FINANSMAN_TUTARI             0.5893 | 80.000TL | money_entity_missing_currency
+    EVIDENCE | ampanya üst limiti 80.000TL'dir.
+[19/121] document=229 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9917 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[20/121] document=230 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9948 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[21/121] document=241 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9910 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[22/121] document=243 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[23/121] document=250 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9937 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[24/121] document=251 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9942 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[25/121] document=253 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9897 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=1
+  REJECTED FINANSMAN_TUTARI             0.9621 | 600.000TL | money_entity_missing_currency
+    EVIDENCE | ğitim finansmanı üst limiti 600.000TL’dir.
+[26/121] document=255 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9914 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[27/121] document=257 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9916 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=3 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9963 | 24 aya | rule_and_confidence_passed
+    EVIDENCE | redilerinizi* avantajlı kâr oranları ve 24 aya varan vadeler ile size en uygun ödeme planını seçerek kredinizi kullanabilir,
+[28/121] document=258 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9944 decision=ACCEPTED
+  NER_RESULT bank=Hayat Finans Katılım Bankası A.Ş. chunks=3 accepted=0 review=0 rejected=0
+[29/121] document=274 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9918 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[30/121] document=280 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9904 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=1 accepted=5 review=0 rejected=0
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9969 | 20 Ocak 2026 - 31 Aralık 2026 | rule_and_confidence_passed
+    EVIDENCE | ampanya Aralığı: 20 Ocak 2026 - 31 Aralık 2026
+  ACCEPTED KAR_PAYI_ORANI               0.9152 | %2,99 | rule_and_confidence_passed
+    EVIDENCE | aksitlio’nun anlaşmalı olduğu mağazalarda yapacağınız alışverişlerinizde yeni müşteriye özel %2,99 kar payı oranlı Taksitlio Alışveriş Finansmanı sizlerle!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9971 | 19 Mart 2026 - 31 Aralık 2026 | rule_and_confidence_passed
+    EVIDENCE | ampanya Aralığı: 19 Mart 2026 - 31 Aralık 2026
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9956 | 13 Ağustos 2024 - 1 Ocak 2027 | rule_and_confidence_passed
+    EVIDENCE | ampanya Aralığı: 13 Ağustos 2024 - 1 Ocak 2027
+  ACCEPTED TAKSIT_SAYISI                0.9968 | 3 | rule_and_confidence_passed
+    EVIDENCE | iyanet Umre Finansmanı ile Vade Farksız 3 Taksit İmkanı!
+[31/121] document=299 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9908 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[32/121] document=346 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9889 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9973 | 3 | rule_and_confidence_passed
+    EVIDENCE | ampanya kapsamında Kutsal toprakları ziyaret etmek isteyen müşterilerimiz toplam umre tutarının en fazla yüzde altmışı için vade farksız 3 taksit imkanından yararlanabilir.
+[33/121] document=357 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9820 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=4 review=0 rejected=1
+  ACCEPTED HARCAMA_UST_LIMITI           0.7281 | 100.000 TL | rule_and_confidence_passed
+    EVIDENCE | Taksitlio’nun anlaşmalı olduğu mağazalarda yapacağınız 100.000 TL’ye kadar alışverişlerinizde 6 taksite kadar %2,99 avantajlı kar payı oranı ile alışveriş yapmanın tadını çıkarın!
+  ACCEPTED TAKSIT_SAYISI                0.9982 | 6 | rule_and_confidence_passed
+    EVIDENCE | Taksitlio’nun anlaşmalı olduğu mağazalarda yapacağınız 100.000 TL’ye kadar alışverişlerinizde 6 taksite kadar %2,99 avantajlı kar payı oranı ile alışveriş yapmanın tadını çıkarın!
+  ACCEPTED KAR_PAYI_ORANI               0.8363 | %2,99 | rule_and_confidence_passed
+    EVIDENCE | Taksitlio’nun anlaşmalı olduğu mağazalarda yapacağınız 100.000 TL’ye kadar alışverişlerinizde 6 taksite kadar %2,99 avantajlı kar payı oranı ile alışveriş yapmanın tadını çıkarın!
+  ACCEPTED VADE_SURESI                  0.9937 | 3 ay | rule_and_confidence_passed
+    EVIDENCE | 3 ay vadeli 10.000 TL’lik başvuru için örnek ödeme planı: Aylık kar oranı %2,99, aylık maliyet %4,1910, yıllık maliyet %63,6673.
+  REJECTED FINANSMAN_TUTARI             0.8713 | 10.787,28 TL | excluded_total_repayment_context
+    EVIDENCE | Ödenecek toplam tutar: 10.787,28 TL.
+[34/121] document=359 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9807 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[35/121] document=364 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9944 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[36/121] document=367 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9926 decision=ACCEPTED
+  NER_RESULT bank=Kuveyt Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[37/121] document=393 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9932 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[38/121] document=394 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9934 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[39/121] document=395 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9931 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[40/121] document=396 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9935 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[41/121] document=402 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9774 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Emlak Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[42/121] document=477 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9904 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Emlak Katılım Bankası A.Ş. chunks=3 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9973 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | inansman vadesi azami 12 ay olarak uygulanmaktadır.
+[43/121] document=486 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9484 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Emlak Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9964 | 12 aya | rule_and_confidence_passed
+    EVIDENCE | LÜS Teminatlı İşletme Finansmanı ile, 3 aya kadar ödemesiz dönem avantajı ve 12 aya kadar vade seçeneği ile esnek ödemeli finansman desteği sağlanmaktadır.
+[44/121] document=493 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9734 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[45/121] document=508 old_type=FINANSMAN classified=DIGER score=0.9940 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[46/121] document=512 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9926 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=5 accepted=5 review=0 rejected=1
+  REJECTED FINANSMAN_TUTARI             0.9386 | 100.000 TL | fact_not_in_evidence
+    EVIDENCE | 00.000 TL.
+  ACCEPTED VADE_SURESI                  0.9972 | 60 ay | rule_and_confidence_passed
+    EVIDENCE | Arsa Finansmanının (Arsa Kredisi)* maksimum vadesi 60 ay olup, Banka tarafından belirlenen finansman tahsisindeki özel şartların sağlanması halinde 84 aya kadar vade seçeneği sunulabilir.
+  ACCEPTED VADE_SURESI                  0.9973 | 84 aya | rule_and_confidence_passed
+    EVIDENCE | Arsa Finansmanının (Arsa Kredisi)* maksimum vadesi 60 ay olup, Banka tarafından belirlenen finansman tahsisindeki özel şartların sağlanması halinde 84 aya kadar vade seçeneği sunulabilir.
+  ACCEPTED TAHSIS_UCRETI                0.8807 | 500 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+  ACCEPTED IPOTEK_TESIS_UCRETI          0.8684 | 3.000 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+  ACCEPTED EKSPERTIZ_UCRETI             0.9366 | 16.500 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+[47/121] document=513 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9924 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=5 accepted=5 review=0 rejected=1
+  REJECTED FINANSMAN_TUTARI             0.9502 | 100.000 TL | fact_not_in_evidence
+    EVIDENCE | 00.000 TL.
+  ACCEPTED VADE_SURESI                  0.9967 | 84 aydır | rule_and_confidence_passed
+    EVIDENCE | Finansmanın maksimum vadesi 84 aydır.
+  ACCEPTED VADE_SURESI                  0.9961 | 60 ay | rule_and_confidence_passed
+    EVIDENCE | Alınacak ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+  ACCEPTED TAHSIS_UCRETI                0.8807 | 500 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+  ACCEPTED IPOTEK_TESIS_UCRETI          0.8684 | 3.000 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+  ACCEPTED EKSPERTIZ_UCRETI             0.9366 | 16.500 TL | rule_and_confidence_passed
+    EVIDENCE | ücretler: 60 ay vadede 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Değerleme) ücretidir.
+[48/121] document=515 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.8081 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=12 accepted=0 review=0 rejected=0
+[49/121] document=517 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.4938 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[50/121] document=518 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9955 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=3 accepted=0 review=0 rejected=0
+[51/121] document=520 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[52/121] document=523 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9936 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=3 accepted=0 review=0 rejected=0
+[53/121] document=524 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9951 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=6 accepted=1 review=0 rejected=2
+  ACCEPTED FINANSMAN_TUTARI             0.9749 | 3.000.000 TL | rule_and_confidence_passed
+    EVIDENCE | OBİ Anında Finansman kapsamında tahsis edilebilecek maksimum kredi limiti tutarı 3.000.000 TL'dir.
+  REJECTED FINANSMAN_TUTARI             0.6787 | 50 | money_entity_missing_currency
+    EVIDENCE | OBİ Anında Finansman hizmetinden Türkiye’de faaliyet gösteren, son kesin dönem yıllık cirosu 50 Milyon TL’nin altında olan tüm KOBİ’ler yararlanabilir.
+  REJECTED FINANSMAN_TUTARI             0.8472 | TL | entity_missing_number
+    EVIDENCE | OBİ Anında Finansman hizmetinden Türkiye’de faaliyet gösteren, son kesin dönem yıllık cirosu 50 Milyon TL’nin altında olan tüm KOBİ’ler yararlanabilir.
+[54/121] document=525 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=8 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9971 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | Dijital Taksitli Ticari Finansman başvurunuzu şimdi yapın, 1 milyon TL’ye varan finansman tutarına 12 ay vade ile hemen ulaşın.
+[55/121] document=526 old_type=FINANSMAN classified=TASIT_FINANSMANI score=0.9934 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=9 accepted=9 review=0 rejected=4
+  ACCEPTED VADE_SURESI                  0.9972 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | 00.000 TL'ye kadar araçlar için maksimum vade süresi 48 ay,
+  ACCEPTED VADE_SURESI                  0.9974 | 36 ay | rule_and_confidence_passed
+    EVIDENCE | 00.000 - 800.000 TL arası araçlar için maksimum vade süresi 36 ay,
+  ACCEPTED VADE_SURESI                  0.9971 | 24 ay | rule_and_confidence_passed
+    EVIDENCE | 00.000 TL - 1.200.000 TL arası araçlar için maksimum vade süresi 24 ay,
+  ACCEPTED VADE_SURESI                  0.9971 | 12 aydır | rule_and_confidence_passed
+    EVIDENCE | .200.000 - 2.000.000 TL arasında araçlar için maksimum vade süresi 12 aydır.
+  REJECTED VADE_SURESI                  0.9973 | 48 aya | fact_not_in_evidence
+    EVIDENCE | 8 aya kadar vade imkânı sunar.
+  REJECTED FINANSMAN_TUTARI             0.9681 | 40.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL.
+  ACCEPTED VADE_SURESI                  0.9967 | 48 ayı | rule_and_confidence_passed
+    EVIDENCE | TL'ye kadar vade 48 ayı,
+  ACCEPTED VADE_SURESI                  0.9966 | 36 ayı | rule_and_confidence_passed
+    EVIDENCE | 00.000 - 800.000 TL arası vade 36 ayı,
+  ACCEPTED VADE_SURESI                  0.9965 | 24 ayı | rule_and_confidence_passed
+    EVIDENCE | 00.000 TL – 1.200.000 TL arası vade 24 ayı,
+  ACCEPTED VADE_SURESI                  0.9965 | 12 ayı | rule_and_confidence_passed
+    EVIDENCE | 400.000 TL'ye kadar vade 48 ayı, 400.000-800.000 TL arası vade 36 ayı, 800.000 TL – 1.200.000 TL arası vade 24 ayı, 1.200.000-2.000.000 TL arasında bir vade ise 12 ayı geçemez.
+  ACCEPTED VADE_SURESI                  0.9967 | 36 aydır | rule_and_confidence_passed
+    EVIDENCE | Taşıt teminatlı finansmanlarda ise maksimum vade 36 aydır .
+  REJECTED FINANSMAN_TUTARI             0.6264 | 400.000 TL | fact_not_in_evidence
+    EVIDENCE | 00.000 TL'ye kadar vade 48 ayı,
+  REJECTED FINANSMAN_TUTARI             0.8764 | 1.200.000 TL | excluded_asset_value_tier_context
+    EVIDENCE | 00.000 TL – 1.200.000 TL arası vade 24 ayı,
+[56/121] document=532 old_type=FINANSMAN classified=TASIT_FINANSMANI score=0.9932 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=7 accepted=1 review=0 rejected=1
+  ACCEPTED VADE_SURESI                  0.9974 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | icari Hat / Ticari Plaka Finansmanını (Ticari Hat / Ticari Plaka Kredisi)* maksimum 48 ay vade ile kullanabilirsiniz.
+  REJECTED FINANSMAN_TUTARI             0.8320 | 40.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL.
+[57/121] document=536 old_type=FINANSMAN classified=DIGER score=0.9934 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[58/121] document=565 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9947 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[59/121] document=568 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9938 decision=ACCEPTED
+  NER_RESULT bank=Türkiye Finans Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[60/121] document=593 old_type=FINANSMAN classified=TASIT_FINANSMANI score=0.9931 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=2 accepted=4 review=0 rejected=5
+  REJECTED VADE_SURESI                  0.9973 | 48 aya | fact_not_in_evidence
+    EVIDENCE | 8 aya varan vade imkânı bulunmaktadır.
+  REJECTED FINANSMAN_TUTARI             0.9785 | 2.000.000 TL | conflicting_property_value_context
+    EVIDENCE | nihai fatura değeri 1.200.001 TL ile 2.000.000 TL arasında olan motosiklet finansmanları için ise azami vade 12 ay olarak uygulanacaktır.
+  REJECTED FINANSMAN_TUTARI             0.9730 | 400.000 TL | conflicting_property_value_context
+    EVIDENCE | ihai fatura değeri 400.000 TL ve altında olan motosiklet finansmanları için azami vade 48 ay;
+  ACCEPTED VADE_SURESI                  0.9964 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | ihai fatura değeri 400.000 TL ve altında olan motosiklet finansmanları için azami vade 48 ay;
+  REJECTED FINANSMAN_TUTARI             0.9595 | 800.000 TL | conflicting_property_value_context
+    EVIDENCE | nihai fatura değeri 400.001 TL ile 800.000 TL arasında olan motosiklet finansmanları için azami vade 36 ay;
+  ACCEPTED VADE_SURESI                  0.9968 | 36 ay | rule_and_confidence_passed
+    EVIDENCE | nihai fatura değeri 400.001 TL ile 800.000 TL arasında olan motosiklet finansmanları için azami vade 36 ay;
+  REJECTED FINANSMAN_TUTARI             0.9231 | 1.200.000 TL | conflicting_property_value_context
+    EVIDENCE | nihai fatura değeri 800.001 TL ile 1.200.000 TL arasında olan motosiklet finansmanları için azami vade 24 ay;
+  ACCEPTED VADE_SURESI                  0.9962 | 24 ay | rule_and_confidence_passed
+    EVIDENCE | nihai fatura değeri 800.001 TL ile 1.200.000 TL arasında olan motosiklet finansmanları için azami vade 24 ay;
+  ACCEPTED VADE_SURESI                  0.9960 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | nihai fatura değeri 1.200.001 TL ile 2.000.000 TL arasında olan motosiklet finansmanları için ise azami vade 12 ay olarak uygulanacaktır.
+[61/121] document=595 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9951 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=3 accepted=0 review=0 rejected=0
+[62/121] document=598 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9947 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[63/121] document=600 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[64/121] document=601 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=4 accepted=2 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9934 | 360 güne | rule_and_confidence_passed
+    EVIDENCE | KVİKS programı çerçevesinde ihracatçı firmalarımızın Eximbank tarafından kabul edilen ülkelerdeki, limitleri onaylanmış alıcılarına yapacakları, 360 güne kadar vadeli, KVİKS kapsamındaki sigorta uygunluk onayı Exim’den alınmış tüm yüklemeleri teminat olarak kabul edilecektir.
+  ACCEPTED VADE_SURESI                  0.9952 | 540 gün | rule_and_confidence_passed
+    EVIDENCE | i programı kapsamında kullandırılacak nakdi finansmanlar TL/USD/EUR döviz cinsi seçenekleriyle kullandırılmakta olup, protokol kapsamında kullandırılacak krediler 120, 180, 360 ve 540 gün kısa vadeli vade opsiyonlarıyla Bankamız aracılığıyla yürütebilirsiniz.
+[65/121] document=602 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[66/121] document=603 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9936 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[67/121] document=604 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[68/121] document=605 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9948 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[69/121] document=606 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9943 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[70/121] document=607 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9945 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=4 accepted=0 review=0 rejected=1
+  REJECTED FINANSMAN_TUTARI             0.6787 | 15 | money_entity_missing_currency
+    EVIDENCE | nde kalan %8 ve %18 KDV’ye tabi makine-ekipmanların finansal kiralama ile finansmanında döviz ödeme planı ve sözleşme düzenlenebilmesi için finansal kiralama talep eden müşterinin 15 milyon USD ve üzeri kredi riskine veya yatırım tutarı kadar ihracat gelirine (son 3 yıllık ihracat geliri kadar) sahip olması gerekmektedir.
+[71/121] document=608 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9912 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[72/121] document=609 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9923 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[73/121] document=617 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9913 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=2 accepted=2 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9970 | 60 aya | rule_and_confidence_passed
+    EVIDENCE | Arsa Finansmanına hemen başvurun, 60 aya kadar vade olanaklarıyla planlarınızı ertelemeyin.
+  ACCEPTED VADE_SURESI                  0.9974 | 60 ay | rule_and_confidence_passed
+    EVIDENCE | şinizi büyütmek için gayrimenkul yatırımına ihtiyacınız varsa, 60 ay vadeyle %100'e kadar finansal destek alabilirsiniz.
+[74/121] document=618 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9925 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[75/121] document=621 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9929 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[76/121] document=622 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9948 decision=ACCEPTED
+  NER_RESULT bank=Vakıf Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[77/121] document=654 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9934 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[78/121] document=693 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9946 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[79/121] document=694 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[80/121] document=695 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[81/121] document=696 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9944 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[82/121] document=698 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9924 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=5 accepted=0 review=0 rejected=0
+[83/121] document=704 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9921 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[84/121] document=705 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.7434 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[85/121] document=707 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9926 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[86/121] document=708 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9910 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[87/121] document=709 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9923 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[88/121] document=710 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9922 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[89/121] document=713 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9899 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[90/121] document=715 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9954 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[91/121] document=717 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9941 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[92/121] document=718 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[93/121] document=719 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[94/121] document=720 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9810 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[95/121] document=721 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[96/121] document=722 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9954 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[97/121] document=723 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9916 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[98/121] document=724 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9946 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[99/121] document=727 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9941 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[100/121] document=728 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[101/121] document=729 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9951 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[102/121] document=730 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9946 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[103/121] document=731 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[104/121] document=732 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9945 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[105/121] document=733 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[106/121] document=734 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[107/121] document=735 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9948 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[108/121] document=736 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9951 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[109/121] document=737 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9946 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[110/121] document=738 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9952 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[111/121] document=739 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9949 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | url_rule_model_conflict
+[112/121] document=742 old_type=FINANSMAN classified=KONUT_FINANSMANI score=0.9922 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=3 accepted=5 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.6465 | 1 yıl | excluded_residency_duration_context
+    EVIDENCE | iskli yapılarda en az 1 yıl oturan kiracı veya sınırlı ayni hak sahipleri,
+  ACCEPTED FINANSMAN_TUTARI             0.9905 | 1.250.000 TL | rule_and_confidence_passed
+    EVIDENCE | Birden fazla bağımsız bölüme sahip olan hak sahipleri adına kar payı desteği sağlanacak toplam finansman tutarı her bir bağımsız bölüm için 1.250.000 TL ’yi aşmamak kaydıyla toplamda en fazla 6.000.000 TL olabilecektir.
+  ACCEPTED FINANSMAN_TUTARI             0.9701 | 6.000.000 TL | rule_and_confidence_passed
+    EVIDENCE | bağımsız bölüme sahip olan hak sahipleri adına kar payı desteği sağlanacak toplam finansman tutarı her bir bağımsız bölüm için 1.250.000 TL ’yi aşmamak kaydıyla toplamda en fazla 6.000.000 TL olabilecektir.
+  ACCEPTED FINANSMAN_TUTARI             0.9878 | 320.000 TL | rule_and_confidence_passed
+    EVIDENCE | onut nitelikli bağımsız bölümler için güçlendirme amacıyla kullandırılacak finansmanlarda ise bir bağımsız bölüm için kar payı destekli finansman tutarı en fazla 320.000 TL’dir.
+  ACCEPTED FINANSMAN_TUTARI             0.8954 | 1.600.000 TL | rule_and_confidence_passed
+    EVIDENCE | la bağımsız bölüme sahip olan hak sahipleri adına kar payı desteği sağlanacak toplam finansman tutarı her bir bağımsız bölüm için 320.000 TL ’yi aşmamak kaydıyla toplamda en fazla 1.600.000 TL olabilecektir.
+  ACCEPTED VADE_SURESI                  0.9921 | 10 yıldır | rule_and_confidence_passed
+    EVIDENCE | ak sahiplerine kullandırılacak kâr destekli konut finansmanı için azami vade 10 yıldır.
+[113/121] document=743 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.8128 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[114/121] document=753 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9948 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=2 review=0 rejected=0
+  ACCEPTED FINANSMAN_TUTARI             0.9811 | 12.500.000 TL | rule_and_confidence_passed
+    EVIDENCE | azami finansman limiti 12.500.000 TL, vade azami 6 ay ödemesiz dönem dahil olmak üzere azami 24 aydır.
+  ACCEPTED VADE_SURESI                  0.9936 | 6 ay | rule_and_confidence_passed
+    EVIDENCE | u paket kapsamında müşterilerimize kullandırılabilecek azami finansman limiti 12.500.000 TL, vade azami 6 ay ödemesiz dönem dahil olmak üzere azami 24 aydır.
+[115/121] document=758 old_type=FINANSMAN classified=SIGORTA_TEKAFUL_URUNU score=0.9915 decision=ACCEPTED
+  NER_SKIPPED | product_type_not_extraction_eligible
+[116/121] document=762 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9901 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[117/121] document=763 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9941 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[118/121] document=764 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9939 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[119/121] document=765 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9923 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[120/121] document=767 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9919 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[121/121] document=771 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9947 decision=ACCEPTED
+  NER_RESULT bank=Ziraat Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+Summary: {"accepted": 52, "classification_review": 32, "failed": 0, "filtered_out": 5, "ner_skipped": 41, "rejected": 26, "review": 0}
+Completed at: 2026-08-25T18:38:56.477669+00:00

@@ -1,0 +1,45 @@
+Pipeline: ner_v4_rules_v1
+Mode: DRY_RUN
+Selected documents: 7
+Unchanged documents skipped: 0
+[1/7] document=164 bank=Dünya Katýlým Bankasý A.Þ. chunks=8 accepted=0 review=0 rejected=0
+[2/7] document=168 bank=Dünya Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[3/7] document=506 bank=Türkiye Finans Katýlým Bankasý A.Þ. chunks=10 accepted=5 review=2 rejected=1
+  REVIEW   FINANSMAN_TUTARI             0.9297 | 100.000 TL | context_rule_failed
+    EVIDENCE | 00.000 TL.
+  ACCEPTED VADE_SURESI                  0.9965 | 120 ay | rule_and_confidence_passed
+    EVIDENCE | Finansmanýn maksimum vadesi 120 ay olup, tahsis ücreti vergiler hariç finansman tutarýnýn binde 5’i oranýndadýr.
+  ACCEPTED TAHSIS_UCRETI                0.8695 | 500 TL | rule_and_confidence_passed
+    EVIDENCE | Alýnacak ücretler: 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Deðerleme) ücretidir.
+  REVIEW   IPOTEK_TESIS_UCRETI          0.5964 | 3.000 TL | below_auto_threshold
+    EVIDENCE | Alýnacak ücretler: 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Deðerleme) ücretidir.
+  ACCEPTED EKSPERTIZ_UCRETI             0.8987 | 16.500 TL | rule_and_confidence_passed
+    EVIDENCE | Alýnacak ücretler: 500 TL tahsis ücreti, 3.000 TL ipotek tesis ücreti, 16.500 TL Ekspertiz(Deðerleme) ücretidir.
+  REJECTED VADE_SURESI                  0.9927 | kaç ay | entity_missing_number
+    EVIDENCE | ortgage finansmaný için en fazla kaç ay vade yapýlabilir?
+  ACCEPTED VADE_SURESI                  0.9967 | 120 aydýr | rule_and_confidence_passed
+    EVIDENCE | ygulanan maksimum vade süresi 120 aydýr.
+  ACCEPTED VADE_SURESI                  0.9964 | 36 ayý | rule_and_confidence_passed
+    EVIDENCE | vadesi 36 ayý aþmayan kredilerde % 1'i, kalan vadesi 36 ayý aþan kredilerde ise % 2'si kadardýr.
+[4/7] document=537 bank=Türkiye Finans Katýlým Bankasý A.Þ. chunks=4 accepted=2 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.9908 | kaç ay | entity_missing_number
+    EVIDENCE | ortgage finansmaný için en fazla kaç ay vade yapýlabilir?
+  ACCEPTED VADE_SURESI                  0.9966 | 120 aydýr | rule_and_confidence_passed
+    EVIDENCE | ygulanan maksimum vade süresi 120 aydýr.
+  ACCEPTED VADE_SURESI                  0.9963 | 36 ayý | rule_and_confidence_passed
+    EVIDENCE | rken ödeme tazminatý oraný, erken ödenen tutarýn kalan vadesi 36 ayý aþmayan kredilerde % 1'i, kalan vadesi 36 ayý aþan kredilerde ise % 2'si kadardýr.
+[5/7] document=561 bank=Türkiye Finans Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[6/7] document=619 bank=Vakýf Katýlým Bankasý A.Þ. chunks=8 accepted=2 review=3 rejected=0
+  ACCEPTED VADE_SURESI                  0.9970 | 120 aya | rule_and_confidence_passed
+    EVIDENCE | 20 aya kadar vade
+  REVIEW   FINANSMAN_TUTARI             0.6789 | 5.000.000 TL | context_rule_failed
+    EVIDENCE | eðer <= 5.000.000 TL
+  REVIEW   FINANSMAN_TUTARI             0.7804 | 7.000.000 TL | context_rule_failed
+    EVIDENCE | .000.000 TL < Deðer <=10.000.000 TL
+  REVIEW   FINANSMAN_TUTARI             0.8368 | 10.000.000 TL | context_rule_failed
+    EVIDENCE | .000.000 TL < Deðer <=10.000.000 TL
+  ACCEPTED VADE_SURESI                  0.9972 | 60 aya | rule_and_confidence_passed
+    EVIDENCE | Arsa Finansmanýna hemen baþvurun, 60 aya kadar vade olanaklarýyla planlarýnýzý ertelemeyin.
+[7/7] document=769 bank=Ziraat Katýlým Bankasý A.Þ. chunks=2 accepted=0 review=0 rejected=0
+Summary: {"accepted": 9, "failed": 0, "rejected": 2, "review": 5}
+Completed at: 2026-08-24T20:40:53.838787+00:00

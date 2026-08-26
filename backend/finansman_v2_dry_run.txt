@@ -1,0 +1,60 @@
+Pipeline: ner_v4_rules_v2
+Mode: DRY_RUN
+Selected documents: 20
+Unchanged documents skipped: 0
+[1/20] document=15 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9892 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[2/20] document=56 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9892 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[3/20] document=59 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9912 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9941 | %10 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Restoran Harcamanıza %10 İndirim Kazandırıyor!
+[4/20] document=61 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.5845 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[5/20] document=62 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9901 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9939 | %50 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Otopark ve Vale Harcamanıza %50 İndirim Kazandırıyor!
+[6/20] document=63 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9920 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[7/20] document=64 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9894 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[8/20] document=70 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[9/20] document=71 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9914 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[10/20] document=83 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9931 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[11/20] document=87 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9914 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[12/20] document=88 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[13/20] document=92 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9912 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[14/20] document=94 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9692 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[15/20] document=95 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9935 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9971 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | akine ekipman, traktör ve biçerdöver finansmanı işlemleri finansal kiralama yöntemiyle ve hasat dönemine uygun ödeme koşulları ile 48 ay vadeye kadar yapılabilmektedir.
+[16/20] document=99 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[17/20] document=100 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9938 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=3 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9975 | 48 aya | rule_and_confidence_passed
+    EVIDENCE | irai faaliyetlerinizin gerçekleşmesi için gerekli her türlü ekipman ve makine alımına yönelik finansman desteğinizi 48 aya varan vadelerle kullanabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9970 | 24 ay | rule_and_confidence_passed
+    EVIDENCE | ihtiyaçlarınızı Bitkisel Üretim Finansmanı ile 24 ay vadeye kadar finanse edebilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9974 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | arımsal faaliyetlerinizin sürdürülmesi için alacağınız tarlalarınızı, Tarla Alım Finansmanı ile 48 ay vadeye kadar finanse edebilirsiniz.
+[18/20] document=102 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9919 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[19/20] document=103 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9804 decision=REVIEW
+  NER_SKIPPED | classification_requires_review | rule_model_conflict
+[20/20] document=104 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9911 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9961 | 10 aya | rule_and_confidence_passed
+    EVIDENCE | ğrenciler için yurt ihtiyaçlarına yönelik 10 aya varan vade seçenekleriyle en uygun ihtiyaç kredisinden siz de faydalanabilirsiniz.
+Summary: {"accepted": 7, "classification_review": 10, "failed": 0, "filtered_out": 0, "ner_skipped": 10, "rejected": 0, "review": 0}
+Completed at: 2026-08-25T17:56:58.192469+00:00

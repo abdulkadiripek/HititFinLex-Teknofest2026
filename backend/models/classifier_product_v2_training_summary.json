@@ -1,0 +1,124 @@
+{
+  "product": {
+    "task": "product_v2",
+    "model_name": "dbmdz/bert-base-turkish-cased",
+    "best_model_dir": "C:\\Users\\PC\\Documents\\katilim_finans_app\\models\\classifier_product_v2_best",
+    "labels": [
+      "DIGER",
+      "DIGER_FINANSMAN",
+      "DIGER_KAMPANYA",
+      "IHTIYAC_FINANSMANI",
+      "KART_KAMPANYASI",
+      "KART_URUNU",
+      "KATILMA_HESABI",
+      "KONUT_FINANSMANI",
+      "ODEME_TRANSFER_HIZMETI",
+      "SIGORTA_TEKAFUL_URUNU",
+      "TASIT_FINANSMANI",
+      "TICARI_FINANSMAN",
+      "YATIRIM_URUNU"
+    ],
+    "test_metrics": {
+      "test_loss": 0.463657408952713,
+      "test_accuracy": 0.9122807017543859,
+      "test_macro_f1": 0.8759311418686913,
+      "test_weighted_f1": 0.9109386823834771,
+      "test_runtime": 0.173,
+      "test_samples_per_second": 658.977,
+      "test_steps_per_second": 46.244
+    },
+    "classification_report": {
+      "DIGER": {
+        "precision": 1.0,
+        "recall": 0.6153846153846154,
+        "f1-score": 0.7619047619047619,
+        "support": 13.0
+      },
+      "DIGER_FINANSMAN": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1-score": 0.6666666666666666,
+        "support": 2.0
+      },
+      "DIGER_KAMPANYA": {
+        "precision": 0.7777777777777778,
+        "recall": 0.875,
+        "f1-score": 0.8235294117647058,
+        "support": 8.0
+      },
+      "IHTIYAC_FINANSMANI": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 5.0
+      },
+      "KART_KAMPANYASI": {
+        "precision": 0.9714285714285714,
+        "recall": 0.9444444444444444,
+        "f1-score": 0.9577464788732394,
+        "support": 36.0
+      },
+      "KART_URUNU": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 11.0
+      },
+      "KATILMA_HESABI": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1-score": 0.6666666666666666,
+        "support": 3.0
+      },
+      "KONUT_FINANSMANI": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 1.0
+      },
+      "ODEME_TRANSFER_HIZMETI": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1-score": 0.6666666666666666,
+        "support": 2.0
+      },
+      "SIGORTA_TEKAFUL_URUNU": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2.0
+      },
+      "TASIT_FINANSMANI": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2.0
+      },
+      "TICARI_FINANSMAN": {
+        "precision": 0.7692307692307693,
+        "recall": 1.0,
+        "f1-score": 0.8695652173913043,
+        "support": 10.0
+      },
+      "YATIRIM_URUNU": {
+        "precision": 0.95,
+        "recall": 1.0,
+        "f1-score": 0.9743589743589743,
+        "support": 19.0
+      },
+      "accuracy": 0.9122807017543859,
+      "macro avg": {
+        "precision": 0.9206490091105477,
+        "recall": 0.8796022353714661,
+        "f1-score": 0.8759311418686913,
+        "support": 114.0
+      },
+      "weighted avg": {
+        "precision": 0.9336487586487586,
+        "recall": 0.9122807017543859,
+        "f1-score": 0.9109386823834771,
+        "support": 114.0
+      }
+    }
+  }
+}

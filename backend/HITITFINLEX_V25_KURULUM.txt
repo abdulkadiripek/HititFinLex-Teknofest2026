@@ -1,0 +1,47 @@
+HITITFINLEX V2.5 - GERCEK DASHBOARD VE KATALOG API
+==================================================
+
+Bu paket V2.4 siniflandirma ve NER kurallarini korur. Ek olarak:
+
+- GET  /dashboard/overview
+- POST /catalog/search
+- GET  /documents/{document_id}
+
+endpoint'lerini ekler.
+
+1. API'yi Ctrl+C ile durdurun.
+
+2. Proje klasorunde mevcut dosyalari yedekleyin:
+
+   copy api.py api_v24_backup.py
+
+3. Bu paketteki tum Python dosyalarini
+   C:\Users\PC\Documents\katilim_finans_app
+   klasorune kopyalayin.
+
+4. Testi calistirin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_dashboard_v25.py
+
+Beklenen:
+
+   HititFinLex dashboard V2.5 API: OK
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Tarayicida kontrol edin:
+
+   http://127.0.0.1:8000/dashboard/overview
+   http://127.0.0.1:8000/docs
+
+7. Frontend'i ayri CMD penceresinde baslatin:
+
+   cd /d C:\Users\PC\Documents\HititFinLex
+   npm run dev
+
+   http://localhost:3000

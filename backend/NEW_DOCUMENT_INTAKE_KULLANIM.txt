@@ -1,0 +1,109 @@
+KATILIM FINANS - YENI DOKUMAN ALIMI V0.8
+==========================================
+
+1. DOSYALARI KOPYALA
+
+Paketteki su dosyalari proje kokune kopyalayin:
+
+  api.py
+  intake_service.py
+  ingest_new_document.py
+  new_document.example.json
+  smoke_test_intake.py
+
+Mevcut classifier_service.py, ner_service.py, hybrid_search.py, .env ve
+models klasorlerine dokunmayin.
+
+
+2. API'YI YENIDEN BASLAT
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  .venv\Scripts\activate
+  uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+Kontrol:
+
+  http://127.0.0.1:8000/health
+
+Beklenen API surumu: 0.8.0
+Beklenen intake_pipeline: classifier_v2_ner_v4_intake_v1
+
+
+3. ONCE DRY-RUN CALISTIR
+
+Yeni bir CMD penceresi acin:
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  .venv\Scripts\activate
+  python ingest_new_document.py --file new_document.example.json
+
+Bu komut veritabanini degistirmez. Siniflandirma, NER ve baglam kurallarinin
+sonucunu gosterir.
+
+Iki guvenlik yolunu otomatik test etmek icin:
+
+  python smoke_test_intake.py
+
+Beklenen:
+
+  ACCEPTED path: OK (6 facts)
+  REVIEW gate: OK (NER skipped)
+  Database safety: OK (DRY_RUN)
+
+
+4. GERCEK VERI DOSYASI HAZIRLA
+
+Her kayit su alanlari icermelidir:
+
+  record_key  : Istege bagli ama onerilir. Ayni sayfa icin sabit kalmalidir.
+  bank_key    : Bankanin sabit ve benzersiz anahtari.
+  bank_name   : Arayuzde gorunecek banka adi.
+  source_url  : Kaynak adresi.
+  page_title  : Sayfa basligi.
+  raw_text    : Sayfanin temiz metni.
+
+Tek belge icin .json, cok belge icin JSON nesnelerinden olusan .jsonl dosyasi
+kullanabilirsiniz.
+
+
+5. VERITABANINA YAZ
+
+Dry-run sonucu dogruysa:
+
+  python ingest_new_document.py --file yeni_belge.json --write
+
+Guvenlik davranisi:
+
+  - Siniflandirma REVIEW ise documents tablosuna yazilmaz.
+  - Belge document_intake_review_queue tablosuna gider.
+  - ACCEPTED ise belge, yalnizca kendi chunklari ve embeddingleri yazilir.
+  - Diger belgelerin chunklari silinmez veya yeniden uretilmez.
+  - Yalnizca kural + guven esigini gecen NER sonuclari comparison_facts'a gider.
+  - Belirsiz NER sonuclari comparison_fact_review_queue tablosuna gider.
+  - Reddedilen NER sonuclari veritabanina yazilmaz.
+  - Ayni icerik yeniden gelirse atlanir.
+  - Ayni record_key degismis icerikle gelirse varsayilan olarak inceleme
+    kuyruguna gider.
+
+
+6. DEGISTIRILMIS MEVCUT BELGE
+
+Yalnizca degisikligi gercekten onayladiysaniz:
+
+  python ingest_new_document.py --file guncel_belge.json --write --allow-update
+
+Bu komut yalnizca ayni record_key'e ait belgeyi, chunklari, embeddingleri ve
+bu pipeline'in NER factlarini gunceller. Diger belgelere dokunmaz.
+
+
+7. VERITABANI KONTROLU
+
+  python -c "import api; from hybrid_search import get_connection; c=get_connection(); cur=c.cursor(); cur.execute('SELECT COUNT(*) FROM documents'); print('Documents:',cur.fetchone()[0]); cur.execute('SELECT COUNT(*) FROM document_chunks'); print('Chunks:',cur.fetchone()[0]); cur.execute('SELECT COUNT(*) FROM comparison_facts'); print('Facts:',cur.fetchone()[0]); cur.execute(\"SELECT COUNT(*) FROM document_intake_review_queue WHERE review_status='pending'\"); print('Document reviews:',cur.fetchone()[0]); cur.execute(\"SELECT COUNT(*) FROM comparison_fact_review_queue WHERE review_status='pending'\"); print('Fact reviews:',cur.fetchone()[0]); c.close()"
+
+
+8. SWAGGER ILE KULLANIM
+
+  http://127.0.0.1:8000/docs
+
+POST /intake bolumunde write=false dry-run, write=true veritabani yazimidir.
+Varsayilan deger her zaman write=false'tur.

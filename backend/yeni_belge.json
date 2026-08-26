@@ -1,0 +1,11 @@
+{
+  "record_key": "demo-konut-finansmani-001",
+  "bank_key": "demo-katilim",
+  "bank_name": "Demo Katilim Bankasi A.S.",
+  "source_url": "https://example.com/konut-finansmani",
+  "page_title": "Konut Finansmani",
+  "raw_text": "Konut finansmani kapsaminda 500.000 TL finansman 120 ay vade ve %2,79 kar payi orani ile sunuluyor. Tahsis ucreti 2.500 TL, ekspertiz ucreti 8.000 TL ve ipotek tesis ucreti 3.000 TL'dir.",
+  "classification_threshold": 0.8,
+  "ner_threshold": 0.4,
+  "review_threshold": 0.6
+}

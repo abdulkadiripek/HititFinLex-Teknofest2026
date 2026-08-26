@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# secrets
+.env
+
+# model weights (too large for git; download instructions in README)
+models/*_best/
+models/*_checkpoints/
+
+# old frontend scaffold copy (superseded by the HititFinLex repo; has its own nested git repo)
+frontend/
+
+# huggingface / misc caches
+*.tsbuildinfo

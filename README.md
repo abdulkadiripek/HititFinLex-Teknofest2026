@@ -7,7 +7,10 @@
 Kaynaklı RAG asistanı, ürün karşılaştırması ve veri kalitesi izleme ile
 katılım finansmanı ürünlerini tek ekrandan keşfedin.
 
-_Teknofest 2026 · Katılım Finans NLP/RAG Sistemi_
+TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması (2. Senaryo) kapsamında
+**HititFinLex** takımı tarafından geliştirilmiştir.
+
+`#BilisimVadisi2026`
 
 </div>
 
@@ -21,9 +24,11 @@ _Teknofest 2026 · Katılım Finans NLP/RAG Sistemi_
 - [Teknoloji yığını](#teknoloji-yığını)
 - [API sözleşmesi](#api-sözleşmesi)
 - [Proje yapısı](#proje-yapısı)
+- [Veri seti](#veri-seti)
 - [Kurulum](#kurulum)
 - [Ortam değişkenleri](#ortam-değişkenleri)
 - [Test ve build](#test-ve-build)
+- [Lisans](#lisans)
 - [Yol haritası](#yol-haritası)
 
 ---
@@ -33,24 +38,27 @@ _Teknofest 2026 · Katılım Finans NLP/RAG Sistemi_
 HititFinLex, Türkiye'deki katılım bankalarının (Türkiye Finans, Vakıf
 Katılım, Ziraat Katılım, Dünya Katılım vb.) kredi kartı kampanyalarını ve
 finansman ürünlerini otomatik olarak toplayan, sınıflandıran ve
-karşılaştırılabilir hâle getiren bir NLP/RAG sisteminin **frontend**
-katmanıdır. Kullanıcı; ürünleri filtreleyip arayabilir, bankalar arası
-karşılaştırma matrisi görebilir, kaynaklı bir sohbet asistanına soru
-sorabilir ve verinin doğrulama/inceleme durumunu izleyebilir.
+karşılaştırılabilir hâle getiren uçtan uca bir NLP/RAG sistemidir. Kullanıcı;
+ürünleri filtreleyip arayabilir, bankalar arası karşılaştırma matrisi
+görebilir, kaynaklı bir sohbet asistanına soru sorabilir ve verinin
+doğrulama/inceleme durumunu izleyebilir.
 
-Bu depo yalnızca **Next.js arayüzünü** içerir. Belge alımı, NER,
-sınıflandırma, embedding üretimi ve RAG orkestrasyonu ayrı bir Python
-servisinde (FastAPI) çalışır ve bu depoya dahil değildir.
+Bu depo **tek repo (monorepo)** olarak hem frontend'i hem backend'i içerir:
+
+- **[`app/`](app)** — Next.js arayüzü (bu README'nin geri kalanı bu katmanı anlatır)
+- **[`backend/`](backend)** — belge alımı, Türkçe NER, sınıflandırma, embedding
+  üretimi ve RAG orkestrasyonunu yapan FastAPI servisi; kurulum ve
+  çalıştırma adımları için [`backend/README.md`](backend/README.md)'ye bakın.
 
 ## Mimari
 
 ```mermaid
 flowchart LR
     subgraph Client["Tarayıcı"]
-        UI["Next.js 16 / React 19\n(bu depo)"]
+        UI["Next.js 16 / React 19\n(app/)"]
     end
 
-    subgraph API["FastAPI Servisi (ayrı depo)"]
+    subgraph API["FastAPI Servisi (backend/)"]
         REST["REST uçları\n/health /dashboard /catalog\n/comparison /documents /chat"]
         NER["Türkçe NER\nner_v4_best"]
         CLS["Kampanya + Ürün\nsınıflandırıcıları"]
@@ -117,7 +125,7 @@ karşılaştırma hücresi kaynağına kadar izlenebilir.
 - [Tailwind CSS 4](https://tailwindcss.com/)
 - Build/test: `vite`, `vinext`, Node'un yerleşik test koşucusu (`node --test`)
 
-**Backend (ayrı depo, referans amaçlı)**
+**Backend ([`backend/`](backend))**
 
 - FastAPI (Python 3.11) REST API
 - PostgreSQL 18 + pgvector — belge, chunk, embedding ve karşılaştırma fact'leri
@@ -146,13 +154,21 @@ adresine bakılabilir.
 
 ```text
 HititFinLex/
-├── app/
-│   ├── page.tsx        # Tüm ekranları içeren ana client component
-│   ├── layout.tsx      # Metadata, kök layout
+├── app/                  # Next.js frontend
+│   ├── page.tsx           # Tüm ekranları içeren ana client component
+│   ├── layout.tsx         # Metadata, kök layout
 │   └── globals.css
-├── public/              # Statik varlıklar (favicon, og görseli)
-├── scripts/             # CI/build yardımcı script'leri
-├── tests/               # Render edilen HTML üzerinde smoke test
+├── public/               # Statik varlıklar (favicon, og görseli)
+├── scripts/               # CI/build yardımcı script'leri
+├── tests/                 # Render edilen HTML üzerinde smoke test
+├── backend/               # FastAPI NLP/RAG servisi (bkz. backend/README.md)
+│   ├── api.py               # REST giriş noktası
+│   ├── ner_service.py       # Türkçe NER servisi
+│   ├── classifier_service.py
+│   ├── hybrid_search.py
+│   ├── data/                 # Etiketli eğitim/doğrulama veri setleri
+│   └── requirements.txt
+├── LICENSE                # Apache License 2.0 (tüm repo için)
 ├── next.config.ts
 ├── package.json
 └── README.md
@@ -161,29 +177,37 @@ HititFinLex/
 > `drizzle/`, `worker/`, `db/`, `build/sites-vite-plugin.ts` gibi bazı
 > dosyalar proje şablonundan kalan, uygulama tarafından kullanılmayan
 > yardımcı dosyalardır (Cloudflare Workers/Drizzle iskeleti). Gerçek
-> uygulama mantığı yalnızca `app/page.tsx` üzerinden backend API'sine
-> HTTP istekleri yapar.
+> uygulama mantığı yalnızca `app/page.tsx` üzerinden `backend/`'deki
+> API'ye HTTP istekleri yapar.
+
+## Veri seti
+
+Yarışma kapsamında toplanan ve etiketlenen tüm veri setleri
+[`backend/data/`](backend/data) altında bu repoyla birlikte herkese açık
+olarak paylaşılmıştır (NER ve sınıflandırma eğitim/doğrulama/test setleri,
+manuel doğrulama kayıtları, ham belge/pasaj çıktıları). Ayrıntılar için
+[`backend/README.md#veri-seti`](backend/README.md#veri-seti) bölümüne bakın.
 
 ## Kurulum
 
 ### Gereksinimler
 
 - Node.js 22.13 veya üzeri
-- Çalışan HititFinLex API (backend) — bkz. [Mimari](#mimari)
+- Çalışan HititFinLex API (backend) — kurulum adımları için [`backend/README.md`](backend/README.md)
 - Backend'in beklediği PostgreSQL 18 + pgvector veritabanı
 
 ### Adımlar
 
-Backend'i ayrı bir terminalde başlatın:
+Backend'i ayrı bir terminalde başlatın (bkz. [`backend/README.md`](backend/README.md)):
 
 ```cmd
-cd /d C:\path\to\katilim_finans_app
+cd backend
 .venv\Scripts\activate
 set PYTHONUTF8=1
 uvicorn api:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Ardından bu depoda:
+Ardından repo kökünde frontend'i başlatın:
 
 ```cmd
 npm install
@@ -212,6 +236,10 @@ npm run build   # bash scripts/build-verified.sh üzerinden doğrulanmış build
 npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
 ```
+
+## Lisans
+
+Bu proje [Apache License 2.0](LICENSE) ile lisanslanmıştır.
 
 ## Yol haritası
 

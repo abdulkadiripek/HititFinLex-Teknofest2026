@@ -1,0 +1,91 @@
+NER RULES V2.3 - URL AND CONTEXT GATE
+=====================================
+
+Bu paket V2.2 kurulumunun uzerine uygulanir. URL yolu; baslik ve metne ek
+olarak belge siniflandirma kaniti olarak kullanilir. Yanlis NER baglamlari da
+genel kurallarla kabul veya ret edilir.
+
+Duzeltilen siniflandirma durumlari
+----------------------------------
+
+- Genel finansman liste sayfalari DIGER_FINANSMAN olur.
+- Egitim, Hac ve Umre URL yollari IHTIYAC_FINANSMANI olur.
+- Kampanyalar URL yolu DIGER_KAMPANYA olur.
+- Ticari, KOBI ve dis ticaret finansmani URL yollari TICARI_FINANSMAN olur.
+- Hizli Finansman ana portali DIGER_FINANSMAN olur.
+- URL veya baslik modeli dogruluyorsa dusuk model guveni tek basina inceleme
+  nedeni olmaz.
+- URL ile model catismasi yine insan incelemesine gider.
+
+Duzeltilen NER durumlari
+------------------------
+
+- Kampanya tarihi kaniti chunk basinda K harfini kaybetse bile taninir.
+- Acik alisveris ust limiti ve kar payi orani daha dusuk model guveninde de
+  baglam kurali ile kabul edilebilir.
+- Acik azami finansman tutari 0.75 ve uzeri guvende kabul edilebilir.
+- Toplam geri odeme FINANSMAN_TUTARI olarak kabul edilmez.
+- Tasit degeri-vade dilimi FINANSMAN_TUTARI olarak kabul edilmez.
+- Taahhut uzatma suresi VADE_SURESI olarak kabul edilmez.
+- Ikamet veya oturma suresi VADE_SURESI olarak kabul edilmez.
+
+Kurulum
+-------
+
+1. API penceresinde Ctrl+C tuslarina basin.
+
+2. Proje kokunde mevcut dosyalari yedekleyin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   copy classifier_service.py classifier_service_v22_backup.py
+   copy api.py api_v22_backup.py
+   copy intake_service.py intake_service_v22_backup.py
+   copy ingest_ner_facts.py ingest_ner_facts_v22_backup.py
+   copy fact_context_rules.py fact_context_rules_v22_backup.py
+
+3. Paketteki yedi Python dosyasini proje ana klasorune kopyalayin.
+
+4. Testleri calistirin:
+
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_classifier_resolution_v23.py
+   python smoke_test_fact_context_rules_v23.py
+   python smoke_test_classifier_resolution_v21.py
+   python smoke_test_fact_context_rules_v22.py
+   python smoke_test_fact_surface_rules.py
+
+Beklenen:
+
+   Classifier resolution V2.3: OK (8 cases)
+   Fact context rules V2.3: OK (10 cases)
+   Classifier resolution V2.1: OK (14 cases)
+   Fact context rules V2.2: OK (8 cases)
+   Fact surface rules: OK (9 cases)
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Yeni CMD penceresinde kalan FINANSMAN belgelerini dry-run yapin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 200 --show-evidence > finansman_kalan_v23_dry_run.txt
+
+7. Sonucu goruntuleyin:
+
+   findstr /C:"Selected documents:" /C:"decision=REVIEW" /C:"NER_SKIPPED" /C:"  REVIEW " /C:"Summary:" finansman_kalan_v23_dry_run.txt
+
+Beklenen temel sonuc
+--------------------
+
+- Selected documents: 121
+- classification_review: 0
+- review: 0
+- failed: 0
+- product_type_not_extraction_eligible atlamalari normaldir.
+
+Bu kontrolde --write KULLANMAYIN. Son dry-run onaylandiktan sonra kalan 121
+belge veritabanina yazilacaktir.

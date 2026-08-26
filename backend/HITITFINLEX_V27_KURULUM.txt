@@ -1,0 +1,73 @@
+HITITFINLEX V2.7 - GUVENLI BILGI KAPSAMI BACKFILL
+=================================================
+
+Bu paket V2.6 dashboard ve karsilastirma ozelliklerini korur. Ek olarak:
+
+- GET  /dashboard/overview
+- POST /catalog/search
+- GET  /documents/{document_id}
+- POST /comparison belgeleri banka bazinda dengeli secer
+- coverage_audit_v27.py eksik bilgi kapsam raporu uretir
+- backfill_coverage_v27.py yuksek guvenli bilgileri eksik belgelere ekler
+- Dashboard genel ve uygun-belge kapsamini ayri hesaplar
+- Urun basligi ve URL baglami birlikte dogrulanan kart turu, yatirim araci,
+  finansman amaci/turu ve sigorta turu alanlari kapsama dahil edilir
+
+Frontend, urun turune uygun alanlari otomatik secer ve her banka icin
+birden fazla belgeyi tek kaynakli sutunda birlestirir.
+
+1. API'yi Ctrl+C ile durdurun.
+
+2. Proje klasorunde mevcut dosyalari yedekleyin:
+
+   copy api.py api_v26_backup.py
+
+3. Bu paketteki tum Python dosyalarini
+   C:\Users\PC\Documents\katilim_finans_app
+   klasorune kopyalayin.
+
+4. Testi calistirin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_dashboard_v27.py
+   python smoke_test_coverage_rules_v27.py
+
+Beklenen:
+
+   HititFinLex dashboard V2.7 API: OK
+   Coverage rules V2.7: OK (18 cases)
+
+5. Yazma oncesi kapsam raporunu ve dry-run'i alin:
+
+   python coverage_audit_v27.py > coverage_before_v27.txt
+   python backfill_coverage_v27.py --limit 1000 --show-evidence > coverage_backfill_v27_dry_run.txt
+   findstr /C:"Current coverage:" /C:"Selected documents:" /C:"Summary:" coverage_backfill_v27_dry_run.txt
+
+6. Dry-run hatasizsa yeni bilgileri yazin:
+
+   python backfill_coverage_v27.py --limit 1000 --write > coverage_backfill_v27_write.txt
+   python coverage_audit_v27.py > coverage_after_v27.txt
+   type coverage_after_v27.txt
+
+Backfill yalnizca hic bilgisi olmayan uygun belgeleri tarar. Her yeni bilgi
+icin birebir kaynak cumlesi ve guven puani saklar. Mevcut bilgi kayitlarini
+silmez veya degistirmez. Ayni komut yeniden calistirilirsa ayni bilgileri
+tekrar eklemez.
+
+7. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+8. Tarayicida kontrol edin:
+
+   http://127.0.0.1:8000/dashboard/overview
+   http://127.0.0.1:8000/docs
+
+9. Frontend'i ayri CMD penceresinde baslatin:
+
+   cd /d C:\Users\PC\Documents\HititFinLex
+   npm run dev
+
+   http://localhost:3000

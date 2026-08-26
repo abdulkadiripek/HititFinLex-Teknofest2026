@@ -1,0 +1,71 @@
+NER RULES V2.2 - CONTEXT EXCLUSION PATCH
+========================================
+
+Bu paket V2.1 kurulumunun uzerine uygulanir. Yalnizca dort Python dosyasi
+vardir. classifier_service.py ve api.py yeniden degistirilmez.
+
+Duzeltilen durumlar
+-------------------
+
+- BES sisteminde kalma suresi VADE_SURESI olarak kabul edilmez.
+- Ilk taksit / ilk odeme erteleme suresi urun vadesi olarak kabul edilmez.
+- Gelir belgesi muafiyet esigi FINANSMAN_TUTARI olarak kabul edilmez.
+- Gecerli urun vadesi ve finansman tutari ornekleri korunur.
+
+Kurulum
+-------
+
+1. API penceresinde Ctrl+C tuslarina basin.
+
+2. Proje kokunde V2.1 dosyalarini yedekleyin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   copy intake_service.py intake_service_v21_backup.py
+   copy ingest_ner_facts.py ingest_ner_facts_v21_backup.py
+
+3. Paketteki su dort dosyayi proje ana klasorune kopyalayin:
+
+   fact_context_rules.py
+   intake_service.py
+   ingest_ner_facts.py
+   smoke_test_fact_context_rules_v22.py
+
+4. Testi calistirin:
+
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_fact_context_rules_v22.py
+   python smoke_test_classifier_resolution_v21.py
+   python smoke_test_fact_surface_rules.py
+
+Beklenen:
+
+   Fact context rules V2.2: OK (8 cases)
+   Classifier resolution V2.1: OK (14 cases)
+   Fact surface rules: OK (9 cases)
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Yeni CMD penceresinde dry-run calistirin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 20 --show-evidence > finansman_v22_dry_run.txt
+
+7. Kisa raporu goruntuleyin:
+
+   findstr /C:"classified=" /C:"NER_SKIPPED" /C:"ACCEPTED" /C:"REVIEW" /C:"REJECTED" /C:"Summary" finansman_v22_dry_run.txt
+
+Beklenen temel degisiklikler
+----------------------------
+
+- 10 yil -> REJECTED | excluded_membership_duration_context
+- 7500 TL -> REJECTED | excluded_document_requirement_threshold_context
+- 45 gun -> REJECTED | excluded_first_payment_timing_context
+- Summary icinde classification_review=0, ner_skipped=0 ve review=0
+
+Bu kontrolde --write KULLANMAYIN. Son dry-run onaylandiktan sonra 141 belge icin
+toplu yazma komutu ayrica verilecektir.

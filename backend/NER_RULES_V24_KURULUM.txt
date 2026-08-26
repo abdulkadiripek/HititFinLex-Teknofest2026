@@ -1,0 +1,84 @@
+NER RULES V2.4 - URL ONCELIK DUZELTMESI
+======================================
+
+Bu paket V2.3 kurulumunun uzerine uygulanir. Yalnizca URL siniflandirma
+onceligini duzeltir; NER kurallari ve diger servis dosyalari degismez.
+
+Duzeltilen durumlar
+-------------------
+
+- Genel finansman URL yollari artik yardimci kanittir.
+- Genel URL modelle uyusursa dusuk model guvenini destekler.
+- Genel URL yuksek guvenli modelle catistiginda modeli incelemeye gondermez.
+- Sigorta, tekaful, DASK, kasko ve ferdi kaza URL yollari; ticari veya
+  kurumsal kelimelerinden once degerlendirilir.
+- Acik konut, tasit, ihtiyac, kampanya ve ticari URL kurallari guclu kanit
+  olmaya devam eder.
+- Acik ve ozel URL kurali ile yuksek guvenli model gercekten catistiginda
+  insan incelemesi korunur.
+
+Kurulum
+-------
+
+1. API penceresinde Ctrl+C tuslarina basin.
+
+2. Proje kokunde mevcut siniflandiriciyi yedekleyin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   copy classifier_service.py classifier_service_v23_backup.py
+
+3. Paketteki iki Python dosyasini proje ana klasorune kopyalayin:
+
+   - classifier_service.py
+   - smoke_test_classifier_resolution_v24.py
+
+4. Testleri calistirin:
+
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_classifier_resolution_v24.py
+   python smoke_test_classifier_resolution_v23.py
+   python smoke_test_classifier_resolution_v21.py
+   python smoke_test_fact_context_rules_v23.py
+   python smoke_test_fact_context_rules_v22.py
+   python smoke_test_fact_surface_rules.py
+
+Beklenen:
+
+   Classifier resolution V2.4: OK (11 cases)
+   Classifier resolution V2.3: OK (8 cases)
+   Classifier resolution V2.1: OK (14 cases)
+   Fact context rules V2.3: OK (10 cases)
+   Fact context rules V2.2: OK (8 cases)
+   Fact surface rules: OK (9 cases)
+
+Toplam: 60/60 test basarili.
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Yeni CMD penceresinde son dry-run kontrolunu yapin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 200 --show-evidence > finansman_kalan_v24_dry_run.txt
+
+7. Ozeti goruntuleyin:
+
+   findstr /C:"Selected documents:" /C:"decision=REVIEW" /C:"  REVIEW " /C:"Summary:" finansman_kalan_v24_dry_run.txt
+
+Beklenen temel sonuc:
+
+- Selected documents: 121
+- classification_review: 0
+- review: 0
+- failed: 0
+
+Bu dort kosul saglanirsa ayni surumle veritabanina yazabilirsiniz:
+
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 200 --write
+
+Yazma islemi de failed: 0 ile biterse siniflandirma ve NER backend'i
+dondurulabilir. Sonraki gelistirme odagi frontend olmalidir.

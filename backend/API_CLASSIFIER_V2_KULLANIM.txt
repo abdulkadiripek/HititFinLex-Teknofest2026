@@ -1,0 +1,45 @@
+KATILIM FINANS API 0.6.0 - CLASSIFIER V2
+========================================
+
+ON KOSULLAR
+Su iki model klasoru mevcut olmalidir:
+models\classifier_campaign_v1_best
+models\classifier_product_v2_best
+
+KURULUM
+API calisiyorsa API CMD penceresinde Ctrl+C yapin.
+
+ZIP icerigini dogrudan su klasore cikarin:
+C:\Users\PC\Documents\katilim_finans_app
+
+Windows sorarsa api.py dosyasinin degistirilmesini onaylayin.
+Paket yalnizca su iki uygulama dosyasini getirir:
+- api.py
+- classifier_service.py
+
+API BASLATMA
+cd /d C:\Users\PC\Documents\katilim_finans_app
+.venv\Scripts\activate
+uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+SAGLIK KONTROLU
+http://127.0.0.1:8000/health
+
+Beklenen alanlar:
+campaign_classifier: classifier_campaign_v1_best
+product_classifier: classifier_product_v2_best
+classifier_ready: true
+
+ENDPOINT TESTI
+http://127.0.0.1:8000/docs
+
+POST /classify icin:
+{
+  "text": "Konut sahibi olmak isteyenlere 120 aya kadar vade ve 5.000.000 TL finansman imkani sunulur.",
+  "threshold": 0.8
+}
+
+Beklenen ana karar:
+product_type.label: KONUT_FINANSMANI
+decision: ACCEPTED
+decision_basis: rule_model_agreement

@@ -1,0 +1,93 @@
+NER RULES V2 + CLASSIFIER GATE
+================================
+
+Bu paket mevcut belgeleri veritabanina yazmadan once belge siniflandiricidan
+gecirir. NER yalnizca siniflandirilan urun turu icin izin verilen etiketleri
+degerlendirir.
+
+Duzeltilen temel durumlar
+-------------------------
+
+- Para birimi iceren deger TAKSIT_SAYISI olarak kabul edilmez.
+- INDIRIM_TUTARI ve diger para etiketlerinde para birimi zorunludur.
+- Oran etiketlerinde yuzde isareti veya "yuzde" ifadesi zorunludur.
+- VADE_SURESI degerinde sayi ile gun/ay/yil birimi birlikte bulunmalidir.
+- Ilk taksit tarihi, urun vadesi olarak kabul edilmez.
+- Eski FINANSMAN grubundaki restoran ve vale kampanyalari once siniflandirilir.
+- Yuksek guvenli siniflandirma olmadan NER calistirilmaz.
+
+Paketteki dosyalar
+------------------
+
+1. fact_surface_rules.py
+2. intake_service.py
+3. ingest_ner_facts.py
+4. smoke_test_fact_surface_rules.py
+
+Kurulum
+-------
+
+1. API penceresini Ctrl+C ile durdurun.
+
+2. Proje kokunde eski dosyalari yedekleyin:
+
+   copy intake_service.py intake_service_v1_backup.py
+   copy ingest_ner_facts.py ingest_ner_facts_v1_backup.py
+
+3. Paketteki dort dosyayi su klasore kopyalayin:
+
+   C:\Users\PC\Documents\katilim_finans_app
+
+4. Dosyalarin gorundugunu kontrol edin:
+
+   dir fact_surface_rules.py
+   dir intake_service.py
+   dir ingest_ner_facts.py
+   dir smoke_test_fact_surface_rules.py
+
+5. Saf kural testini calistirin:
+
+   python smoke_test_fact_surface_rules.py
+
+Beklenen:
+
+   Fact surface rules: OK (9 cases)
+
+6. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+7. Yeni bir CMD penceresinde proje ortamini acin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+
+8. Ayni 20 belgeyi yeniden DRY_RUN ile test edin:
+
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 20 --show-evidence > finansman_v2_dry_run.txt
+
+9. Kisa sonucu goruntuleyin:
+
+   findstr /C:"classified=" /C:"NER_SKIPPED" /C:"ACCEPTED" /C:"REVIEW" /C:"REJECTED" /C:"Summary" finansman_v2_dry_run.txt
+
+Bu kontrolde --write KULLANMAYIN. Once v2 dry-run sonucu incelenecektir.
+
+Beklenen davranislar
+--------------------
+
+- 20.000 TL degeri TAKSIT_SAYISI olarak kabul edilmemelidir.
+- 20 puan degeri INDIRIM_TUTARI olarak kabul edilmemelidir.
+- Ilk taksit icin 45 gun ifadesi VADE_SURESI olarak kabul edilmemelidir.
+- 7.500 TL gercek finansman tutari ACCEPTED veya guvenli REVIEW olmalidir.
+- Restoran/vale belgeleri KART_KAMPANYASI veya uygun kampanya sinifina
+  yonlendirilmelidir.
+
+Onemli
+------
+
+DRY_RUN veritabanini degistirmez. --write kullanildiginda yalnizca
+siniflandirmasi ACCEPTED olan ve verified=false durumundaki belgelerin urun
+turu guncellenir; kabul edilen fact'ler yazilir ve inceleme adaylari kuyruga
+alinir. Bu nedenle toplu --write yalnizca dry-run raporu onaylandiktan sonra
+calistirilmalidir.

@@ -1,0 +1,38 @@
+KATILIM FINANS API 0.7.0 - BIRLESIK ANALIZ
+==========================================
+
+KURULUM
+API CMD penceresinde Ctrl+C yapin.
+
+ZIP icerigini dogrudan su klasore cikarin:
+C:\Users\PC\Documents\katilim_finans_app
+
+api.py ve classifier_service.py dosyalarinin degistirilmesini onaylayin.
+
+API BASLATMA
+cd /d C:\Users\PC\Documents\katilim_finans_app
+.venv\Scripts\activate
+uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+SAGLIK KONTROLU
+http://127.0.0.1:8000/health
+
+Beklenen:
+analysis_pipeline: classifier_v2_ner_v4
+
+ANALIZ TESTI
+http://127.0.0.1:8000/docs
+POST /analyze
+
+{
+  "text": "Konut finansmani kapsaminda 500.000 TL finansman 120 ay vade ve %2,79 kar payi orani ile sunuluyor. Tahsis ucreti 2.500 TL, ekspertiz ucreti 8.000 TL ve ipotek tesis ucreti 3.000 TL'dir.",
+  "classification_threshold": 0.8,
+  "ner_threshold": 0.4,
+  "run_ner_on_review": false
+}
+
+GUVENLIK DAVRANISI
+- Siniflandirma REVIEW ise NER varsayilan olarak calismaz.
+- DIGER ve desteklenmeyen urun tiplerinde NER calismaz.
+- NER calisirsa yalnizca urun tipine izin verilen etiketler doner.
+- Endpoint veritabanina yazmaz; yalnizca analiz sonucu dondurur.

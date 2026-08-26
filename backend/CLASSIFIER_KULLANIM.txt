@@ -1,0 +1,45 @@
+KATILIM FINANS BELGE SINIFLANDIRICI V1
+======================================
+
+AMAC
+Yeni bir belge icin iki ayri karar uretir:
+1. Kampanya mi? (EVET / HAYIR)
+2. Urun tipi nedir? (13 sinif)
+
+DOSYALARIN YERLESTIRILMESI
+ZIP dosyasini dogrudan su klasore acin:
+C:\Users\PC\Documents\katilim_finans_app
+
+Son durumda su yollar bulunmalidir:
+train_classifier.py
+predict_document.py
+data\classification_v3\classification_train.jsonl
+data\classification_v3\classification_val.jsonl
+data\classification_v3\classification_test.jsonl
+
+EGITIM
+API calisiyorsa once API penceresinde Ctrl+C yaparak GPU bellegini bosaltin.
+
+Yeni CMD:
+cd /d C:\Users\PC\Documents\katilim_finans_app
+.venv\Scripts\activate
+python train_classifier.py
+
+Iki model olusur:
+models\classifier_campaign_v1_best
+models\classifier_product_v1_best
+
+TAHMIN TESTI
+python predict_document.py
+
+Bir metin yapistirip Enter'a basin.
+
+KARAR MANTIGI
+- Her iki modelin guveni en az 0.80 ise ACCEPTED olabilir.
+- Guven dusukse veya kampanya karari ile urun tipi celisirse REVIEW olur.
+- REVIEW kayitlari otomatik olarak NER/veritabanina aktarilmamalidir.
+
+ONEMLI KALITE NOTU
+SIGORTA_TEKAFUL_URUNU ve KONUT_FINANSMANI gibi az ornekli siniflar icin
+tek basina test F1 yeterli degildir. Yarismadan once bu siniflara yeni,
+insan onayli ornek eklenmesi onerilir.

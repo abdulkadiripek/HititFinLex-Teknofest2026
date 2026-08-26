@@ -1,0 +1,92 @@
+Pipeline: ner_v4_rules_v1
+Mode: DRY_RUN
+Selected documents: 20
+Unchanged documents skipped: 0
+[1/20] document=15 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[2/20] document=56 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[3/20] document=59 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9941 | %10 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Restoran Harcamanýza %10 Ýndirim Kazandýrýyor!
+[4/20] document=61 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=0 review=0 rejected=0
+[5/20] document=62 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9939 | %50 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Otopark ve Vale Harcamanýza %50 Ýndirim Kazandýrýyor!
+[6/20] document=63 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=6 accepted=0 review=2 rejected=2
+  REJECTED VADE_SURESI                  0.5463 | 6 yýl | below_review_threshold
+    EVIDENCE | n az 3 yýl sistemde kalanlar devlet katkýsý ve getirilerinin %15'ine, En az 6 yýl sistemde kalanlar %35'ine, En az 10 yýl sistemde kalanlar %60'ýna, 10 yýl sistemde kaldýktan sonra 56 yaþýný dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrýlanlar, getir
+  REVIEW   VADE_SURESI                  0.6734 | 10 yýl | context_rule_failed
+    EVIDENCE | n az 3 yýl sistemde kalanlar devlet katkýsý ve getirilerinin %15'ine, En az 6 yýl sistemde kalanlar %35'ine, En az 10 yýl sistemde kalanlar %60'ýna, 10 yýl sistemde kaldýktan sonra 56 yaþýný dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrýlanlar, getirileri dahil devlet katkýsýnýn tamamýna h
+  REJECTED VADE_SURESI                  0.6037 | yýl | entity_missing_number
+    EVIDENCE | n az 3 yýl sistemde kalanlar devlet katkýsý ve getirilerinin %15'ine, En az 6 yýl sistemde kalanlar %35'ine, En az 10 yýl sistemde kalanlar %60'ýna, 10 yýl sistemde kaldýktan sonra 56 yaþýný dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrýlanlar, getirileri dahil devlet katkýsýnýn tamamýna hak kazanýrlar.
+  REVIEW   INDIRIM_TUTARI               0.7236 | 20 puan | context_rule_failed
+    EVIDENCE | es Teminatlý Ýhtiyaç Finansmaný kullanýmlarýnýzda standart oranlarýmýz üzerinden 20 puan indirim yapýlacaktýr.
+[7/20] document=64 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[8/20] document=70 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[9/20] document=71 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9972 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | Alýþveriþlerinizde Bayide Finansman’ý tercih edin, 36 aya varan vadelerle ödeyin.
+[10/20] document=83 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=3 accepted=1 review=1 rejected=1
+  ACCEPTED FINANSMAN_TUTARI             0.9873 | 60.000 TL | rule_and_confidence_passed
+    EVIDENCE | üþterinizin kredibilitenize bakýlmaksýzýn ve þubeye gerek kalmadan 60.000 TL’ye kadar finansman kullandýrýmý bayide yapýlabilecektir.
+  REJECTED VADE_SURESI                  0.9965 | 36 aya | fact_not_in_evidence
+    EVIDENCE | 6 aya varan vadelerde taksitlendirme yapýlabilecektir.
+  REVIEW   FINANSMAN_TUTARI             0.9287 | 7500 TL | context_rule_failed
+    EVIDENCE | inansman tutarý 7500 TL’yi aþmayan iþlemlerde müþterilerden gelir belgesi beyaný talep edilmeyecektir.
+[11/20] document=87 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=1 review=0 rejected=1
+  ACCEPTED VADE_SURESI                  0.9967 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | Alýþveriþlerinizde Bayide Finansman’ý tercih edin, 36 aya varan vadelerle ödeyin.
+  REJECTED TAKSIT_SAYISI                0.5715 | 36 | below_review_threshold
+    EVIDENCE | Eðitim kurumu, mobilya, elektronik, beyaz eþya, cep telefonu, bilgisayar, ev tekstil ürünleri ve diðer sektörlerden yapacaðýnýz alýþveriþleri Bayide Finansman sayesinde 36 aya kadar taksitle ödeme imkanýna sahip olursunuz.
+[12/20] document=88 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=0 review=0 rejected=0
+[13/20] document=92 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=7 accepted=0 review=0 rejected=0
+[14/20] document=94 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=2 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9963 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | kiracý da 12 ay eþit vadede geri ödemesini yapabiliyor.
+  ACCEPTED TAKSIT_SAYISI                0.9119 | 36 | rule_and_confidence_passed
+    EVIDENCE | 36 aya varan taksit imkânlarý ile kredi ihtiyacýnýzý karþýlayýn.
+[15/20] document=95 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9971 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | akine ekipman, traktör ve biçerdöver finansmaný iþlemleri finansal kiralama yöntemiyle ve hasat dönemine uygun ödeme koþullarý ile 48 ay vadeye kadar yapýlabilmektedir.
+[16/20] document=99 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=0 review=0 rejected=0
+[17/20] document=100 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=3 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9975 | 48 aya | rule_and_confidence_passed
+    EVIDENCE | irai faaliyetlerinizin gerçekleþmesi için gerekli her türlü ekipman ve makine alýmýna yönelik finansman desteðinizi 48 aya varan vadelerle kullanabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9970 | 24 ay | rule_and_confidence_passed
+    EVIDENCE | ihtiyaçlarýnýzý Bitkisel Üretim Finansmaný ile 24 ay vadeye kadar finanse edebilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9974 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | arýmsal faaliyetlerinizin sürdürülmesi için alacaðýnýz tarlalarýnýzý, Tarla Alým Finansmaný ile 48 ay vadeye kadar finanse edebilirsiniz.
+[18/20] document=102 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=5 accepted=9 review=3 rejected=1
+  ACCEPTED FINANSMAN_TUTARI             0.9843 | 50.000 TL | rule_and_confidence_passed
+    EVIDENCE | .000-50.000 TL arasý finansmanlarda 36 Ay,
+  ACCEPTED FINANSMAN_TUTARI             0.9754 | 100.000 TL | rule_and_confidence_passed
+    EVIDENCE | 0.001-100.000 TL arasý finansmanlarda 24 Ay,
+  REJECTED FINANSMAN_TUTARI             0.7915 | 100.001 TL | fact_not_in_evidence
+    EVIDENCE | 00.001 TL ve üzeri arasý finansmanlarda 12 Ay’a kadar vade imkanýndan faydalanabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9962 | 12 Ay | rule_and_confidence_passed
+    EVIDENCE | 00.001 TL ve üzeri arasý finansmanlarda 12 Ay’a kadar vade imkanýndan faydalanabilirsiniz.
+  ACCEPTED FINANSMAN_TUTARI             0.9496 | 1.000 TL | rule_and_confidence_passed
+    EVIDENCE | harcamalarýnýz için minimum 1.000 TL, maksimum 60.000 TL’ye kadar Jet Finansman baþvurusu yapabilir, tüm ihtiyaçlarýnýza kolayca ulaþabilirsiniz.*
+  ACCEPTED FINANSMAN_TUTARI             0.9752 | 60.000 TL | rule_and_confidence_passed
+    EVIDENCE | harcamalarýnýz için minimum 1.000 TL, maksimum 60.000 TL’ye kadar Jet Finansman baþvurusu yapabilir, tüm ihtiyaçlarýnýza kolayca ulaþabilirsiniz.*
+  REVIEW   HARCAMA_UST_LIMITI           0.8488 | 20.000 TL | below_auto_threshold
+    EVIDENCE | ep telefonlarýnda 20.000 TL’ye kadar olan alýþveriþlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alýþveriþleriniz 3 Aya varan vade taksit imkanýna sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9970 | 12 | rule_and_confidence_passed
+    EVIDENCE | ep telefonlarýnda 20.000 TL’ye kadar olan alýþveriþlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alýþveriþleriniz 3 Aya varan vade taksit imkanýna sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9932 | 20.000 TL | rule_and_confidence_passed
+    EVIDENCE | ep telefonlarýnda 20.000 TL’ye kadar olan alýþveriþlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alýþveriþleriniz 3 Aya varan vade taksit imkanýna sahip olabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9698 | 3 Aya | rule_and_confidence_passed
+    EVIDENCE | ep telefonlarýnda 20.000 TL’ye kadar olan alýþveriþlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alýþveriþleriniz 3 Aya varan vade taksit imkanýna sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9966 | 6 | rule_and_confidence_passed
+    EVIDENCE | ablet alýþveriþlerinizde maksimum 6 taksit imkanýna sahip olabilirsiniz.
+  REVIEW   TAKSIT_SAYISI                0.8175 | 36 | below_auto_threshold
+    EVIDENCE | demenizi tek seferde yapmak yerine, 36 aya kadar taksitlendirebilir, uzun vadeli ödeme imkanýna sahip olarak bütçenize uygun alýþveriþ yapmanýn rahatlýðýný yaþayabilirsiniz.
+  REVIEW   VADE_SURESI                  0.8110 | 45 gün | context_rule_failed
+    EVIDENCE | lk taksit için en geç 45 gün sonrasýna kadar, istediðiniz tarihi seçebilir, ödemelerinizi önceden planlayabilirsiniz.
+[19/20] document=103 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=2 accepted=0 review=0 rejected=1
+  REJECTED INDIRIM_ORANI                0.4929 | 1 | below_review_threshold
+    EVIDENCE | atýrýmlarýnýzý leasinge özgü %1 KDV oraný ile yapma imkâný (Bkz.
+[20/20] document=104 bank=Albaraka Türk Katýlým Bankasý A.Þ. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9961 | 10 aya | rule_and_confidence_passed
+    EVIDENCE | ðrenciler için yurt ihtiyaçlarýna yönelik 10 aya varan vade seçenekleriyle en uygun ihtiyaç kredisinden siz de faydalanabilirsiniz.
+Summary: {"accepted": 21, "failed": 0, "rejected": 6, "review": 6}
+Completed at: 2026-08-25T16:13:01.192765+00:00

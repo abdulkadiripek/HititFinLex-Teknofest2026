@@ -1,0 +1,56 @@
+KATILIM FINANS URUN SINIFLANDIRICI V2
+=====================================
+
+NEDEN V2?
+V1 testi, urun etiketlerinde sinif gurultusu oldugunu ortaya cikardi.
+771 belgenin tamami baslik, URL ve metin baglamiyla yeniden denetlendi.
+151 urun etiketi degistirildi. Bir kampanya etiketi duzeltildi.
+
+VERI BOLUMLERI
+- Train: 543 kaynak belge
+- Augmented train: 1237 metin (yalnizca train belgelerinden)
+- Validation: 114 belge
+- Test: 114 belge
+- Train/validation/test arasinda belge veya birebir metin sizintisi yoktur.
+
+KURULUM
+ZIP icerigini dogrudan su klasore cikarin:
+C:\Users\PC\Documents\katilim_finans_app
+
+Su yollar olusmalidir:
+train_product_v2.py
+predict_document_v2.py
+data\classification_v2\classification_train_augmented.jsonl
+data\classification_v2\classification_validation.jsonl
+data\classification_v2\classification_test.jsonl
+
+EGITIM
+API aciksa API penceresinde Ctrl+C yaparak GPU bellegini bosaltin.
+
+Yeni CMD:
+cd /d C:\Users\PC\Documents\katilim_finans_app
+.venv\Scripts\activate
+python train_product_v2.py
+
+Model su klasore yazilir:
+models\classifier_product_v2_best
+
+V2 TAHMIN TESTI
+python predict_document_v2.py
+
+Test metni:
+Konut sahibi olmak isteyenlere 120 aya kadar vade ve 5.000.000 TL finansman imkani sunulur.
+
+V2, mevcut kampanya modelini su klasorden kullanir:
+models\classifier_campaign_v1_best
+
+KALITE POLITIKASI
+- Guclu kural ile model ayni sinifi verirse ACCEPTED olabilir.
+- Kural ve model celisirse REVIEW olur.
+- Guclu kural yoksa urun modeli en az 0.80 guven uretmelidir.
+- Validation ve test verilerine artirma uygulanmamistir.
+
+DOSYALAR
+- classification_label_audit.csv: 771 kaydin eski/yeni etiketi ve gerekcesi
+- classification_v2_summary.json: dagilim ve denetim ozeti
+- build_classifier_v2.py: veri setini yeniden ureten betik

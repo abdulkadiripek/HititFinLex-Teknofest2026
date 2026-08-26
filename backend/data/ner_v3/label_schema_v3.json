@@ -1,0 +1,68 @@
+{
+  "schema_version": "3.0.0-draft",
+  "scope": "2026 TYDA ikinci senaryo: katılım bankacılığı ürün ve kampanya metinleri",
+  "principles": [
+    "Yalnızca kaynak metinde açıkça desteklenen bilgi etiketlenir.",
+    "Sayısal değer, yakın bağlamından bağımsız etiketlenmez.",
+    "Uzun koşul ve belge listeleri klasik NER yerine alan çıkarımı olarak tutulur.",
+    "Banka ve ürün adı doküman metadata alanlarından güvenilir geliyorsa NER ile tekrar üretilmez.",
+    "Yeni metinlerde çıkarım otomatik yapılır; insan kontrolü yalnızca düşük güven ve çelişkide devreye girer."
+  ],
+  "document_classification": {
+    "task": "multi_label_hierarchical_classification",
+    "fields": {
+      "is_campaign": ["EVET", "HAYIR"],
+      "product_family": ["FINANSMAN", "KART", "HESAP_YATIRIM", "ODEME_TRANSFER", "SIGORTA_TEKAFUL", "DIGER"],
+      "product_type": ["KONUT_FINANSMANI", "TASIT_FINANSMANI", "IHTIYAC_FINANSMANI", "TICARI_FINANSMAN", "DIGER_FINANSMAN", "KART_KAMPANYASI", "KART_URUNU", "YENI_MUSTERI", "KATILMA_HESABI", "YATIRIM_URUNU", "ODEME_TRANSFER_HIZMETI", "SIGORTA_TEKAFUL_URUNU", "DIGER_KAMPANYA", "DIGER"]
+    }
+  },
+  "ner_labels": {
+    "KAR_PAYI_ORANI": "Finansmana uygulanan sayısal kâr payı oranı.",
+    "KAR_PAYLASIM_ORANI": "Katılma hesabındaki müşteri/banka paylaşım oranı.",
+    "FINANSMAN_TUTARI": "Sağlanan veya sağlanabilecek finansman ana para tutarı.",
+    "FINANSMAN_ORANI": "Varlık değerinin finanse edilebilen yüzdesi.",
+    "PESINAT_TUTARI": "Açıkça belirtilen peşinat tutarı.",
+    "PESINAT_ORANI": "Açıkça belirtilen peşinat yüzdesi.",
+    "VADE_SURESI": "Finansman veya ürün vadesi.",
+    "TAKSIT_SAYISI": "Ödeme veya kampanya taksit adedi.",
+    "KAMPANYA_BASLANGIC_TARIHI": "Kampanyanın başlangıç tarihi.",
+    "KAMPANYA_BITIS_TARIHI": "Kampanyanın bitiş tarihi.",
+    "KAMPANYA_TARIH_ARALIGI": "Tek span halinde verilen başlangıç-bitiş aralığı.",
+    "HARCAMA_ESIGI": "Kazanım için gerekli alışveriş/harcama alt sınırı.",
+    "HARCAMA_UST_LIMITI": "Kampanyaya uygun harcama aralığının açık üst sınırı.",
+    "INDIRIM_ORANI": "Açıkça belirtilen indirim yüzdesi.",
+    "INDIRIM_TUTARI": "Açıkça belirtilen parasal indirim.",
+    "ODUL_TUTARI": "Kampanyadan kazanılan parasal ödül veya iade.",
+    "ALISVERIS_PUANI": "Kampanyadan kazanılan puan miktarı.",
+    "TAHSIS_UCRETI": "Yalnızca açıkça finansman tahsis ücreti.",
+    "EKSPERTIZ_UCRETI": "Ekspertiz/değerleme ücreti.",
+    "IPOTEK_TESIS_UCRETI": "İpotek tesis ücreti.",
+    "SIGORTA_UCRETI": "Açıkça belirtilen sigorta/tekafül primi veya ücreti.",
+    "DIGER_UCRET": "Türü metinde açık olan fakat özel ücret sınıflarına girmeyen ücret.",
+    "HEDEF_KITLE": "Kampanyadan yararlanabilecek açık müşteri grubu.",
+    "MINIMUM_BAKIYE": "Hesap/ürün için gereken minimum bakiye veya açılış tutarı.",
+    "ISLEM_ALT_LIMITI": "Bir işlem için açıkça belirtilen minimum tutar.",
+    "ISLEM_UST_LIMITI": "Bir işlem için açıkça belirtilen maksimum tutar."
+  },
+  "structured_extraction_fields": {
+    "BASVURU_KANALI": "Mobil, web, şube, çağrı merkezi gibi kanal listesi.",
+    "GEREKLI_BELGELER": "Belge adlarının listesi; her uzun cümle tek NER spanı yapılmaz.",
+    "BELGE_MUAFIYETI": "Açıkça gerekli olmadığı belirtilen belge veya belge grubu.",
+    "ERKEN_ODEME_KOSULU": "Erken ödeme/tazminat koşulunun kanıt metni ve normalize özeti.",
+    "SIGORTA_KOSULU": "Zorunlu veya opsiyonel sigorta/tekafül koşulu.",
+    "MEVDUAT_GUVENCESI": "TMSF veya eşdeğer mevduat/katılım fonu güvence bilgisi.",
+    "VERGI_MUAFIYETI": "KKDF, BSMV veya diğer vergi/fon muafiyetleri.",
+    "MASRAF_DURUMU": "Masraflı, masrafsız veya ücretsiz olma durumu.",
+    "KAMPANYA_AVANTAJI": "Sayısal etiketlere indirgenemeyen kısa avantaj ifadesi.",
+    "UYGUNLUK_KOSULU": "Hedef kitle dışındaki yararlanma şartları.",
+    "BASVURU_SON_TARIHI": "Kampanya süresinden ayrı bir başvuru son tarihi varsa."
+  },
+  "metadata_fields": ["BANKA_ADI", "URUN_ADI", "KAYNAK_URL", "SAYFA_BASLIGI", "DOKUMAN_TARIHI"],
+  "explicit_exclusions": [
+    "BANKA_ADI ve URUN_ADI güvenilir metadata varken varsayılan NER etiketi değildir.",
+    "GEREKLI_BELGELER ve ERKEN_ODEME_KOSULU uzun BIO spanları olarak eğitilmez.",
+    "Sayısal olmayan genel pazarlama ifadeleri finansal oran veya tutar etiketi almaz.",
+    "Ekspertiz ve ipotek tesis ücretleri TAHSIS_UCRETI değildir.",
+    "Hesap açılış minimumu HARCAMA_ESIGI değildir."
+  ]
+}

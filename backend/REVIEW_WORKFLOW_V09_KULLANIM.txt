@@ -1,0 +1,124 @@
+KATILIM FINANS - HUMAN REVIEW WORKFLOW V0.9
+===========================================
+
+1. KURULUM
+
+API calisan CMD'de Ctrl+C yapin. Paketteki dosyalari proje ana klasorune
+kopyalayin. api.py ve intake_service.py icin degistirmeyi onaylayin.
+
+Yeni dosyalar:
+
+  review_service.py
+  review_queue_manager.py
+  smoke_test_review_workflow.py
+
+Guncellenen dosyalar:
+
+  api.py
+  intake_service.py
+
+
+2. API'YI BASLAT
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  .venv\Scripts\activate
+  uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+Health sonucunda sunlar gorulmelidir:
+
+  "version": "0.9.0"
+  "review_workflow": "human_review_v1"
+
+
+3. SALT OKUNUR TEST
+
+Yeni bir CMD penceresinde:
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  .venv\Scripts\activate
+  python smoke_test_review_workflow.py
+
+Bu test herhangi bir kaydi onaylamaz, reddetmez veya degistirmez.
+
+
+4. KUYRUK OZETI
+
+  python review_queue_manager.py summary
+
+
+5. BEKLEYEN BELGELERI LISTELE
+
+  python review_queue_manager.py list-documents
+
+Onaylanmis veya reddedilmis belgeler:
+
+  python review_queue_manager.py list-documents --status approved
+  python review_queue_manager.py list-documents --status rejected
+
+
+6. BELGE ONAYLAMA
+
+Belge onayinda urun turunu insan secmelidir. Once summary komutundaki urun
+turlerinden dogru olani belirleyin.
+
+Ornek:
+
+  python review_queue_manager.py approve-document 12 --product-type KONUT_FINANSMANI --yes
+
+Onaylanan belge:
+
+  - verified=true olur.
+  - auto_accepted=false olur.
+  - Secilen urun turu human_review olarak kaydedilir.
+  - NER ve baglam kurallari calisir.
+  - Chunk ve embeddingler yalnizca ilgili belge icin uretilir.
+  - Guvenilir factler comparison_facts tablosuna yazilir.
+  - Belirsiz factler fact inceleme kuyruguna gider.
+
+
+7. BELGE REDDETME
+
+  python review_queue_manager.py reject-document 12 --yes
+
+Reddedilen belge documents tablosuna yazilmaz. Kuyrukta audit kaydi olarak
+kalir ve review_status=rejected olur.
+
+
+8. BEKLEYEN FACTLERI LISTELE
+
+  python review_queue_manager.py list-facts
+
+Her kayitta etiket, deger, guven, ret/inceleme nedeni ve kanit metni gosterilir.
+
+
+9. FACT ONAYLAMA VE REDDETME
+
+Onay:
+
+  python review_queue_manager.py approve-fact 7 --yes
+
+Onaylanan fact comparison_facts tablosuna human_review_v1 kaynagiyla yazilir.
+
+Ret:
+
+  python review_queue_manager.py reject-fact 7 --yes
+
+
+10. GUVENLIK KURALLARI
+
+  - Listeleme ve summary komutlari salt okunurdur.
+  - Tum approve/reject komutlari --yes ister.
+  - Belge onayi product_type secilmeden calismaz.
+  - Yalnizca pending kayitlar cozulur.
+  - Her durum degisikligi transaction icinde yapilir.
+  - Hicbir kuyruk kaydi fiziksel olarak silinmez; audit izi korunur.
+  - Onaylanan factin kanit metni ve orijinal guven puani korunur.
+
+
+11. SWAGGER ENDPOINTLERI
+
+  GET  /reviews/summary
+  GET  /reviews/documents
+  GET  /reviews/facts
+  POST /reviews/documents/resolve
+  POST /reviews/facts/resolve

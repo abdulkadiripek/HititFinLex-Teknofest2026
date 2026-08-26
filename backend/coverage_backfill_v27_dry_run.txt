@@ -1,0 +1,492 @@
+Pipeline: coverage_rules_v2_7
+Mode: DRY_RUN
+Current coverage: 473/771 (61.3%)
+Selected documents: 249
+[3/249] document=18 product=YENI_MUSTERI bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Albaraka Mobil'de Şimdi "Seçkin Fırsatlar" Zamanı!
+  ACCEPT UYGUNLUK_KOSULU              0.91 | Kampanyadan yararlanmak için kullanım limiti bulunmamaktadır. | campaign_eligibility
+    EVIDENCE | Kampanyadan yararlanmak için kullanım limiti bulunmamaktadır.
+[4/249] document=22 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=2 title=Elektronik Ürün Senedi (ELÜS)
+  ACCEPT YATIRIM_ARACI                0.99 | ELÜS | investment_instrument_from_title
+    EVIDENCE | Elektronik Ürün Senedi (ELÜS)
+  ACCEPT YATIRIM_ARACI                0.99 | Elektronik Ürün Senedi | investment_instrument_from_title
+    EVIDENCE | Elektronik Ürün Senedi (ELÜS)
+[6/249] document=34 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=2 title=Döviz Alım-Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Döviz Alım-Satım | investment_instrument_from_title
+    EVIDENCE | Döviz Alım-Satım
+  ACCEPT BASVURU_KANALI               0.96 | Şubemiz | application_channel
+    EVIDENCE | Albaraka Mobil ve İnternet Şubemiz üzerinden Cazip kur avantajlarıyla döviz alış ve satış işlemlerini gerçekleştirebilir, yatırımlarınızı farklı para birimlerine taşıyabilirsiniz.
+[7/249] document=37 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Hızlı döviz işlemleri sayesinde Albaraka Türk\u0027ün avantajlı döviz kurlarına 
+  ACCEPT MASRAF_DURUMU                0.95 | ücretsiz | fee_free_status
+    EVIDENCE | Hızlı Döviz İşlemleri menüsü ücretsiz olarak kullanılabilmektedir.
+[8/249] document=39 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=2 title=Halka Arz Nedir?
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Halka arz başvurusu için henüz hisse senedi hesabın yoksa Albaraka Mobil ya da İnternet Şube üzerinden;
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Halka arz başvurusu için henüz hisse senedi hesabın yoksa Albaraka Mobil ya da İnternet Şube üzerinden;
+[9/249] document=48 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=3 title=Kıymetli Maden Alım-Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım-Satım | investment_instrument_from_title
+    EVIDENCE | Kıymetli Maden Alım-Satım
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şubemizden | application_channel
+    EVIDENCE | Size en yakın şubelerimiz, ATM, Albaraka Mobil uygulamamız ve İnternet Şubemizden en uygun kurlarla kıymetli maden alım satımınızı gerçekleştirebilir, vadeli ve vadesiz kıymetli maden hesabı açtırarak kıymetli madenlerinizi Albaraka Türk’te saklayabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Size en yakın şubelerimiz, ATM, Albaraka Mobil uygulamamız ve İnternet Şubemizden en uygun kurlarla kıymetli maden alım satımınızı gerçekleştirebilir, vadeli ve vadesiz kıymetli maden hesabı açtırarak kıymetli madenlerinizi Albaraka Türk’te saklayabilirsiniz.
+[11/249] document=61 product=IHTIYAC_FINANSMANI bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Kira Ödeyen Hesap
+  ACCEPT FINANSMAN_AMACI              0.99 | Kira Ödeyen Hesap | finance_purpose_from_title
+    EVIDENCE | Kira Ödeyen Hesap
+[12/249] document=64 product=IHTIYAC_FINANSMANI bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Aidat Ödeyen Hesap
+  ACCEPT FINANSMAN_AMACI              0.99 | Aidat Ödeyen Hesap | finance_purpose_from_title
+    EVIDENCE | Aidat Ödeyen Hesap
+[13/249] document=66 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=2 title=Özel Fon Havuzuna Dayalı Kira Sertifikası
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikası | investment_instrument_from_title
+    EVIDENCE | Özel Fon Havuzuna Dayalı Kira Sertifikası
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Albaraka Türk nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerinizi, şubelerimiz ve İnternet/Mobil bankacılık aracılığıyla gerçekleştirebilirsiniz.
+[20/249] document=81 product=YATIRIM_URUNU bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Yatırım Fonları
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonları | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonları
+[24/249] document=96 product=KART bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Hicaz Kart
+  ACCEPT KART_TURU                    0.99 | Hicaz Kart | card_type_from_title
+    EVIDENCE | Hicaz Kart
+[25/249] document=99 product=TICARI_FINANSMAN bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Dış Ticaret Finansmanları
+  ACCEPT FINANSMAN_TURU               0.99 | Dış Ticaret Finansmanları | finance_type_from_title
+    EVIDENCE | Dış Ticaret Finansmanları
+[26/249] document=101 product=KART bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=2 title=Eflatun Kredi Kartı ve Eflatun Banka Kartı
+  ACCEPT KART_TURU                    0.99 | Banka Kartı | card_type_from_title
+    EVIDENCE | Eflatun Kredi Kartı ve Eflatun Banka Kartı
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Eflatun Kredi Kartı ve Eflatun Banka Kartı
+[27/249] document=103 product=TICARI_FINANSMAN bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=3 title=Leasing - Finansal Kiralama
+  ACCEPT FINANSMAN_TURU               0.99 | Finansal Kiralama | finance_type_from_title
+    EVIDENCE | Leasing - Finansal Kiralama
+  ACCEPT FINANSMAN_TURU               0.99 | Leasing | finance_type_from_title
+    EVIDENCE | Leasing - Finansal Kiralama
+  ACCEPT ODEME_PLANI                  0.95 | ödeme planı | payment_plan
+    EVIDENCE | Nakit akışınıza uygun esnek geri ödeme planı sunar.
+[28/249] document=105 product=IHTIYAC_FINANSMANI bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Tatiliniz İçin
+  ACCEPT FINANSMAN_AMACI              0.99 | Tatiliniz İçin | finance_purpose_from_title
+    EVIDENCE | Tatiliniz İçin
+[29/249] document=106 product=KART bank=Albaraka Türk Katılım Bankası A.Ş. new_facts=1 title=Kredi Kartı Başvurusu
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Kredi Kartı Başvurusu
+[34/249] document=157 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Kira Sertifikası
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikası | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası
+[35/249] document=158 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Döviz/ Kıymetli Maden Alım Satımı
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım Satımı | investment_instrument_from_title
+    EVIDENCE | Döviz/ Kıymetli Maden Alım Satımı
+[37/249] document=160 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=2 title=Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikası | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Sukuk | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+[38/249] document=161 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Döviz/Kıymetli Maden Alım Satımı
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım Satımı | investment_instrument_from_title
+    EVIDENCE | Döviz/Kıymetli Maden Alım Satımı
+[41/249] document=166 product=TASIT_FINANSMANI bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Araç Finansmanları
+  ACCEPT FINANSMAN_AMACI              0.99 | Araç Finansmanları | finance_purpose_from_title
+    EVIDENCE | Araç Finansmanları
+[42/249] document=168 product=KONUT_FINANSMANI bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Konut Finansmanları
+  ACCEPT FINANSMAN_AMACI              0.99 | Konut Finansmanları | finance_purpose_from_title
+    EVIDENCE | Konut Finansmanları
+[43/249] document=171 product=TASIT_FINANSMANI bank=Dünya Katılım Bankası A.Ş. new_facts=3 title=Çevre Dostu Araç Finansmanı
+  ACCEPT FINANSMAN_AMACI              0.99 | Araç Finansmanı | finance_purpose_from_title
+    EVIDENCE | Çevre Dostu Araç Finansmanı
+  ACCEPT GEREKLI_BELGELER             0.93 | Araç bilgilerinin sunulması: Finansman sağlanacak elektrikli veya hibrit araca ilişkin proforma fatura ve benzeri belgeler talep edilir. | required_documents
+    EVIDENCE | Araç bilgilerinin sunulması: Finansman sağlanacak elektrikli veya hibrit araca ilişkin proforma fatura ve benzeri belgeler talep edilir.
+  ACCEPT GEREKLI_BELGELER             0.93 | Tapu Fotokopileri / Kira Kontratları / Gelir Belgeleri: Varsa ek gelir kaynaklarını kanıtlamak için. | required_documents
+    EVIDENCE | Tapu Fotokopileri / Kira Kontratları / Gelir Belgeleri: Varsa ek gelir kaynaklarını kanıtlamak için.
+[45/249] document=175 product=KART bank=Dünya Katılım Bankası A.Ş. new_facts=3 title=Paraf Kredi Kartı
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Paraf Kredi Kartı
+  ACCEPT BASVURU_KANALI               0.96 | mobil uygulaması | application_channel
+    EVIDENCE | Dünya Katılım mobil uygulaması üzerinden ya da şubelerimiz aracılığıyla Dünya Katılım Paraf Kredi Kartı başvurusu yapabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Dünya Katılım mobil uygulaması üzerinden ya da şubelerimiz aracılığıyla Dünya Katılım Paraf Kredi Kartı başvurusu yapabilirsiniz.
+[46/249] document=177 product=SIGORTA_TEKAFUL_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=2 title=Finansmana Bağlı Hayat Sigortası
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortası | insurance_type_from_title
+    EVIDENCE | Finansmana Bağlı Hayat Sigortası
+  ACCEPT TEMINAT                      0.93 | Finansmana Bağlı Hayat Sigortası, bireysel kredi kullanan müşterilerimizin yaşam kaybı veya tam ve daimi maluliyet durumunda kredi borcunu teminat kapsamında güvence altına alan sigortadır. | insurance_coverage
+    EVIDENCE | Finansmana Bağlı Hayat Sigortası, bireysel kredi kullanan müşterilerimizin yaşam kaybı veya tam ve daimi maluliyet durumunda kredi borcunu teminat kapsamında güvence altına alan sigortadır.
+[47/249] document=178 product=SIGORTA_TEKAFUL_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Finansman'a Bağlı Ferdi Kaza Sigortası
+  ACCEPT SIGORTA_TURU                 0.99 | Ferdi Kaza Sigortası | insurance_type_from_title
+    EVIDENCE | Finansman'a Bağlı Ferdi Kaza Sigortası
+[51/249] document=183 product=TICARI_FINANSMAN bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=İşletme Finansmanı
+  ACCEPT FINANSMAN_TURU               0.99 | İşletme Finansmanı | finance_type_from_title
+    EVIDENCE | İşletme Finansmanı
+[55/249] document=188 product=TICARI_FINANSMAN bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Teminat Mektupları
+  ACCEPT FINANSMAN_TURU               0.99 | Teminat Mektupları | finance_type_from_title
+    EVIDENCE | Teminat Mektupları
+[57/249] document=190 product=TICARI_FINANSMAN bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Taksitli Ticari Finansman
+  ACCEPT ODEME_PLANI                  0.95 | ödeme planı | payment_plan
+    EVIDENCE | Nakit akışınıza uygun vade ve ödeme planı imkanı sağlanmaktadır.
+[58/249] document=191 product=SIGORTA_TEKAFUL_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Ticari Kredili Hayat Sigortaları
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortaları | insurance_type_from_title
+    EVIDENCE | Ticari Kredili Hayat Sigortaları
+[59/249] document=192 product=TICARI_FINANSMAN bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Nakdi Finansman
+  ACCEPT FINANSMAN_TURU               0.99 | Nakdi Finansman | finance_type_from_title
+    EVIDENCE | Nakdi Finansman
+[60/249] document=193 product=TICARI_FINANSMAN bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Gayri Nakdi Finansman
+  ACCEPT FINANSMAN_TURU               0.99 | Gayri Nakdi Finansman | finance_type_from_title
+    EVIDENCE | Gayri Nakdi Finansman
+[62/249] document=200 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=3 title=Standart Katılma Hesabı
+  ACCEPT MEVDUAT_GUVENCESI            0.98 | TMSF | deposit_guarantee
+    EVIDENCE | Katılma hesaplarının 1.200.000 TL’ ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) güvencesi altındadır.
+  ACCEPT MEVDUAT_GUVENCESI            0.98 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Katılma hesaplarının 1.200.000 TL’ ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) güvencesi altındadır.
+  ACCEPT VADE_SURESI                  0.96 | 31 gün | account_maturity
+    EVIDENCE | * Aylık katılma hesabı ortalama 31 gün vade baz alınarak hesaplanmıştır.
+[63/249] document=201 product=YATIRIM_URUNU bank=Dünya Katılım Bankası A.Ş. new_facts=1 title=Katılma Hesapları
+  ACCEPT YATIRIM_ARACI                0.99 | Katılma Hesapları | investment_instrument_from_title
+    EVIDENCE | Katılma Hesapları
+[68/249] document=223 product=YATIRIM_URUNU bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Hisse Senedi İşlemleri
+  ACCEPT YATIRIM_ARACI                0.99 | Hisse Senedi İşlemleri | investment_instrument_from_title
+    EVIDENCE | Hisse Senedi İşlemleri
+[70/249] document=226 product=YATIRIM_URUNU bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Yatırım Hesabı
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Hesabı | investment_instrument_from_title
+    EVIDENCE | Yatırım Hesabı
+[71/249] document=229 product=DIGER_FINANSMAN bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Mikro Finansman
+  ACCEPT FINANSMAN_TURU               0.99 | Mikro Finansman | finance_type_from_title
+    EVIDENCE | Mikro Finansman
+[73/249] document=231 product=KART bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Biz Kart ile Yeni Nesil Aile Bankacılığına Yakından Bakış
+  ACCEPT KART_TURU                    0.99 | Biz Kart | card_type_from_title
+    EVIDENCE | Biz Kart ile Yeni Nesil Aile Bankacılığına Yakından Bakış
+[75/249] document=233 product=KART bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Hayat Finans’tan 8 Yaş ve Üzeri Herkes için Dijital & Finansal Yol Arkadaşı: Biz
+  ACCEPT KART_TURU                    0.99 | Biz Kart | card_type_from_title
+    EVIDENCE | Hayat Finans’tan 8 Yaş ve Üzeri Herkes için Dijital & Finansal Yol Arkadaşı: Biz Kart
+[76/249] document=234 product=KART bank=Hayat Finans Katılım Bankası A.Ş. new_facts=3 title=Mastercard Silver Hayat Plus Kredi Kartı
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Mastercard Silver Hayat Plus Kredi Kartı
+  ACCEPT BASVURU_KANALI               0.96 | Mobil uygulama | application_channel
+    EVIDENCE | Mobil uygulama üzerinden yapılan kredi kartı başvuruları, anında değerlendirilerek sonuçlandırılır.
+  ACCEPT BASVURU_KANALI               0.96 | Mobil uygulaması | application_channel
+    EVIDENCE | Hayat Finans Mobil uygulaması üzerinden başvurunuzu dilediğiniz zaman yapabilirsiniz.
+[89/249] document=251 product=TICARI_FINANSMAN bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=İşletme Finansmanı
+  ACCEPT FINANSMAN_TURU               0.99 | İşletme Finansmanı | finance_type_from_title
+    EVIDENCE | İşletme Finansmanı
+[94/249] document=258 product=TICARI_FINANSMAN bank=Hayat Finans Katılım Bankası A.Ş. new_facts=1 title=Tedarikçi Finansman Sistemi (TFS) (Çok Yakında!)
+  ACCEPT FINANSMAN_TURU               0.99 | Tedarikçi Finansman Sistemi | finance_type_from_title
+    EVIDENCE | Tedarikçi Finansman Sistemi (TFS) (Çok Yakında!)
+[103/249] document=359 product=DIGER_KAMPANYA bank=Kuveyt Türk Katılım Bankası A.Ş. new_facts=1 title=12 Aya Kadar ödemesiz dönemli ve indirimli Tarım Finansmanı Kuveyt Türk'te!
+  ACCEPT BASVURU_KANALI               0.96 | şubemiz | application_channel
+    EVIDENCE | Size en yakın şubemiz aracılığıyla Tarım ve Hayvancılık Finansmanı’na kolayca başvurabilirsiniz.
+[105/249] document=363 product=YATIRIM_URUNU bank=Kuveyt Türk Katılım Bankası A.Ş. new_facts=3 title=Yatırım Ürünleri
+  ACCEPT BASVURU_KANALI               0.96 | internet şube | application_channel
+    EVIDENCE | Bankamız üzerinden açacağınız Yatırım Hesabı ile kira sertifikası alım satım, kira sertifikası ihraç ve yatırım fonu alım satım işlemlerini şubelerimiz ve internet şube üzerinden gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şube | application_channel
+    EVIDENCE | Bankamız üzerinden açacağınız Yatırım Hesabı ile kira sertifikası alım satım, kira sertifikası ihraç ve yatırım fonu alım satım işlemlerini şubelerimiz ve internet şube üzerinden gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Bankamız üzerinden açacağınız Yatırım Hesabı ile kira sertifikası alım satım, kira sertifikası ihraç ve yatırım fonu alım satım işlemlerini şubelerimiz ve internet şube üzerinden gerçekleştirebilirsiniz.
+[108/249] document=366 product=YATIRIM_URUNU bank=Kuveyt Türk Katılım Bankası A.Ş. new_facts=1 title=Yatırım Hesabı
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Hesabı | investment_instrument_from_title
+    EVIDENCE | Yatırım Hesabı
+[109/249] document=367 product=TICARI_FINANSMAN bank=Kuveyt Türk Katılım Bankası A.Ş. new_facts=1 title=Leasing | Kuveyt Türk Katılım Bankası
+  ACCEPT FINANSMAN_TURU               0.99 | Leasing | finance_type_from_title
+    EVIDENCE | Leasing | Kuveyt Türk Katılım Bankası
+[112/249] document=375 product=KART bank=T.O.M. Katılım Bankası A.Ş. new_facts=1 title=HADi Banka Kartı
+  ACCEPT KART_TURU                    0.99 | Banka Kartı | card_type_from_title
+    EVIDENCE | HADi Banka Kartı
+[113/249] document=385 product=YATIRIM_URUNU bank=T.O.M. Katılım Bankası A.Ş. new_facts=1 title=Gümüş Hesabı
+  ACCEPT YATIRIM_ARACI                0.99 | Gümüş Hesabı | investment_instrument_from_title
+    EVIDENCE | Gümüş Hesabı
+[114/249] document=392 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Yatırım Fonu
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonu | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonu
+[115/249] document=393 product=SIGORTA_TEKAFUL_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Finansman Ferdi Kaza Sigortası
+  ACCEPT SIGORTA_TURU                 0.99 | Ferdi Kaza Sigortası | insurance_type_from_title
+    EVIDENCE | Finansman Ferdi Kaza Sigortası
+[116/249] document=394 product=SIGORTA_TEKAFUL_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=2 title=Finansmana Bağlı Hayat Sigortası
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortası | insurance_type_from_title
+    EVIDENCE | Finansmana Bağlı Hayat Sigortası
+  ACCEPT TEMINAT                      0.93 | Vefat ve Kaza Sonucu Kalıcı Sakatlık Teminatı: | insurance_coverage
+    EVIDENCE | Vefat ve Kaza Sonucu Kalıcı Sakatlık Teminatı:
+[117/249] document=395 product=SIGORTA_TEKAFUL_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Finansman Ferdi Kaza Katılım Sigortası ile hayatın tatsız sürprizlerine karşı ke
+  ACCEPT SIGORTA_TURU                 0.99 | Ferdi Kaza Katılım Sigortası | insurance_type_from_title
+    EVIDENCE | Finansman Ferdi Kaza Katılım Sigortası ile hayatın tatsız sürprizlerine karşı kendinizin ve sevdiklerinizin güvence altında olduğunu bilmenin rahatlığını yaşayın.
+[118/249] document=396 product=SIGORTA_TEKAFUL_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=2 title=Finansmana Bağlı Hayat Sigortası
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortası | insurance_type_from_title
+    EVIDENCE | Finansmana Bağlı Hayat Sigortası
+  ACCEPT TEMINAT                      0.93 | Vefat ve Kaza Sonucu Kalıcı Sakatlık Teminatı: | insurance_coverage
+    EVIDENCE | Vefat ve Kaza Sonucu Kalıcı Sakatlık Teminatı:
+[119/249] document=397 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=3 title=Yatırım Ürünleri
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+[120/249] document=398 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=3 title=Yatırım Ürünleri
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerini, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+[125/249] document=403 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Döviz Alım-Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Döviz Alım-Satım | investment_instrument_from_title
+    EVIDENCE | Döviz Alım-Satım
+[126/249] document=404 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Forward İşlemleri
+  ACCEPT YATIRIM_ARACI                0.99 | Forward İşlemleri | investment_instrument_from_title
+    EVIDENCE | Forward İşlemleri
+[127/249] document=405 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Kıymetli Maden Alım Satımı
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım Satımı | investment_instrument_from_title
+    EVIDENCE | Kıymetli Maden Alım Satımı
+[128/249] document=469 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=2 title=Pay Piyasası (Hisse Senedi)
+  ACCEPT YATIRIM_ARACI                0.99 | Hisse Senedi | investment_instrument_from_title
+    EVIDENCE | Pay Piyasası (Hisse Senedi)
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Bankamız aracılığı ile adınıza tanımlanan Aracı Kurum Hesabı üzerinden pay piyasası işlemlerinizi İnternet ve Mobil Şubelerimiz üzerinden zahmetsizce gerçekleştirebilirsiniz.
+[133/249] document=474 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Yatırım Fonu
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonu | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonu
+[137/249] document=479 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Döviz Alım-Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Döviz Alım-Satım | investment_instrument_from_title
+    EVIDENCE | Döviz Alım-Satım
+[138/249] document=480 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=5 title=Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikası | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Sukuk | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım-satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım-satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım-satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+[139/249] document=481 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=5 title=Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikası | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Sukuk | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikası (Sukuk)
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Emlak Katılım nezdinde açtıracağınız yatırım hesabı üzerinden Kira Sertifikası alım satım işlemlerinizi, şubelerimiz ve İnternet Şube aracılığıyla gerçekleştirebilirsiniz.
+[142/249] document=484 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=1 title=Kıymetli Maden Alım Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım Satım | investment_instrument_from_title
+    EVIDENCE | Kıymetli Maden Alım Satım
+[143/249] document=485 product=YATIRIM_URUNU bank=Türkiye Emlak Katılım Bankası A.Ş. new_facts=2 title=Elektronik Ürün Senedi (ELÜS)
+  ACCEPT YATIRIM_ARACI                0.99 | ELÜS | investment_instrument_from_title
+    EVIDENCE | Elektronik Ürün Senedi (ELÜS)
+  ACCEPT YATIRIM_ARACI                0.99 | Elektronik Ürün Senedi | investment_instrument_from_title
+    EVIDENCE | Elektronik Ürün Senedi (ELÜS)
+[144/249] document=491 product=KART bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Kredi Kartı Kampanyaları
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Kredi Kartı Kampanyaları
+[154/249] document=520 product=TICARI_FINANSMAN bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Nakdi Finansman | Ticari
+  ACCEPT FINANSMAN_TURU               0.99 | Nakdi Finansman | finance_type_from_title
+    EVIDENCE | Nakdi Finansman | Ticari
+[156/249] document=527 product=YATIRIM_URUNU bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Hisse Senedi | Yatırım Hizmetleri
+  ACCEPT YATIRIM_ARACI                0.99 | Hisse Senedi | investment_instrument_from_title
+    EVIDENCE | Hisse Senedi | Yatırım Hizmetleri
+[157/249] document=529 product=YATIRIM_URUNU bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=2 title=Yurt Dışı Hisse Senedi | Yatırım Hizmetleri | Bireysel
+  ACCEPT YATIRIM_ARACI                0.99 | Hisse Senedi | investment_instrument_from_title
+    EVIDENCE | Yurt Dışı Hisse Senedi | Yatırım Hizmetleri | Bireysel
+  ACCEPT BASVURU_KANALI               0.96 | mobil uygulaması | application_channel
+    EVIDENCE | TFXTarget mobil uygulaması üzerinden gerçekleştireceğiniz yurt dışı hisse senedi işlemlerinizde düşük alt limit ve indirimli komisyon oranları ile işlemlerinizi yapabilirsiniz.
+[158/249] document=531 product=YATIRIM_URUNU bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Borsa Yatırım Fonu | Yatırım Hizmetleri
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonu | investment_instrument_from_title
+    EVIDENCE | Borsa Yatırım Fonu | Yatırım Hizmetleri
+[159/249] document=533 product=YATIRIM_URUNU bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Yatırım Fonları | Yatırım Hizmetleri
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonları | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonları | Yatırım Hizmetleri
+[162/249] document=558 product=YATIRIM_URUNU bank=Türkiye Finans Katılım Bankası A.Ş. new_facts=1 title=Esnek Vadeli Katılma Hesabı
+  ACCEPT VADE_SURESI                  0.96 | 450 gün | account_maturity
+    EVIDENCE | Esnek Vadeli Katılma Hesabınızı 31- 450 gün aralığında dilediğiniz vadede açtırabilirsiniz.
+[165/249] document=583 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=2 title=Forward | Kurumsal
+  ACCEPT YATIRIM_ARACI                0.99 | Forward | investment_instrument_from_title
+    EVIDENCE | Forward | Kurumsal
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Döviz alım satım işlemlerinizi Şubelerimiz ve dijital kanallarımız aracılığıyla en uygun kurlarla güvenle gerçekleştirebilirsiniz.
+[166/249] document=585 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=4 title=Hisse Senedi | Bireysel
+  ACCEPT YATIRIM_ARACI                0.99 | Hisse Senedi | investment_instrument_from_title
+    EVIDENCE | Hisse Senedi | Bireysel
+  ACCEPT BASVURU_KANALI               0.96 | Mobil Şube | application_channel
+    EVIDENCE | Birikimlerinizi, büyük ölçekli yatırımlara ortak edebileceğiniz hisse senedi işlemlerini Vakıf Katılım İnternet ve Mobil Şube kanallarından kolayca gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | internet şube | application_channel
+    EVIDENCE | Katılım finans sistemi ilkelerine uygun hisse senedi işlemlerinizi yapabilmek için yatırım hesabınızı internet şube ve mobil şube üzerinden kolayca açabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Birikimlerinizi, büyük ölçekli yatırımlara ortak edebileceğiniz hisse senedi işlemlerini Vakıf Katılım İnternet ve Mobil Şube kanallarından kolayca gerçekleştirebilirsiniz.
+[167/249] document=586 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=3 title=Yatırım Fonları | Kurumsal
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonları | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonları | Kurumsal
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Şubelerimiz, İnternet Şubemiz ve Mobil Şubemiz kanallarından katılım bankacılığı ilke ve esaslarına uygun yatırım fonu alım-satım işlemlerini gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şubemiz | application_channel
+    EVIDENCE | Katılım finans sistemi ilkelerine uygun yatırım fonu işlemlerinizi yapabilmek için yatırım hesabınızı Mobil Şubemiz üzerinden kolayca açabilirsiniz.
+[168/249] document=587 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=4 title=Kıymetli Maden Alım Satım | Bireysel
+  ACCEPT YATIRIM_ARACI                0.99 | Kıymetli Maden Alım Satım | investment_instrument_from_title
+    EVIDENCE | Kıymetli Maden Alım Satım | Bireysel
+  ACCEPT BASVURU_KANALI               0.96 | Mobil Şube | application_channel
+    EVIDENCE | Vakıf Katılım’da rekabetçi kur avantajlarıyla altın, gümüş platin, paladyum alım-satım işlemlerini İnternet ve Mobil Şube kanalları aracılığıyla hızla ve güvenle gerçekleştirebilir.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Vakıf Katılım’da rekabetçi kur avantajlarıyla altın, gümüş platin, paladyum alım-satım işlemlerini İnternet ve Mobil Şube kanalları aracılığıyla hızla ve güvenle gerçekleştirebilir.
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Kıymetli maden alım satım işlemlerinizi Şubelerimiz ve dijital kanallarımız aracılığıyla en uygun kurlarla güvenle gerçekleştirebilirsiniz.
+[169/249] document=588 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=4 title=Yatırım Fonları | Bireysel
+  ACCEPT YATIRIM_ARACI                0.99 | Yatırım Fonları | investment_instrument_from_title
+    EVIDENCE | Yatırım Fonları | Bireysel
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Katılım finans sistemi ilkelerine uygun yatırım fonu işlemlerinizi yapabilmek için yatırım hesabınızı İnternet Şube ve Mobil Şubemiz üzerinden kolayca açabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Katılım finans sistemi ilkelerine uygun yatırım fonu işlemlerinizi yapabilmek için yatırım hesabınızı İnternet Şube ve Mobil Şubemiz üzerinden kolayca açabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şubemiz | application_channel
+    EVIDENCE | Katılım finans sistemi ilkelerine uygun yatırım fonu işlemlerinizi yapabilmek için yatırım hesabınızı İnternet Şube ve Mobil Şubemiz üzerinden kolayca açabilirsiniz.
+[170/249] document=595 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Tedarikçi Finansman Sistemi
+  ACCEPT FINANSMAN_TURU               0.99 | Tedarikçi Finansman Sistemi | finance_type_from_title
+    EVIDENCE | Tedarikçi Finansman Sistemi
+[171/249] document=596 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Ticari Kartlar | Kurumsal
+  ACCEPT KART_TURU                    0.99 | Ticari Kartlar | card_type_from_title
+    EVIDENCE | Ticari Kartlar | Kurumsal
+[172/249] document=597 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Kredi Kartı | Kurumsal
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Kredi Kartı | Kurumsal
+[173/249] document=598 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Dış Ticaret Finansmanları | Kurumsal
+  ACCEPT FINANSMAN_TURU               0.99 | Dış Ticaret Finansmanları | finance_type_from_title
+    EVIDENCE | Dış Ticaret Finansmanları | Kurumsal
+[174/249] document=599 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=VKart Debit | Kurumsal
+  ACCEPT KART_TURU                    0.99 | Debit | card_type_from_title
+    EVIDENCE | VKart Debit | Kurumsal
+[175/249] document=600 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=İthalat Finansmanları | Kurumsal
+  ACCEPT FINANSMAN_TURU               0.99 | İthalat Finansmanları | finance_type_from_title
+    EVIDENCE | İthalat Finansmanları | Kurumsal
+[176/249] document=603 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Tarım Finansmanları | Kurumsal
+  ACCEPT FINANSMAN_AMACI              0.99 | Tarım Finansmanları | finance_purpose_from_title
+    EVIDENCE | Tarım Finansmanları | Kurumsal
+[177/249] document=604 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Gayrinakdi Finansmanlar | Kurumsal
+  ACCEPT FINANSMAN_TURU               0.99 | Gayrinakdi Finansmanlar | finance_type_from_title
+    EVIDENCE | Gayrinakdi Finansmanlar | Kurumsal
+[178/249] document=606 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Finansal Kiralamalar | Kurumsal
+  ACCEPT FINANSMAN_TURU               0.99 | Finansal Kiralamalar | finance_type_from_title
+    EVIDENCE | Finansal Kiralamalar | Kurumsal
+[179/249] document=607 product=TICARI_FINANSMAN bank=Vakıf Katılım Bankası A.Ş. new_facts=2 title=Finansal Kiralama | Kurumsal
+  ACCEPT FINANSMAN_TURU               0.99 | Finansal Kiralama | finance_type_from_title
+    EVIDENCE | Finansal Kiralama | Kurumsal
+  ACCEPT ODEME_PLANI                  0.95 | ödeme planı | payment_plan
+    EVIDENCE | Bunun haricinde kalan %8 ve %18 KDV’ye tabi makine-ekipmanların finansal kiralama ile finansmanında döviz ödeme planı ve sözleşme düzenlenebilmesi için finansal kiralama talep eden müşterinin 15 milyon USD ve üzeri kredi riskine veya yatırım tutarı kadar ihracat gelirine (son 3 yıllık ihracat geliri kadar) sahip olması gerekmektedir.
+[180/249] document=610 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Kredi Kartı | Bireysel
+  ACCEPT KART_TURU                    0.99 | Kredi Kartı | card_type_from_title
+    EVIDENCE | Kredi Kartı | Bireysel
+[181/249] document=612 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Yatırım | Kurumsal
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Döviz alım satım işlemlerinizi Şubelerimiz ve dijital kanallarımız aracılığıyla en uygun kurlarla güvenle gerçekleştirebilirsiniz.
+[182/249] document=613 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=3 title=Yatırım | Bireysel
+  ACCEPT BASVURU_KANALI               0.96 | Mobil Şube | application_channel
+    EVIDENCE | Birikimlerinizi, büyük ölçekli yatırımlara ortak edebileceğiniz hisse senedi işlemlerini Vakıf Katılım İnternet ve Mobil Şube kanallarından kolayca gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Birikimlerinizi, büyük ölçekli yatırımlara ortak edebileceğiniz hisse senedi işlemlerini Vakıf Katılım İnternet ve Mobil Şube kanallarından kolayca gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Döviz alım-satım işlemlerinizi Şubelerimiz ve dijital kanallarımız aracılığıyla en uygun kurlarla güvenle gerçekleştirebilirsiniz.
+[184/249] document=615 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Banka Kartı | Bireysel
+  ACCEPT KART_TURU                    0.99 | Banka Kartı | card_type_from_title
+    EVIDENCE | Banka Kartı | Bireysel
+[187/249] document=623 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Hızlı Fon Finansmanı
+  ACCEPT HEDEF_KITLE                  0.92 | bireysel müşterilere | target_audience
+    EVIDENCE | Hızlı Fon Finansmanı, Vakıf Katılım Portföy Yönetimi AŞ’nin portföyünde bulunan VKV (Vakıf Katılım Portföy Kısa Vadeli Kira Sertifikaları Katılım Fonu) alımlarına yönelik olarak, bireysel müşterilere, avantajlı kâr oranlarıyla sunulan bir ihtiyaç finansmanı ürünüdür.
+[189/249] document=634 product=KART bank=Vakıf Katılım Bankası A.Ş. new_facts=3 title=Yazar Kasa POS | Kurumsal
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şube | application_channel
+    EVIDENCE | Vakıf Katılım İnternet Şube ve fiziki şubelerimizden başvuru yapabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | İnternet şubeden | application_channel
+    EVIDENCE | İnternet şubeden başvuru için aşağıdaki adımlar izlenmelidir.
+  ACCEPT BASVURU_KANALI               0.96 | Şube | application_channel
+    EVIDENCE | Vakıf Katılım İnternet Şube ve fiziki şubelerimizden başvuru yapabilirsiniz.
+[191/249] document=641 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Çeyrek Altın Hesabı | Bireysel
+  ACCEPT YATIRIM_ARACI                0.99 | Altın Hesabı | investment_instrument_from_title
+    EVIDENCE | Çeyrek Altın Hesabı | Bireysel
+[192/249] document=646 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Altın Katılma Hesabı | Bireysel
+  ACCEPT MEVDUAT_GUVENCESI            0.98 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Kredi kuruluşları nezdindeki resmi kuruluşlar, kredi kuruluşları ve finansal kuruluşlara ait olanlar haricindeki tüm mevduat ve katılım fonları, Tasarruf Mevduatı Sigorta Fonu tarafından sigorta ettirilir.
+[194/249] document=654 product=SIGORTA_TEKAFUL_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=3 title=Kar Paylaşımlı Finansman Hayat Sigortası | Bireysel
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortası | insurance_type_from_title
+    EVIDENCE | Kar Paylaşımlı Finansman Hayat Sigortası | Bireysel
+  ACCEPT TEMINAT                      0.93 | Vefat ve daimi sakatlık hali (isteğe bağlı) teminatlardır. | insurance_coverage
+    EVIDENCE | Vefat ve daimi sakatlık hali (isteğe bağlı) teminatlardır.
+  ACCEPT TEMINAT                      0.93 | Vefat ve daimi sakatlık teminatını içerir. | insurance_coverage
+    EVIDENCE | Vefat ve daimi sakatlık teminatını içerir.
+[195/249] document=657 product=YATIRIM_URUNU bank=Vakıf Katılım Bankası A.Ş. new_facts=1 title=Ara Dönem Kâr Payı Ödemeli Katılma Hesabı ile ilgili Sıkça Sorulan Sorular
+  ACCEPT MEVDUAT_GUVENCESI            0.98 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Kredi kuruluşları nezdindeki resmi kuruluşlar, kredi kuruluşları ve finansal kuruluşlara ait olanlar haricindeki tüm mevduat ve katılım fonları, Tasarruf Mevduatı Sigorta Fonu tarafından sigorta ettirilir.
+[198/249] document=695 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=2 title=Eximbank Destekli Finansmanlar
+  ACCEPT HEDEF_KITLE                  0.92 | ihracatçı | target_audience
+    EVIDENCE | Türk Eximbank ve Bankamız İş Birliğiyle ihracatın ve döviz kazandırıcı hizmetlerin geliştirilmesi amacıyla, ihracatçı veya ihracata yönelik üretim yapan işletmelere veya döviz kazandırıcı hizmet faaliyetlerinde bulunan işletmelere Türkiye İhracat Kredi Bankası A.Ş.
+  ACCEPT HEDEF_KITLE                  0.92 | işletmelere | target_audience
+    EVIDENCE | Türk Eximbank ve Bankamız İş Birliğiyle ihracatın ve döviz kazandırıcı hizmetlerin geliştirilmesi amacıyla, ihracatçı veya ihracata yönelik üretim yapan işletmelere veya döviz kazandırıcı hizmet faaliyetlerinde bulunan işletmelere Türkiye İhracat Kredi Bankası A.Ş.
+[199/249] document=699 product=YATIRIM_URUNU bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Ziraat Katılım Bankası
+  ACCEPT BASVURU_KANALI               0.96 | şubemiz | application_channel
+    EVIDENCE | Anında Piyasa Modülü’ne Katılım Mobil uygulamamız veya internet şubemiz üzerinden hızlıca başvurabilir;
+[201/249] document=701 product=YATIRIM_URUNU bank=Ziraat Katılım Bankası A.Ş. new_facts=2 title=Ziraat Katılım Bankası
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şubesi | application_channel
+    EVIDENCE | Gerçek kişi müşterilerimiz için Şubelerimiz, Ziraat Katılım Mobil Ve İnternet Şubesi, Tüzel kişi müşterilerimiz için ise Şubelerimiz üzerinden hesap açılışını gerçekleştirebilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Gerçek kişi müşterilerimiz için Şubelerimiz, Ziraat Katılım Mobil Ve İnternet Şubesi, Tüzel kişi müşterilerimiz için ise Şubelerimiz üzerinden hesap açılışını gerçekleştirebilirsiniz.
+[206/249] document=707 product=IHTIYAC_FINANSMANI bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Dayanıklı Tüketim Finansmanı
+  ACCEPT FINANSMAN_AMACI              0.99 | Dayanıklı Tüketim Finansmanı | finance_purpose_from_title
+    EVIDENCE | Dayanıklı Tüketim Finansmanı
+[207/249] document=708 product=IHTIYAC_FINANSMANI bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Doğalgaz Dönüşüm Finansmanı
+  ACCEPT FINANSMAN_AMACI              0.99 | Doğalgaz Dönüşüm Finansmanı | finance_purpose_from_title
+    EVIDENCE | Doğalgaz Dönüşüm Finansmanı
+[211/249] document=714 product=IHTIYAC_FINANSMANI bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Ziraat Katılım Bankası
+  ACCEPT HEDEF_KITLE                  0.92 | bireysel müşterilerin | target_audience
+    EVIDENCE | Katılım Bankacılığı ilke ve standartları çerçevesine uygun menkul kıymetlerden oluşan fonların satın alımını finanse ederek bireysel müşterilerin yatırım ihtiyaçlarının karşılanmasına yönelik oluşturulan finansman üründür.
+[215/249] document=721 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Nakdi Finansman Ürünleri
+  ACCEPT FINANSMAN_TURU               0.99 | Nakdi Finansman Ürünleri | finance_type_from_title
+    EVIDENCE | Nakdi Finansman Ürünleri
+[216/249] document=722 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Dış Ticaret Finansmanları
+  ACCEPT FINANSMAN_TURU               0.99 | Dış Ticaret Finansmanları | finance_type_from_title
+    EVIDENCE | Dış Ticaret Finansmanları
+[218/249] document=724 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Gayri Nakdi Finansman Ürünleri
+  ACCEPT FINANSMAN_TURU               0.99 | Gayri Nakdi Finansman Ürünleri | finance_type_from_title
+    EVIDENCE | Gayri Nakdi Finansman Ürünleri
+[219/249] document=725 product=TASIT_FINANSMANI bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Ziraat Katılım Bankası
+  ACCEPT BASVURU_KANALI               0.96 | şubelerimiz | application_channel
+    EVIDENCE | Başvurular TOGG satış platformu Trumore ve şubelerimiz aracılığıyla yapılabilmektedir.
+[220/249] document=726 product=TASIT_FINANSMANI bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Ziraat Katılım Bankası
+  ACCEPT VADE_SURESI                  0.96 | 48 aya | finance_maturity
+    EVIDENCE | Bütçenize uygun kâr payı oranlarıyla 48 aya varan vade imkânı bulunmaktadır.
+[223/249] document=729 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=3 title=Ziraat Katılım Bankası
+  ACCEPT ODEME_PLANI                  0.95 | Ara Ödemeli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+  ACCEPT ODEME_PLANI                  0.95 | Artan Taksitli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+  ACCEPT ODEME_PLANI                  0.95 | Azalan Taksitli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+[224/249] document=730 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Ziraat Katılım Bankası
+  ACCEPT HEDEF_KITLE                  0.92 | işletmeler | target_audience
+    EVIDENCE | İthalat faaliyetlerde bulunan tüm işletmeler yararlanabilirler.
+[225/249] document=731 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=2 title=Ziraat Katılım Bankası
+  ACCEPT VERGI_MUAFIYETI              0.98 | KKDF | tax_exemption
+    EVIDENCE | İhracat taahhüdü yerine getirildiği takdirde vergi, resim, harç ve fon (KKDF) muafiyeti vardır.
+  ACCEPT HEDEF_KITLE                  0.92 | işletmeler | target_audience
+    EVIDENCE | İhracat faaliyetinde ve ihracat sayılan satış teslimleri ile döviz kazandırıcı faaliyetlerde bulunan tüm işletmeler yararlanabilirler.
+[228/249] document=735 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=3 title=Taksitli Ticari Finansman
+  ACCEPT ODEME_PLANI                  0.95 | Ara Ödemeli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+  ACCEPT ODEME_PLANI                  0.95 | Artan Taksitli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+  ACCEPT ODEME_PLANI                  0.95 | Azalan Taksitli | payment_plan
+    EVIDENCE | Anapara Eşit Taksitli, Anapara Serbest Taksitli, Eşit Taksitli, Azalan Taksitli, Artan Taksitli, Periyodik Ara Ödemeli, Değişken Ara Ödemeli, Serbest Ara Ödemeli, Belirli Dönem Kâr Payı Ödemeli, Belirli Dönem Ödemesiz ve Serbest Tarihli Eşit Taksitli ödeme seçenekleri bulunmaktadır.
+[229/249] document=736 product=TICARI_FINANSMAN bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Vadeli İhracat Finansmanı
+  ACCEPT FINANSMAN_TURU               0.99 | İhracat Finansmanı | finance_type_from_title
+    EVIDENCE | Vadeli İhracat Finansmanı
+[236/249] document=749 product=YATIRIM_URUNU bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Vaade Dayalı Döviz Alım Satım
+  ACCEPT YATIRIM_ARACI                0.99 | Döviz Alım Satım | investment_instrument_from_title
+    EVIDENCE | Vaade Dayalı Döviz Alım Satım
+[237/249] document=750 product=YATIRIM_URUNU bank=Ziraat Katılım Bankası A.Ş. new_facts=2 title=Kira Sertifikaları (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Kira Sertifikaları | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikaları (Sukuk)
+  ACCEPT YATIRIM_ARACI                0.99 | Sukuk | investment_instrument_from_title
+    EVIDENCE | Kira Sertifikaları (Sukuk)
+[239/249] document=758 product=SIGORTA_TEKAFUL_URUNU bank=Ziraat Katılım Bankası A.Ş. new_facts=1 title=Finansman Hayat Sigortaları
+  ACCEPT SIGORTA_TURU                 0.99 | Hayat Sigortaları | insurance_type_from_title
+    EVIDENCE | Finansman Hayat Sigortaları
+[240/249] document=759 product=KART bank=Ziraat Katılım Bankası A.Ş. new_facts=4 title=Ziraat Katılım Bankası
+  ACCEPT BASVURU_KANALI               0.96 | Çağrı Merkezi | application_channel
+    EVIDENCE | Şubelerimiz, Çağrı Merkezi, Internet Bankacılığı ve Katılım Mobil ile TROY banka kartı başvurusu yapabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | İnternet Şubesi | application_channel
+    EVIDENCE | Banka kartı başvurunuzu, Bankamız Şubeleri, Müşteri İletişim Merkezi, İnternet Şubesi ve Katılım Mobil aracılığıyla yapabilirsiniz.
+  ACCEPT BASVURU_KANALI               0.96 | Şubelerimiz | application_channel
+    EVIDENCE | Şubelerimiz, Çağrı Merkezi, Internet Bankacılığı ve Katılım Mobil ile TROY banka kartı başvurusu yapabilirsiniz.
+  ACCEPT MASRAF_DURUMU                0.95 | herhangi bir ücret alınmamaktadır | fee_free_status
+    EVIDENCE | Bankamız banka kartlarından yıllık üyelik ücreti, kullanım ücreti gibi herhangi bir ücret alınmamaktadır.
+Summary: {"accepted_fact_candidates": 185, "banks": {"Albaraka T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 16, "D\u00fcnya Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 18, "Hayat Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 8, "Kuveyt T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 4, "T.O.M. Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 2, "T\u00fcrkiye Emlak Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 17, "T\u00fcrkiye Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 7, "Vak\u0131f Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 25, "Ziraat Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 20}, "coverage_before": {"covered": 473, "percentage": 61.3, "total": 771}, "documents_scanned": 249, "documents_with_new_facts": 117, "fact_types": {"BASVURU_KANALI": 54, "FINANSMAN_AMACI": 9, "FINANSMAN_TURU": 22, "GEREKLI_BELGELER": 2, "HEDEF_KITLE": 6, "KART_TURU": 15, "MASRAF_DURUMU": 2, "MEVDUAT_GUVENCESI": 4, "ODEME_PLANI": 9, "SIGORTA_TURU": 9, "TEMINAT": 5, "UYGUNLUK_KOSULU": 1, "VADE_SURESI": 3, "VERGI_MUAFIYETI": 1, "YATIRIM_ARACI": 43}, "inserted_facts": 0, "mode": "dry_run", "product_types": {"DIGER_FINANSMAN": 1, "DIGER_KAMPANYA": 1, "IHTIYAC_FINANSMANI": 6, "KART": 16, "KONUT_FINANSMANI": 1, "SIGORTA_TEKAFUL_URUNU": 9, "TASIT_FINANSMANI": 4, "TICARI_FINANSMAN": 27, "YATIRIM_URUNU": 51, "YENI_MUSTERI": 1}, "projected_after": {"covered": 590, "percentage": 76.5, "total": 771}, "touched_documents": 0}

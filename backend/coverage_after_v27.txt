@@ -1,0 +1,9 @@
+HititFinLex Coverage Audit V2.7
+Overall coverage: 590/771 (76.5%)
+Eligible coverage: 533/665 (80.2%)
+Eligible gaps: 132
+Recoverable high-confidence gaps: 0
+Projected overall coverage: 590/771 (76.5%)
+Top gap products: {"DIGER_FINANSMAN": 5, "DIGER_KAMPANYA": 4, "IHTIYAC_FINANSMANI": 8, "KART": 19, "KONUT_FINANSMANI": 2, "TASIT_FINANSMANI": 1, "TICARI_FINANSMAN": 23, "YATIRIM_URUNU": 70}
+Recoverable products: {}
+Projected fact types: {}

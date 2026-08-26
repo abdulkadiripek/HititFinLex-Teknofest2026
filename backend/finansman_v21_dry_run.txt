@@ -1,0 +1,94 @@
+Pipeline: ner_v4_rules_v2_1
+Mode: DRY_RUN
+Selected documents: 20
+Unchanged documents skipped: 0
+[1/20] document=15 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9892 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[2/20] document=56 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9892 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[3/20] document=59 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9912 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9941 | %10 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Restoran Harcamanıza %10 İndirim Kazandırıyor!
+[4/20] document=61 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.5845 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[5/20] document=62 old_type=FINANSMAN classified=DIGER_KAMPANYA score=0.9901 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9939 | %50 | rule_and_confidence_passed
+    EVIDENCE | Albaraka Otopark ve Vale Harcamanıza %50 İndirim Kazandırıyor!
+[6/20] document=63 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9920 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=6 accepted=0 review=1 rejected=2
+  REJECTED VADE_SURESI                  0.5463 | 6 yıl | below_review_threshold
+    EVIDENCE | n az 3 yıl sistemde kalanlar devlet katkısı ve getirilerinin %15'ine, En az 6 yıl sistemde kalanlar %35'ine, En az 10 yıl sistemde kalanlar %60'ına, 10 yıl sistemde kaldıktan sonra 56 yaşını dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrılanlar, getir
+  REVIEW   VADE_SURESI                  0.6734 | 10 yıl | context_rule_failed
+    EVIDENCE | n az 3 yıl sistemde kalanlar devlet katkısı ve getirilerinin %15'ine, En az 6 yıl sistemde kalanlar %35'ine, En az 10 yıl sistemde kalanlar %60'ına, 10 yıl sistemde kaldıktan sonra 56 yaşını dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrılanlar, getirileri dahil devlet katkısının tamamına h
+  REJECTED VADE_SURESI                  0.6037 | yıl | entity_missing_number
+    EVIDENCE | n az 3 yıl sistemde kalanlar devlet katkısı ve getirilerinin %15'ine, En az 6 yıl sistemde kalanlar %35'ine, En az 10 yıl sistemde kalanlar %60'ına, 10 yıl sistemde kaldıktan sonra 56 yaşını dolduranlar veya vefat/maluliyet nedeniyle sistemden ayrılanlar, getirileri dahil devlet katkısının tamamına hak kazanırlar.
+[7/20] document=64 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9894 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[8/20] document=70 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9953 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[9/20] document=71 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9914 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9972 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | Alışverişlerinizde Bayide Finansman’ı tercih edin, 36 aya varan vadelerle ödeyin.
+[10/20] document=83 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9931 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=3 accepted=2 review=0 rejected=1
+  ACCEPTED FINANSMAN_TUTARI             0.9873 | 60.000 TL | rule_and_confidence_passed
+    EVIDENCE | üşterinizin kredibilitenize bakılmaksızın ve şubeye gerek kalmadan 60.000 TL’ye kadar finansman kullandırımı bayide yapılabilecektir.
+  REJECTED VADE_SURESI                  0.9965 | 36 aya | fact_not_in_evidence
+    EVIDENCE | 6 aya varan vadelerde taksitlendirme yapılabilecektir.
+  ACCEPTED FINANSMAN_TUTARI             0.9287 | 7500 TL | rule_and_confidence_passed
+    EVIDENCE | inansman tutarı 7500 TL’yi aşmayan işlemlerde müşterilerden gelir belgesi beyanı talep edilmeyecektir.
+[11/20] document=87 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9914 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9967 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | Alışverişlerinizde Bayide Finansman’ı tercih edin, 36 aya varan vadelerle ödeyin.
+[12/20] document=88 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[13/20] document=92 old_type=FINANSMAN classified=DIGER_FINANSMAN score=0.9912 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=7 accepted=0 review=0 rejected=0
+[14/20] document=94 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9692 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9963 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | kiracı da 12 ay eşit vadede geri ödemesini yapabiliyor.
+[15/20] document=95 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9935 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9971 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | akine ekipman, traktör ve biçerdöver finansmanı işlemleri finansal kiralama yöntemiyle ve hasat dönemine uygun ödeme koşulları ile 48 ay vadeye kadar yapılabilmektedir.
+[16/20] document=99 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9950 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=0 review=0 rejected=0
+[17/20] document=100 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9938 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=3 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9975 | 48 aya | rule_and_confidence_passed
+    EVIDENCE | irai faaliyetlerinizin gerçekleşmesi için gerekli her türlü ekipman ve makine alımına yönelik finansman desteğinizi 48 aya varan vadelerle kullanabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9970 | 24 ay | rule_and_confidence_passed
+    EVIDENCE | ihtiyaçlarınızı Bitkisel Üretim Finansmanı ile 24 ay vadeye kadar finanse edebilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9974 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | arımsal faaliyetlerinizin sürdürülmesi için alacağınız tarlalarınızı, Tarla Alım Finansmanı ile 48 ay vadeye kadar finanse edebilirsiniz.
+[18/20] document=102 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9919 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=5 accepted=6 review=1 rejected=1
+  ACCEPTED FINANSMAN_TUTARI             0.9843 | 50.000 TL | rule_and_confidence_passed
+    EVIDENCE | .000-50.000 TL arası finansmanlarda 36 Ay,
+  ACCEPTED FINANSMAN_TUTARI             0.9754 | 100.000 TL | rule_and_confidence_passed
+    EVIDENCE | 0.001-100.000 TL arası finansmanlarda 24 Ay,
+  REJECTED FINANSMAN_TUTARI             0.7915 | 100.001 TL | fact_not_in_evidence
+    EVIDENCE | 00.001 TL ve üzeri arası finansmanlarda 12 Ay’a kadar vade imkanından faydalanabilirsiniz.
+  ACCEPTED VADE_SURESI                  0.9962 | 12 Ay | rule_and_confidence_passed
+    EVIDENCE | 00.001 TL ve üzeri arası finansmanlarda 12 Ay’a kadar vade imkanından faydalanabilirsiniz.
+  ACCEPTED FINANSMAN_TUTARI             0.9496 | 1.000 TL | rule_and_confidence_passed
+    EVIDENCE | harcamalarınız için minimum 1.000 TL, maksimum 60.000 TL’ye kadar Jet Finansman başvurusu yapabilir, tüm ihtiyaçlarınıza kolayca ulaşabilirsiniz.*
+  ACCEPTED FINANSMAN_TUTARI             0.9752 | 60.000 TL | rule_and_confidence_passed
+    EVIDENCE | harcamalarınız için minimum 1.000 TL, maksimum 60.000 TL’ye kadar Jet Finansman başvurusu yapabilir, tüm ihtiyaçlarınıza kolayca ulaşabilirsiniz.*
+  ACCEPTED VADE_SURESI                  0.9698 | 3 Aya | rule_and_confidence_passed
+    EVIDENCE | ep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz 3 Aya varan vade taksit imkanına sahip olabilirsiniz.
+  REVIEW   VADE_SURESI                  0.8110 | 45 gün | context_rule_failed
+    EVIDENCE | lk taksit için en geç 45 gün sonrasına kadar, istediğiniz tarihi seçebilir, ödemelerinizi önceden planlayabilirsiniz.
+[19/20] document=103 old_type=FINANSMAN classified=TICARI_FINANSMAN score=0.9804 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=2 accepted=0 review=0 rejected=0
+[20/20] document=104 old_type=FINANSMAN classified=IHTIYAC_FINANSMANI score=0.9911 decision=ACCEPTED
+  NER_RESULT bank=Albaraka Türk Katılım Bankası A.Ş. chunks=1 accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9961 | 10 aya | rule_and_confidence_passed
+    EVIDENCE | ğrenciler için yurt ihtiyaçlarına yönelik 10 aya varan vade seçenekleriyle en uygun ihtiyaç kredisinden siz de faydalanabilirsiniz.
+Summary: {"accepted": 18, "classification_review": 0, "failed": 0, "filtered_out": 10, "ner_skipped": 0, "rejected": 4, "review": 2}
+Completed at: 2026-08-25T18:12:55.265378+00:00

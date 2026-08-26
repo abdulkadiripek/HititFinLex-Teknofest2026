@@ -1,0 +1,32 @@
+NER API KURULUM
+===============
+
+1. api.py ve ner_service.py dosyalarini proje kokune kopyalayin.
+
+   C:\Users\PC\Documents\katilim_finans_app
+
+2. models\ner_v4_best klasorunun mevcut oldugunu kontrol edin.
+
+3. Calisan Uvicorn surecini Ctrl+C ile durdurun.
+
+4. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+5. Saglik kontrolu:
+
+   http://127.0.0.1:8000/health
+
+   Beklenen alan:
+   "ner_model_ready": true
+
+6. Swagger:
+
+   http://127.0.0.1:8000/docs
+
+   POST /ner govdesi:
+
+   {
+     "text": "500.000 TL finansman 120 ay vade ile sunuluyor.",
+     "threshold": 0.4
+   }

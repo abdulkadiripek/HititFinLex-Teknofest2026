@@ -1,0 +1,95 @@
+NER RULES V2.1 - TITLE AWARE CLASSIFIER GATE
+================================================
+
+Bu paket V2 raporunda gorulen rule_model_conflict sorununu duzeltir.
+Banka sayfalarindaki menu, ilgili urun ve yan bilgi metinleri artik baslik
+kadar guclu siniflandirma kaniti sayilmaz.
+
+Temel kararlar
+--------------
+
+- Baslikta bulunan acik urun kurali guclu kanittir.
+- Tum sayfada bulunan fakat baslikta bulunmayan kural advisory kabul edilir.
+- Govde kurali ile model catistiginda model guveni en az 0.95 ise model korunur.
+- 0.95 altindaki model-govde catisma kayitlari insan incelemesine gider.
+- Baslik kurali ile model catismasi her zaman insan incelemesine gider.
+- Basliksiz /classify ve /analyze isteklerinde onceki muhafazakar davranis korunur.
+
+Paketteki dosyalar
+------------------
+
+1. classifier_service.py
+2. api.py
+3. intake_service.py
+4. ingest_ner_facts.py
+5. fact_surface_rules.py
+6. smoke_test_classifier_resolution_v21.py
+
+Kurulum
+-------
+
+1. API penceresinde Ctrl+C tuslarina basin.
+
+2. Proje kokunde mevcut dosyalari bir kez yedekleyin:
+
+   copy classifier_service.py classifier_service_v2_backup.py
+   copy api.py api_v2_backup.py
+   copy intake_service.py intake_service_v2_backup.py
+   copy ingest_ner_facts.py ingest_ner_facts_v2_backup.py
+   copy fact_surface_rules.py fact_surface_rules_v2_backup.py
+
+3. Paketteki alti Python dosyasini su klasore kopyalayin:
+
+   C:\Users\PC\Documents\katilim_finans_app
+
+4. Ortami etkinlestirin ve testleri calistirin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python smoke_test_classifier_resolution_v21.py
+   python smoke_test_fact_surface_rules.py
+   python smoke_test_intake.py
+
+Beklenen:
+
+   Classifier resolution V2.1: OK (14 cases)
+   Fact surface rules: OK (9 cases)
+   ACCEPTED path: OK (6 facts)
+   REVIEW gate: OK (NER skipped)
+   Database safety: OK (DRY_RUN)
+
+5. API'yi yeniden baslatin:
+
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+6. Yeni bir CMD penceresinde ayni 20 belgeyi DRY_RUN yapin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   set PYTHONUTF8=1
+   python ingest_ner_facts.py --campaign-type FINANSMAN --limit 20 --show-evidence > finansman_v21_dry_run.txt
+
+7. Kisa sonucu goruntuleyin:
+
+   findstr /C:"classified=" /C:"NER_SKIPPED" /C:"ACCEPTED" /C:"REVIEW" /C:"REJECTED" /C:"Summary" finansman_v21_dry_run.txt
+
+Bu adimda --write KULLANMAYIN. Dry-run sonucu incelendikten sonra toplu yazma
+komutu ayrica verilecektir.
+
+Beklenen siniflandirma davranisi
+--------------------------------
+
+- V2'deki 10 rule_model_conflict kaydinin buyuk bolumu otomatik gecmelidir.
+- Kira Odeyen Hesap IHTIYAC_FINANSMANI olarak kabul edilmelidir.
+- Kobi Nakdi Finansman ve Leasing TICARI_FINANSMAN olarak kabul edilmelidir.
+- Jet Finansman IHTIYAC_FINANSMANI olarak kabul edilmelidir.
+- Govdede gecen sigorta, kart, EFT veya konut ifadeleri tek basina ana urun
+  turunu degistirmemelidir.
+
+Guvenlik
+--------
+
+DRY_RUN veritabanini degistirmez. Pipeline surumu ner_v4_rules_v2_1 olarak
+degistirilmistir; bu nedenle eski durum kayitlari yeni kararlari yanlislikla
+atlamaz. --write yalnizca dry-run raporu onaylandiktan sonra kullanilmalidir.

@@ -1,0 +1,48 @@
+KATILIM FINANS API 0.8.1 - DUPLICATE GATE DUZELTMESI
+====================================================
+
+NEDEN BU GUNCELLEME VAR?
+
+API 0.8.0'da mevcut ve degismemis belge kontrolu siniflandirmadan sonra
+yapiliyordu. Mevcut belge siniflandirmada REVIEW olursa gereksiz yere inceleme
+kuyruguna gidebilirdi.
+
+0.8.1 ile record_key + content_hash kontrolu veritabani yazma kararindan once
+calisir. Ayni belge dogrudan UNCHANGED olarak atlanir ve hicbir tablo degismez.
+
+
+KURULUM
+
+1. API calisan CMD'de Ctrl+C yapin.
+
+2. Paketteki su uc dosyayi proje ana klasorune kopyalayip degistirmeyi
+   onaylayin:
+
+   api.py
+   intake_service.py
+   smoke_test_intake_database.py
+
+3. API'yi yeniden baslatin:
+
+   cd /d C:\Users\PC\Documents\katilim_finans_app
+   .venv\Scripts\activate
+   uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+4. Health kontrolunde sunlar gorulmelidir:
+
+   "version": "0.8.1"
+   "intake_duplicate_gate": "record_hash_first_v1"
+
+5. Diger CMD penceresinde testi calistirin:
+
+   python smoke_test_intake_database.py
+
+Beklenen son satirlar:
+
+   Dry-run status: REVIEW veya ACCEPTED
+   Database action: unchanged_skipped
+   Incremental write safety: OK
+
+Dry-run sonucunun REVIEW olmasi bu test icin hata degildir. Belge zaten mevcut
+ve ayni oldugu icin duplicate gate daha sonra hicbir yazma yapmadan UNCHANGED
+sonucu dondurmelidir.
