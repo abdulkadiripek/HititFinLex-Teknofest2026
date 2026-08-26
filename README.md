@@ -247,7 +247,7 @@ npm run lint
 | Rol | İsim |
 | --- | --- |
 | Danışman | Emre Deniz |
-| Üye | Doğukan Ayas |
+| Takım Kaptanı | Doğukan Ayas |
 | Üye | Tuğba Melisa Güngör Kurnaz |
 | Üye | Abdulkadir İpek |
 
