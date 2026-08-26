@@ -8,9 +8,10 @@ Kaynaklı RAG asistanı, ürün karşılaştırması ve veri kalitesi izleme ile
 katılım finansmanı ürünlerini tek ekrandan keşfedin.
 
 TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması (2. Senaryo) kapsamında
-**HititFinLex** takımı tarafından geliştirilmiştir.
+**HititFinLex** takımı tarafından **Türkiye Açık Kaynak Platformu** için
+geliştirilmiştir.
 
-`#BilisimVadisi2026`
+`#BilisimVadisi2026` `#TürkiyeAçıkKaynakPlatformu`
 
 </div>
 
