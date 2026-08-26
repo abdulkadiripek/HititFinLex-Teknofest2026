@@ -28,6 +28,7 @@ TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması (2. Senaryo) kapsamında
 - [Kurulum](#kurulum)
 - [Ortam değişkenleri](#ortam-değişkenleri)
 - [Test ve build](#test-ve-build)
+- [Proje dokümantasyonu](#proje-dokümantasyonu)
 - [Lisans](#lisans)
 - [Yol haritası](#yol-haritası)
 
@@ -236,6 +237,13 @@ npm run build   # bash scripts/build-verified.sh üzerinden doğrulanmış build
 npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
 ```
+
+## Proje dokümantasyonu
+
+Sistem mimarisi, NLP/kural yaklaşımı, veri ön işleme adımları, model
+performans metrikleri ve karşılaştırma yaklaşımının ayrıntılı anlatımı
+için [`docs/PROJE_DOKUMANTASYONU.md`](docs/PROJE_DOKUMANTASYONU.md)
+dosyasına bakın.
 
 ## Lisans
 
