@@ -6,8 +6,12 @@ from dataclasses import dataclass
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
+from fact_context_rules import (
+    campaign_amount_role_at,
+    campaign_percent_role_at,
+)
 
-PIPELINE_VERSION = "coverage_rules_v2_7"
+PIPELINE_VERSION = "coverage_rules_v3_1"
 
 ELIGIBLE_PRODUCT_CODES = {
     "ALISVERIS_PUANI",
@@ -78,7 +82,7 @@ DATE_RANGE_PATTERNS = (
     re.compile(
         rf"\b\d{{1,2}}\s+(?:{MONTHS})(?:\s+20\d{{2}})?\s*"
         rf"(?:-|\u2013|\u2014|ile|ve)\s*"
-        rf"\d{{1,2}}\s+(?:{MONTHS})\s+20\d{{2}}\b"
+        rf"\d{{1,2}}\s+(?:{MONTHS})(?:\s+20\d{{2}})?\b"
     ),
 )
 
@@ -434,11 +438,20 @@ def extract_coverage_facts(
                         {"raw": value},
                     )
 
-            amounts = exact_matches(segment, (AMOUNT_PATTERN,))
-            percentages = exact_matches(segment, (PERCENT_PATTERN,))
+            folded_segment = fold_text(segment)
+            amount_matches = list(AMOUNT_PATTERN.finditer(folded_segment))
+            percent_matches = list(PERCENT_PATTERN.finditer(folded_segment))
             installments = exact_matches(segment, (INSTALLMENT_PATTERN,))
-            if "indirim" in folded:
-                for value in percentages:
+            for percent_match in percent_matches:
+                value = segment[
+                    percent_match.start() : percent_match.end()
+                ]
+                percent_role = campaign_percent_role_at(
+                    folded_segment,
+                    percent_match.start(),
+                    percent_match.end(),
+                )
+                if percent_role == "discount_percent":
                     add(
                         "INDIRIM_ORANI",
                         value,
@@ -447,7 +460,27 @@ def extract_coverage_facts(
                         "discount_percent",
                         {"value": parse_number(value), "unit": "percent"},
                     )
-                for value in amounts:
+                elif (
+                    percent_role == "finance_rate"
+                    and code == "DIGER_KAMPANYA"
+                ):
+                    add(
+                        "KAR_PAYI_ORANI",
+                        value,
+                        segment,
+                        0.97,
+                        "campaign_finance_rate",
+                        {"value": parse_number(value), "unit": "percent"},
+                    )
+
+            for amount_match in amount_matches:
+                value = segment[amount_match.start() : amount_match.end()]
+                role = campaign_amount_role_at(
+                    folded_segment,
+                    amount_match.start(),
+                    amount_match.end(),
+                )
+                if role == "discount_amount":
                     add(
                         "INDIRIM_TUTARI",
                         value,
@@ -456,18 +489,7 @@ def extract_coverage_facts(
                         "discount_amount",
                         {"value": parse_number(value), "currency": "TRY"},
                     )
-            if any(
-                cue in folded
-                for cue in (
-                    "odul",
-                    "iade",
-                    "worldpuan",
-                    "bonus",
-                    "chip-para",
-                    "puan kazan",
-                )
-            ):
-                for value in amounts:
+                elif role == "reward_amount":
                     add(
                         "ODUL_TUTARI",
                         value,
@@ -476,14 +498,7 @@ def extract_coverage_facts(
                         "reward_amount",
                         {"value": parse_number(value), "currency": "TRY"},
                     )
-            if (
-                ("harcama" in folded or "alisveris" in folded)
-                and any(
-                    cue in folded
-                    for cue in ("en az", "minimum", "ve uzeri", "alt limit")
-                )
-            ):
-                for value in amounts:
+                elif role == "spend_threshold":
                     add(
                         "HARCAMA_ESIGI",
                         value,
@@ -502,7 +517,7 @@ def extract_coverage_facts(
                     {"value": parse_number(value), "unit": "count"},
                 )
 
-            if any(
+            eligibility_cue = any(
                 cue in folded
                 for cue in (
                     "kampanyadan yararlan",
@@ -511,7 +526,26 @@ def extract_coverage_facts(
                     "kampanya kosulu",
                     "kampanya sarti",
                 )
-            ) and len(segment) <= 240:
+            )
+            eligibility_predicate = any(
+                cue in folded
+                for cue in (
+                    "gerekm",
+                    "yeter",
+                    "olmal",
+                    "yararlanamay",
+                    "zorunlu",
+                    "verilmesi",
+                    "yapilmasi",
+                    "kullanmaniz",
+                    "gerceklestiril",
+                )
+            )
+            if (
+                eligibility_cue
+                and eligibility_predicate
+                and len(segment) <= 240
+            ):
                 add(
                     "UYGUNLUK_KOSULU",
                     segment,
@@ -544,8 +578,25 @@ def extract_coverage_facts(
             )
         )
         if explicit_application or investment_operation:
-            for value in exact_matches(segment, channel_patterns):
-                value_end = folded.find(fold_text(value)) + len(fold_text(value))
+            channel_matches = [
+                (pattern_index, match)
+                for pattern_index, pattern in enumerate(channel_patterns)
+                for match in pattern.finditer(folded)
+            ]
+            specific_spans = [
+                (match.start(), match.end())
+                for pattern_index, match in channel_matches
+                if pattern_index != 5
+            ]
+            for pattern_index, match in channel_matches:
+                if pattern_index == 5 and any(
+                    other_start <= match.start()
+                    and match.end() <= other_end
+                    for other_start, other_end in specific_spans
+                ):
+                    continue
+                value = segment[match.start() : match.end()]
+                value_end = match.end()
                 if "gitmeden" in folded[value_end : value_end + 20]:
                     continue
                 add(

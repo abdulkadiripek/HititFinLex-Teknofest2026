@@ -1,0 +1,21 @@
+Diagnostic: historical_v2_8_classification
+Mode: READ_ONLY
+Dataset ZIP: C:\Users\PC\Documents\katilim_finans_app\HititFinLex_VeriSeti_2.zip
+Archive rows: 2580
+Eligible before window: 2580
+Selected documents: 100
+Decision counts: {"ACCEPTED": 34, "REVIEW": 66}
+Review reason counts: {"low_product_confidence": 1, "url_rule_model_conflict": 65}
+Review product counts: {"DIGER": 10, "DIGER_KAMPANYA": 1, "KART_KAMPANYASI": 52, "KART_URUNU": 1, "KONUT_FINANSMANI": 2}
+Decision basis counts: {"high_confidence_model": 6, "high_confidence_model_over_body_rule": 6, "low_product_confidence": 1, "title_rule_model_agreement": 1, "url_rule_model_agreement": 21, "url_rule_model_conflict": 65}
+Failures: 0
+
+REASON: low_product_confidence count=1
+  SAMPLE: {"basis": "low_product_confidence", "campaign": "EVET", "campaign_hint": true, "campaign_score": 0.9934, "date": "2023-11-27", "index": 44, "key": "albaraka-a20231127-20d210246e4b", "product": "DIGER_KAMPANYA", "product_score": 0.7486, "rule_label": "KART_KAMPANYASI", "rule_reason": "body_advisory:explicit_card_campaign", "source_category": "finansman", "title": "Banka Hesabınızı Şubeye Gitmeden Açın", "url": "https://www.albaraka.com.tr/tr/bireysel/banka-hesabi-acma"}
+
+REASON: url_rule_model_conflict count=65
+  SAMPLE: {"basis": "url_rule_model_conflict", "campaign": "EVET", "campaign_hint": true, "campaign_score": 0.9982, "date": "2024-12-04", "index": 15, "key": "albaraka-a20241204-56161fd73feb", "product": "KART_KAMPANYASI", "product_score": 0.9962, "rule_label": "DIGER_KAMPANYA", "rule_reason": "url:campaign_path", "source_category": "kart", "title": "Business Kart ile Elektorik Ürün Harcamanıza 250 TL’ye varan Worldpuan", "url": "https://www.albaraka.com.tr/tr/kampanyalar/detay/business-kart-ile-elektorik-urun-harcamaniza-250-tlye-varan-worldpuan"}
+  SAMPLE: {"basis": "url_rule_model_conflict", "campaign": "EVET", "campaign_hint": true, "campaign_score": 0.9981, "date": "2025-12-15", "index": 16, "key": "albaraka-a20251215-0702b385b6a2", "product": "KART_KAMPANYASI", "product_score": 0.9962, "rule_label": "DIGER_KAMPANYA", "rule_reason": "url:campaign_path", "source_category": "kart", "title": "Business Kart ile Elektronik Ürün Harcamanıza 500 TL Worldpuan", "url": "https://www.albaraka.com.tr/tr/kampanyalar/detay/business-kart-ile-elektronik-urun-harcamaniza-500-tl-worldpuan"}
+  SAMPLE: {"basis": "url_rule_model_conflict", "campaign": "HAYIR", "campaign_hint": true, "campaign_score": 0.9976, "date": "2016-01-01", "index": 18, "key": "albaraka-a20160101-5ed1b2965702", "product": "DIGER", "product_score": 0.9539, "rule_label": "DIGER_KAMPANYA", "rule_reason": "url:campaign_path", "source_category": "finansman", "title": "ARAÇ FİNANSMANI KAMPANYASI", "url": "http://www.albaraka.com.tr/arac-finansmani-kampanyasi.aspx"}
+  SAMPLE: {"basis": "url_rule_model_conflict", "campaign": "HAYIR", "campaign_hint": true, "campaign_score": 0.9985, "date": "2016-05-13", "index": 19, "key": "albaraka-a20160513-5ed1b2965702", "product": "DIGER", "product_score": 0.9554, "rule_label": "DIGER_KAMPANYA", "rule_reason": "url:campaign_path", "source_category": "finansman", "title": "ARAÇ FİNANSMANI KAMPANYASI", "url": "http://www.albaraka.com.tr/arac-finansmani-kampanyasi.aspx"}
+  SAMPLE: {"basis": "url_rule_model_conflict", "campaign": "HAYIR", "campaign_hint": true, "campaign_score": 0.999, "date": "2020-09-28", "index": 20, "key": "albaraka-a20200928-94ccf9ed7876", "product": "DIGER", "product_score": 0.9319, "rule_label": "DIGER_KAMPANYA", "rule_reason": "url:campaign_path", "source_category": "finansman", "title": "DİŞHEKİMİ FİNANSMAN KAMPANYASI", "url": "https://www.albaraka.com.tr/dis-hekimi-finansman-kampanyasi.aspx"}

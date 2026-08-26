@@ -1,0 +1,52 @@
+{
+  "accepted_cross_role_amount_count": 0,
+  "accepted_cross_role_amount_samples": [],
+  "accepted_incomplete_date_count": 0,
+  "accepted_incomplete_date_samples": [],
+  "accepted_labels": {
+    "BASVURU_KANALI": 3,
+    "FINANSMAN_AMACI": 3,
+    "FINANSMAN_ORANI": 1,
+    "FINANSMAN_TURU": 2,
+    "FINANSMAN_TUTARI": 2,
+    "SIGORTA_KOSULU": 2,
+    "SIGORTA_TURU": 2,
+    "TEMINAT": 1,
+    "VADE_SURESI": 6,
+    "VERGI_MUAFIYETI": 6,
+    "YATIRIM_ARACI": 3
+  },
+  "error_count": 0,
+  "error_samples": [],
+  "parsed_decisions": {
+    "ACCEPTED": 31,
+    "REJECTED": 6,
+    "REVIEW": 2
+  },
+  "rejected_labels": {
+    "FINANSMAN_TUTARI": 3,
+    "TAHSIS_UCRETI": 1,
+    "VADE_SURESI": 2
+  },
+  "report": "C:\\Users\\PC\\Documents\\katilim_finans_app\\archive_ner_v30_1200.txt",
+  "review_labels": {
+    "TAHSIS_UCRETI": 2
+  },
+  "review_reasons": {
+    "context_rule_failed": 2
+  },
+  "summary": {
+    "archive_rows": 2580,
+    "classification_accepted": 30,
+    "classification_review": 10,
+    "documents_with_accepted_facts": 15,
+    "eligible_before_window": 2580,
+    "facts_accepted": 31,
+    "facts_rejected": 6,
+    "facts_review": 2,
+    "historical_versions_of_live_urls": 317,
+    "mode": "dry_run",
+    "ner_filtered_out": 4,
+    "selected": 40
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "accepted_cross_role_amount_count": 0,
+  "accepted_cross_role_amount_samples": [],
+  "accepted_incomplete_date_count": 0,
+  "accepted_incomplete_date_samples": [],
+  "accepted_labels": {
+    "BASVURU_KANALI": 4,
+    "FINANSMAN_TUTARI": 6,
+    "HARCAMA_ESIGI": 36,
+    "HARCAMA_UST_LIMITI": 1,
+    "HEDEF_KITLE": 2,
+    "INDIRIM_ORANI": 7,
+    "KAMPANYA_TARIH_ARALIGI": 37,
+    "KAR_PAYI_ORANI": 1,
+    "MEVDUAT_GUVENCESI": 4,
+    "ODUL_TUTARI": 48,
+    "TAKSIT_SAYISI": 10,
+    "UYGUNLUK_KOSULU": 6,
+    "VADE_SURESI": 10
+  },
+  "error_count": 0,
+  "error_samples": [],
+  "parsed_decisions": {
+    "ACCEPTED": 172,
+    "REJECTED": 76,
+    "REVIEW": 1
+  },
+  "rejected_labels": {
+    "FINANSMAN_TUTARI": 3,
+    "HARCAMA_ESIGI": 18,
+    "HARCAMA_UST_LIMITI": 2,
+    "INDIRIM_ORANI": 1,
+    "KAMPANYA_TARIH_ARALIGI": 33,
+    "KAR_PAYI_ORANI": 1,
+    "ODUL_TUTARI": 3,
+    "TAKSIT_SAYISI": 6,
+    "VADE_SURESI": 9
+  },
+  "report": "C:\\Users\\PC\\Documents\\katilim_finans_app\\archive_ner_v30_dry_run.txt",
+  "review_labels": {
+    "VADE_SURESI": 1
+  },
+  "review_reasons": {
+    "below_auto_threshold": 1
+  },
+  "summary": {
+    "archive_rows": 2580,
+    "classification_accepted": 74,
+    "classification_review": 26,
+    "documents_with_accepted_facts": 60,
+    "eligible_before_window": 2580,
+    "facts_accepted": 172,
+    "facts_rejected": 76,
+    "facts_review": 1,
+    "historical_versions_of_live_urls": 317,
+    "mode": "dry_run",
+    "ner_filtered_out": 68,
+    "selected": 100
+  }
+}

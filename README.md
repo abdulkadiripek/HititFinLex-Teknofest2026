@@ -62,7 +62,7 @@ flowchart LR
     end
 
     subgraph API["FastAPI Servisi (backend/)"]
-        REST["REST uçları\n/health /dashboard /catalog\n/comparison /documents /chat"]
+        REST["REST uçları\n/health /dashboard /catalog\n/comparison /documents /chat\n/history/* (tarihsel arşiv)"]
         NER["Türkçe NER\nner_v4_best"]
         CLS["Kampanya + Ürün\nsınıflandırıcıları"]
         HYB["Hibrit Arama\n(BM25 + vektör)"]
@@ -106,18 +106,22 @@ Backend'in referans yapılandırması (kurulum rehberinden alınmıştır):
 
 ## Özellikler
 
-Arayüz beş ana görünümden oluşur:
+Arayüz beş ana görünümden oluşur; her görünüm **güncel** ve **tarihsel
+(arşiv)** verileri birleşik olarak sunar:
 
 | Görünüm | Açıklama |
 | --- | --- |
 | **Genel bakış** | Belge/banka/fact sayıları, doğrulama oranı, kapsam yüzdesi, en son eklenen belgeler |
-| **Katalog** | Arama, çoklu filtre (banka, ürün türü, güven eşiği), sıralama ve sayfalama ile belge listesi |
-| **Karşılaştırma** | Ürün türüne göre değişen alanlarla bankalar arası karşılaştırma matrisi (kart kampanyalarında tarih/harcama eşiği/indirim/puan, finansman ürünlerinde tutar/oran/vade/kâr payı vb.) — veride bulunmayan alanlar matrise eklenmez |
-| **Asistan** | BGE-M3 + PostgreSQL hibrit arama ve Qwen tabanlı, kaynak göstererek cevap üreten RAG sohbeti |
-| **Veri kalitesi** | Sınıflandırma güveni, NER kapsamı ve bekleyen belge/fact incelemeleri |
+| **Katalog** | Arama, çoklu filtre (banka, ürün türü, güven eşiği, tarih), sıralama ve sayfalama ile güncel + tarihsel belge listesi |
+| **Karşılaştırma** | Ürün türüne göre değişen alanlarla bankalar arası karşılaştırma matrisi (kart kampanyalarında tarih/harcama eşiği/indirim/puan, finansman ürünlerinde tutar/oran/vade/kâr payı vb.) — veride bulunmayan alanlar matrise eklenmez. Son 1 ay / 3 ay / 6 ay / 1 yıl / tüm arşiv seçenekleriyle geçmişe dönük karşılaştırma da yapılabilir |
+| **Asistan** | BGE-M3 + PostgreSQL hibrit arama ve Qwen tabanlı, kaynak göstererek cevap üreten RAG sohbeti; "güncel" veya "tarihsel" kapsam seçilebilir, ürün türü otomatik algılanamazsa panelden elle seçilebilir |
+| **Veri kalitesi** | Sınıflandırma güveni, NER kapsamı, bekleyen belge/fact incelemeleri ve tarihsel embedding durumu |
 
 Her belge ayrıntısında kanıt metni ve ham kaynak URL'si gösterilir; her
-karşılaştırma hücresi kaynağına kadar izlenebilir.
+karşılaştırma hücresi kaynağına kadar izlenebilir. Eksik/yapılandırılmamış
+alanlar "ürün bankada yok" olarak değil, "seçili kaynaklarda yapılandırılmış
+alan yok" şeklinde açıkça ayrıştırılarak gösterilir. Bankalar, marka
+renkleriyle yerel logo rozetleriyle listelenir.
 
 ## Teknoloji yığını
 
@@ -149,6 +153,10 @@ Frontend'in çağırdığı uçlar:
 | `GET /documents/{id}` | Belge ayrıntısı, kanıt metni ve kaynak |
 | `POST /comparison` | Seçilen ürün türü için bankalar arası karşılaştırma matrisi |
 | `POST /chat` | RAG asistanı — kaynak gösteren sohbet cevabı |
+| `GET /history/overview` | Tarihsel arşiv için özet istatistikler |
+| `POST /history/search` | Tarihsel belge kataloğu araması |
+| `POST /history/comparison` | Belirli bir tarihe kadarki (`as_of`) arşiv karşılaştırma matrisi |
+| `POST /history/chat` | Tarihsel kapsamda RAG asistanı |
 
 Tam şema için backend çalışırken `http://127.0.0.1:8000/docs` (Swagger UI)
 adresine bakılabilir.
@@ -161,7 +169,7 @@ HititFinLex/
 │   ├── page.tsx           # Tüm ekranları içeren ana client component
 │   ├── layout.tsx         # Metadata, kök layout
 │   └── globals.css
-├── public/               # Statik varlıklar (favicon, og görseli)
+├── public/               # Statik varlıklar (favicon, og görseli, banka logoları)
 ├── scripts/               # CI/build yardımcı script'leri
 ├── tests/                 # Render edilen HTML üzerinde smoke test
 ├── backend/               # FastAPI NLP/RAG servisi (bkz. backend/README.md)
@@ -169,9 +177,12 @@ HititFinLex/
 │   ├── ner_service.py       # Türkçe NER servisi
 │   ├── classifier_service.py
 │   ├── hybrid_search.py
-│   ├── data/                 # Etiketli eğitim/doğrulama veri setleri
+│   ├── data/                 # Etiketli eğitim/doğrulama veri setleri (ham/çalışma verisi)
 │   └── requirements.txt
+├── dataset/               # Yayınlanan resmî veri seti paketi (HititFinLex Veri Seti v1.0)
+├── docs/                  # Şartname kapsamındaki proje dokümantasyonu
 ├── LICENSE                # Apache License 2.0 (tüm repo için)
+├── HITITFINLEX_WINDOWS_KURULUM.txt  # Windows'a özel ayrıntılı frontend kurulum notu
 ├── next.config.ts
 ├── package.json
 └── README.md
@@ -185,11 +196,20 @@ HititFinLex/
 
 ## Veri seti
 
-Yarışma kapsamında toplanan ve etiketlenen tüm veri setleri
-[`backend/data/`](backend/data) altında bu repoyla birlikte herkese açık
-olarak paylaşılmıştır (NER ve sınıflandırma eğitim/doğrulama/test setleri,
-manuel doğrulama kayıtları, ham belge/pasaj çıktıları). Ayrıntılar için
-[`backend/README.md#veri-seti`](backend/README.md#veri-seti) bölümüne bakın.
+Yarışma kapsamında toplanan ve etiketlenen veri setleri iki biçimde bu
+repoyla birlikte herkese açık olarak paylaşılmıştır:
+
+- **[`dataset/`](dataset)** — resmî, sürümlenmiş veri seti paketi
+  (**HititFinLex Veri Seti v1.0**): ham korpus, banka/etiket/kural
+  şemaları, veri kartı (`VERI_KARTI.md`) ve kendi lisansıyla birlikte.
+  Şartnamenin istediği "herkese açık indirilebilir veri seti" karşılığı
+  budur.
+- **[`backend/data/`](backend/data)** — eğitim script'lerinin (`train_ner.py`,
+  `train_classifier.py` vb.) doğrudan okuduğu çalışma kopyası (train/val/test
+  bölünmüş NER ve sınıflandırma setleri).
+
+Ayrıntılar için [`backend/README.md#veri-seti`](backend/README.md#veri-seti)
+bölümüne bakın.
 
 ## Kurulum
 
@@ -213,9 +233,13 @@ uvicorn api:app --reload --host 127.0.0.1 --port 8000
 Ardından repo kökünde frontend'i başlatın:
 
 ```cmd
+copy .env.example .env.local
 npm install
 npm run dev
 ```
+
+Windows'a özel ayrıntılı adımlar için `HITITFINLEX_WINDOWS_KURULUM.txt`
+dosyasına da bakabilirsiniz.
 
 Tarayıcıda açın:
 

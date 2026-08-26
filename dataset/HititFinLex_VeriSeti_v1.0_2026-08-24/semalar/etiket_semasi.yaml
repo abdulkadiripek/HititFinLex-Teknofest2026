@@ -1,0 +1,186 @@
+# =============================================================================
+# HititFinLex — NLP Veri Seti Etiket Şeması
+# TEKNOFEST 2026 TYDA / 2. Senaryo
+#
+# İki ayrı görev tanımlanır:
+#   1. span  -> Bilgi çıkarımı  (şartname 5.3 "Finansal Bilgi Çıkarımı")
+#   2. sinif -> Kampanya türü   (şartname 5.4 "Kampanya Türünün Belirlenmesi")
+#
+# Etiket adları şartnamedeki tablo başlıklarından türetilmiştir; yeni bir
+# etiket eklemek için burayı ve kurallar.yaml'ı güncellemek yeterlidir.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1) SPAN ETİKETLERİ (bilgi çıkarımı)
+# -----------------------------------------------------------------------------
+# oncelik: iki etiket aynı metin parçasına talip olduğunda büyük olan kazanır.
+#   Örn. "12 taksit" hem VADE_SURESI hem TAKSIT_SAYISI kalıbına uyar;
+#   TAKSIT_SAYISI daha özgül olduğu için önceliği yüksektir.
+# normalizasyon: utils/normalize.py içindeki dönüştürücünün adı (şartname 5.6)
+span_etiketleri:
+
+  KAR_PAYI_ORANI:
+    aciklama: >-
+      Finansman veya katılma hesabına uygulanan kâr payı oranı.
+      Katılım bankacılığında faiz oranının karşılığıdır (şartname 5.5).
+    ornek: ["%1,89 kâr payı oranı", "kâr payı oranı %2,05", "%1,87"]
+    oncelik: 100
+    normalizasyon: oran
+
+  KAR_PAYLASIM_ORANI:
+    aciklama: >-
+      Katılma hesaplarında banka ile müşteri arasındaki kâr-zarar paylaşım
+      oranı (ör. "98/2"). Kâr payı oranından farklıdır, karıştırılmamalı.
+    ornek: ["98/2 paylaşım oranı", "katılma oranı 95/5"]
+    oncelik: 100
+    normalizasyon: paylasim_orani
+
+  FINANSMAN_TUTARI:
+    aciklama: Kullandırılabilecek finansman tutarı veya üst limiti.
+    ornek: ["140.000 TL'ye varan", "50.000 TL'ye kadar finansman"]
+    oncelik: 80
+    normalizasyon: tutar
+
+  VADE_SURESI:
+    aciklama: Finansmanın geri ödeme vadesi.
+    ornek: ["120 aya kadar", "36 ay vade", "10 yıl"]
+    oncelik: 70
+    normalizasyon: sure_ay
+
+  TAKSIT_SAYISI:
+    aciklama: Alışveriş veya finansman taksit adedi.
+    ornek: ["12 taksit", "peşin fiyatına 6 taksit"]
+    oncelik: 90
+    normalizasyon: adet
+
+  TAHSIS_UCRETI:
+    aciklama: Tahsis ücreti, dosya masrafı, ekspertiz gibi ücret tutarları.
+    ornek: ["1.500 TL dosya masrafı", "tahsis ücreti 2.000 TL"]
+    oncelik: 95
+    normalizasyon: tutar
+
+  MASRAF_DURUMU:
+    aciklama: >-
+      Ücret/masraf alınmadığını bildiren ifadeler. Tutar taşımaz, bu yüzden
+      ayrı bir etikettir; "Masrafsız Finansman" şartname 5.5'te tanımlıdır.
+    ornek: ["masrafsız", "dosya masrafı alınmamaktadır", "vade farksız"]
+    oncelik: 85
+    normalizasyon: yok
+
+  HARCAMA_ESIGI:
+    aciklama: >-
+      Kampanyadan yararlanmak için gereken asgari harcama tutarı. ÖDÜL
+      MIKTARI ile karıştırılmamalı: "500 TL ve üzeri harcamalarına 50 TL
+      Worldpuan" cümlesinde 500 TL eşik, 50 TL ödüldür. Ayrı etiket olmadan
+      kart kampanyalarının tamamında eşik tutarları ödül sanılıyordu.
+    ornek: ["500 TL ve üzeri harcamalarınıza", "minimum 1.000 TL alışveriş"]
+    oncelik: 88
+    normalizasyon: tutar
+
+  ODUL_MIKTARI:
+    aciklama: Kampanya kapsamında verilen nakit iade, hediye çeki, ödül tutarı.
+    ornek: ["5.000 TL değerinde alışveriş çeki", "1.000 TL'ye varan nakit iade"]
+    oncelik: 80
+    normalizasyon: tutar
+
+  INDIRIM_ORANI:
+    aciklama: Yüzde cinsinden indirim oranı (kâr payı oranı DEĞİL).
+    ornek: ["%25 indirim", "%50 komisyon indirimi"]
+    oncelik: 75
+    normalizasyon: oran
+
+  ALISVERIS_PUANI:
+    aciklama: Kart programlarında kazanılan puan/mil (Worldpuan, ChipPara, mil).
+    ornek: ["200 TL'ye varan Worldpuan", "500 ChipPara", "1.000 mil"]
+    oncelik: 85
+    normalizasyon: tutar
+
+  KAMPANYA_SURESI:
+    aciklama: Kampanyanın geçerlilik tarihi veya tarih aralığı.
+    ornek: ["31 Aralık 2026 tarihine kadar", "1 Ocak - 28 Şubat 2026"]
+    oncelik: 90
+    normalizasyon: tarih
+
+  HEDEF_KITLE:
+    aciklama: Kampanyanın yöneldiği müşteri segmenti (şartname 5.3 tablosu).
+    ornek: ["yeni müşterilerimize özel", "maaş müşterilerine", "KOBİ'lere"]
+    oncelik: 60
+    normalizasyon: yok
+
+# -----------------------------------------------------------------------------
+# 2) KAMPANYA TÜRÜ ETİKETLERİ (doküman sınıflandırma)
+# -----------------------------------------------------------------------------
+# Liste şartname 5.4'teki "Kampanya Türleri" tablosundan birebir alınmış,
+# kampanya olmayan sayfalar için DIGER eklenmiştir.
+# oncelik: birden fazla tür eşleştiğinde büyük olan kazanır (özgülden genele).
+kampanya_turleri:
+
+  KONUT_FINANSMANI:
+    etiket: "Konut Finansmanı Kampanyası"
+    oncelik: 90
+
+  TASIT_FINANSMANI:
+    etiket: "Taşıt Finansmanı Kampanyası"
+    oncelik: 90
+
+  IHTIYAC_FINANSMANI:
+    etiket: "İhtiyaç Finansmanı Kampanyası"
+    oncelik: 85
+
+  FINANSMAN:
+    etiket: "Finansman Kampanyası"
+    oncelik: 50            # yukarıdakiler tutmazsa genel finansman
+
+  ALISVERIS_PUANI:
+    etiket: "Alışveriş Puanı Kampanyası"
+    oncelik: 80
+
+  KART:
+    etiket: "Kart Kampanyası"
+    oncelik: 60
+
+  YENI_MUSTERI:
+    etiket: "Yeni Müşteri Kampanyası"
+    oncelik: 70
+
+  YATIRIM_URUNU:
+    etiket: "Yatırım Ürünü Kampanyası"
+    oncelik: 75
+
+  DIGER:
+    etiket: "Diğer / Kampanya Değil"
+    oncelik: 0             # hiçbiri tutmazsa
+
+# -----------------------------------------------------------------------------
+# 3) VERİ SETİ ÜRETİM AYARLARI
+# -----------------------------------------------------------------------------
+ayarlar:
+  # Span görevinde belgeler cümlelere bölünür: 2.500 karakterlik belgeler
+  # tipik transformer bağlam penceresine sığmaz ve etiketlemeyi zorlaştırır.
+  pasaj_maks_karakter: 600
+  pasaj_min_karakter: 40
+
+  # Sınıflandırma görevinde belgenin ilk N karakteri örnek metin olarak
+  # saklanır (tam metin ayrıca korunur).
+  sinif_ozet_karakter: 1200
+
+  # Bölümleme
+  bolme:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+    tohum: 20260814
+
+  # Bir ön etiket bu güvenin altındaysa insan doğrulaması ZORUNLU sayılır ve
+  # --sadece-dogrulanmis modunda final veri setine alınmaz.
+  #
+  # İki görev için ayrı eşik var çünkü kuralların güvenilirliği farklı:
+  #   span  : desenler dar ve bağlam zorunlu; yüksek güvenli öneriler gerçekten
+  #           güvenilir (pasajların ~%56'sı eşiği geçiyor).
+  #   sinif : anahtar kelimeye dayalı tür tahmini bu eşiği pratikte HİÇ
+  #           geçmiyor — ölçülen en yüksek güven 0,88. Bu bir kusur değil,
+  #           dürüst bir sinyal: kampanya türü etiketleri insan doğrulaması
+  #           olmadan altın standart sayılmamalı. Eşiği düşürmeden önce
+  #           04_tur_ornek_denetim.csv ile gerçek isabeti ölçün.
+  otomatik_kabul_esigi: 0.90
+  otomatik_kabul_esigi_sinif: 0.90

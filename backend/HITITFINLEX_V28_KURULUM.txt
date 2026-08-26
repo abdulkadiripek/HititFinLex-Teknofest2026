@@ -1,0 +1,294 @@
+HITITFINLEX V2.8 - TARIHSEL VERI ENTEGRASYONU
+=============================================
+
+Bu paket V2.7'nin mevcut 771 canli belgesini, frontendini, RAG aramasini,
+karsilastirma ekranini ve bilgi kapsami backfill'ini korur.
+
+Eklenen yetenekler:
+
+- HititFinLex_VeriSeti_2.zip icindeki 771 canli kopyayi otomatik dislar.
+- Yalnizca 2.580 arsiv kaydini isler.
+- Arsiv belgelerini V2.4 guncel urun siniflariyla yeniden siniflandirir.
+- V2.7 NER, yuzey ve baglam kurallarini uygular.
+- Kabul, inceleme ve ret sonuclarini ayri historical_* tablolarda tutar.
+- Guncel ve tarihsel aramayi birbirine karistirmaz.
+- BGE-M3 ile tarihsel embedding uretir.
+- Tarih, banka ve urun turu filtreli tarihsel arama sunar.
+- Bir URL'nin zaman icindeki surumlerini listeler.
+- Belirli bir tarih itibariyla bankalar arasi karsilastirma yapar.
+- Arsiv verisini validation/test'e koymadan silver train olarak disari aktarir.
+- Mevcut model dosyalarini degistirmeden A/B model egitimi yapar.
+
+Guvenlik ilkesi:
+
+  Dry-run -> inceleme -> --write -> embedding -> A/B test
+
+--write verilmeden arsiv veritabanina yazilmaz.
+
+
+1. DOSYALARI HAZIRLAYIN
+-----------------------
+
+API'yi Ctrl+C ile durdurun.
+
+Proje klasorune gidin:
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+
+Mevcut API'yi yedekleyin:
+
+  copy api.py api_v27_backup.py
+
+Bu paketteki tum Python dosyalarini proje ana klasorune kopyalayin.
+
+HititFinLex_VeriSeti_2.zip dosyasini da proje ana klasorune koyun:
+
+  C:\Users\PC\Documents\katilim_finans_app\HititFinLex_VeriSeti_2.zip
+
+
+2. ORTAMI ACIN VE TESTLERI CALISTIRIN
+------------------------------------
+
+  .venv\Scripts\activate
+  set PYTHONUTF8=1
+  python smoke_test_archive_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip
+  python smoke_test_classifier_resolution_v24.py
+  python smoke_test_fact_context_rules_v23.py
+  python smoke_test_coverage_rules_v27.py
+
+Beklenen V2.8 sonucu:
+
+  HititFinLex V2.8 historical pipeline: OK (6 groups, 2580 rows)
+
+
+3. API'YI BASLATIN
+------------------
+
+  uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+Yeni bir CMD penceresi acin, proje klasorune gidin ve sanal ortami etkinlestirin.
+
+
+4. ONCE 100 BELGEYLE SINIFLANDIRMA DRY-RUN
+-------------------------------------------
+
+  python archive_ingest_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip --limit 100 --classification-only > archive_classification_v28_dry_run.txt
+
+Ozeti gorun:
+
+  findstr /C:"Archive rows:" /C:"Duplicate live text:" /C:"Selected documents:" /C:"Summary:" archive_classification_v28_dry_run.txt
+
+Beklenen temel kosullar:
+
+- Archive rows: 2580
+- Duplicate live text: 0
+- Selected documents: 100
+- failed: 0
+
+classification_review sifir olmak zorunda degildir. Inceleme kayitlari aramaya
+acilmaz ve model egitimine alinmaz.
+
+
+5. 100 BELGEYLE TAM NER/FACT DRY-RUN
+------------------------------------
+
+  python archive_ingest_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip --limit 100 --show-evidence > archive_full_v28_dry_run.txt
+
+Ozeti gorun:
+
+  findstr /C:"Selected documents:" /C:"quality=review" /C:"  REVIEW " /C:"ERROR:" /C:"Summary:" archive_full_v28_dry_run.txt
+
+Kontrol edilecek kosul:
+
+  failed: 0
+
+Review kayitlarinin bulunmasi normaldir. Bunlar ayri kuyrukta tutulur.
+
+
+6. 2.580 ARSIV KAYDINI YAZIN
+----------------------------
+
+Orneklem temizse tum arsivi yazin:
+
+  python archive_ingest_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip --limit 0 --write > archive_ingest_v28_write.txt
+
+Islem kesilirse ayni komutu yeniden calistirin. Ayni icerik ve ayni pipeline
+surumune sahip kayitlar otomatik atlanir; canli 771 belgeye dokunulmaz.
+
+Ozeti kontrol edin:
+
+  findstr /C:"Selected documents:" /C:"ERROR:" /C:"Summary:" archive_ingest_v28_write.txt
+
+
+7. VERI KALITESI DENETIMI
+------------------------
+
+  python archive_audit_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip > archive_audit_v28.json
+  type archive_audit_v28.json
+
+Kritik alanlar:
+
+- schema_ready: true
+- historical_document_count
+- searchable_document_count
+- review_document_count
+- pending_fact_reviews
+- searchable_documents_missing_embeddings
+
+
+8. TARIHSEL EMBEDDING URETIN
+----------------------------
+
+Once uc belgeyle GPU testi:
+
+  python archive_embeddings_v28.py --test
+
+Test temizse tum kabul edilmis arsiv belgelerini yazin:
+
+  python archive_embeddings_v28.py --write
+
+Islem kesilirse ayni komutu tekrar calistirin. Embedding'i bulunan belgeler
+atlanir. Mevcut document_chunks tablosu silinmez veya degistirilmez.
+
+Son denetim:
+
+  python archive_audit_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip > archive_audit_after_embeddings_v28.json
+  type archive_audit_after_embeddings_v28.json
+
+Beklenen:
+
+  searchable_documents_missing_embeddings: 0
+
+
+9. API UCLARINI TEST EDIN
+-------------------------
+
+Tarayicida:
+
+  http://127.0.0.1:8000/history/overview
+  http://127.0.0.1:8000/dashboard/overview
+  http://127.0.0.1:8000/docs
+
+Tarihsel arama:
+
+  curl -X POST http://127.0.0.1:8000/history/search -H "Content-Type: application/json" -d "{\"query\":\"konut finansmani kampanyalari\",\"top_k\":5,\"date_from\":\"2020-01-01\",\"date_to\":\"2025-12-31\"}"
+
+Bir URL'nin eski surumleri:
+
+  http://127.0.0.1:8000/history/versions?source_url=URL_BURAYA
+
+Belirli tarih itibariyla banka karsilastirmasi:
+
+  curl -X POST http://127.0.0.1:8000/history/comparison -H "Content-Type: application/json" -d "{\"product_type_code\":\"KONUT_FINANSMANI\",\"as_of\":\"2025-12-31\",\"limit\":10}"
+
+Tarihsel asistan:
+
+  curl -X POST http://127.0.0.1:8000/history/chat -H "Content-Type: application/json" -d "{\"query\":\"Konut finansmani kosullari zaman icinde nasil degismis?\",\"top_k\":5}"
+
+Tarihsel asistan, arsiv kosullarini guncelmis gibi sunmamak uzere ayri bir
+prompt ve ayri bir veri havuzu kullanir.
+
+
+10. INCELEME CSV'LERINI DISARI AKTARIN
+-------------------------------------
+
+  python export_archive_training_v28.py
+
+Olusan dosyalar:
+
+  data\archive_v28_training\archive_classification_review.csv
+  data\archive_v28_training\archive_fact_review.csv
+  data\archive_v28_training\classification_archive_train.jsonl
+  data\archive_v28_training\ner_archive_train_bio.jsonl
+  data\archive_v28_training\archive_training_summary.json
+
+CSV'lerde ONAY_E_H alanina E veya H yazin. Gerekirse DUZELTILMIS_ETIKET ve
+DUZELTILMIS_DEGER alanlarini doldurun.
+
+Oncelikle dry-run:
+
+  python resolve_archive_reviews_v28.py
+
+Sonra yazma:
+
+  python resolve_archive_reviews_v28.py --write
+
+Insan tarafindan sinifi onaylanan ve henuz fact'i olmayan belgeleri isleyin:
+
+  python backfill_archive_facts_v28.py --limit 200 --show-evidence > archive_fact_backfill_v28_dry_run.txt
+  python backfill_archive_facts_v28.py --limit 200 --write
+
+Komutu Selected documents: 0 olana kadar tekrarlayabilirsiniz.
+
+Yeni kabul edilen belgeler icin embedding komutunu tekrar calistirin:
+
+  python archive_embeddings_v28.py --write
+
+
+11. SIZINTISIZ A/B EGITIM VERISINI HAZIRLAYIN
+---------------------------------------------
+
+export_archive_training_v28.py su kurallari uygular:
+
+- Arsiv etiketi sadece train'e gider.
+- Mevcut validation/test URL gruplari arsiv train'inden cikarilir.
+- Mevcut split dosyalari bulunamazsa tum canli URL'ler korunur.
+- Bir URL'den varsayilan olarak en fazla iki tarihsel surum alinir.
+- NER train'e baglam kapisini gecen kabul edilmis NER adaylari eklenir.
+- Sayisal ama etiketsiz zor negatif pasajlar da eklenir.
+
+A/B klasorlerini olusturun:
+
+  python build_ab_training_v28.py
+
+Bu komut mevcut validation/test dosyalarini aynen kopyalar ve arsiv verisini
+yalnizca train'e ekler.
+
+
+12. MODELLERI AYRI KLASORDE EGITIN
+---------------------------------
+
+Mevcut production modelleri degistirilmez.
+
+Urun siniflandirma A/B modeli:
+
+  python train_product_v28_ab.py
+
+NER A/B modeli:
+
+  python train_ner_v28_ab.py
+
+train_product_v2.py ve train_ner.py proje ana klasorunde bulunmalidir.
+
+Metrikleri karsilastirin:
+
+  python compare_ab_metrics_v28.py
+
+promotion_ready=true tek basina modeli production'a almak icin yeterli degildir.
+Sinif bazli hata analizi ve ozellikle arsivden gelen yanlis pozitifler ayrica
+kontrol edilmelidir. Bu paket hicbir production model klasorunu otomatik olarak
+degistirmez.
+
+
+13. FRONTEND VE CANLI SISTEM DAVRANISI
+--------------------------------------
+
+- Mevcut frontend gorunumu degistirilmemistir.
+- /dashboard/overview eski alanlarini aynen dondurur.
+- Ek olarak live_document_count, historical_document_count,
+  total_snapshot_count, history_start_date ve history_end_date alanlarini verir.
+- Mevcut /search ve /chat yalnizca 771 canli belgeyi kullanmaya devam eder.
+- Arsiv verisi sadece /history/* uclarinda kullanilir.
+- Eski kampanyalar yanlislikla guncel sonuclara karismaz.
+
+
+14. GERI DONUS
+--------------
+
+API kodunu geri almak gerekirse:
+
+  copy /Y api_v27_backup.py api.py
+
+historical_* tablolari canli tablolarla bagimsizdir. API geri alindiginda canli
+771 belge, document_chunks, entities ve comparison_facts aynen calismaya devam
+eder. Bu dokuman bilerek DROP TABLE komutu vermez.

@@ -1,0 +1,24 @@
+Pipeline: historical_v3_1
+Mode: WRITE
+Eligible historical documents: 1566
+Model: BAAI/bge-m3
+Device: cuda:0
+GPU: NVIDIA GeForce RTX 5070 Ti
+Allocated VRAM (MB): 1083.0
+Batch 1: documents=100 chunks=232 shape=(232, 1024)
+Batch 2: documents=100 chunks=172 shape=(172, 1024)
+Batch 3: documents=100 chunks=158 shape=(158, 1024)
+Batch 4: documents=100 chunks=279 shape=(279, 1024)
+Batch 5: documents=100 chunks=163 shape=(163, 1024)
+Batch 6: documents=100 chunks=350 shape=(350, 1024)
+Batch 7: documents=100 chunks=165 shape=(165, 1024)
+Batch 8: documents=100 chunks=239 shape=(239, 1024)
+Batch 9: documents=100 chunks=233 shape=(233, 1024)
+Batch 10: documents=100 chunks=282 shape=(282, 1024)
+Batch 11: documents=100 chunks=158 shape=(158, 1024)
+Batch 12: documents=100 chunks=151 shape=(151, 1024)
+Batch 13: documents=100 chunks=284 shape=(284, 1024)
+Batch 14: documents=100 chunks=113 shape=(113, 1024)
+Batch 15: documents=100 chunks=127 shape=(127, 1024)
+Batch 16: documents=66 chunks=86 shape=(86, 1024)
+Summary: {"chunks": 3192, "documents": 1566, "mode": "write", "model": "BAAI/bge-m3"}

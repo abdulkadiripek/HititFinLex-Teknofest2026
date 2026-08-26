@@ -1,0 +1,132 @@
+{
+  "database": {
+    "fact_decisions": {
+      "accepted": 3982,
+      "rejected": 1036,
+      "review": 437
+    },
+    "overview": {
+      "banks": [
+        {
+          "count": 492,
+          "name": "Kuveyt T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 473,
+          "name": "T\u00fcrkiye Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 410,
+          "name": "Ziraat Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 394,
+          "name": "Vak\u0131f Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 325,
+          "name": "Albaraka T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 242,
+          "name": "T\u00fcrkiye Emlak Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 185,
+          "name": "Hayat Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        },
+        {
+          "count": 59,
+          "name": "D\u00fcnya Kat\u0131l\u0131m Bankas\u0131 A.\u015e."
+        }
+      ],
+      "embedded_chunk_count": 3192,
+      "historical_chunk_count": 3192,
+      "historical_document_count": 2580,
+      "historical_fact_count": 3982,
+      "history_end_date": "2026-08-21",
+      "history_start_date": "2016-01-01",
+      "product_types": [
+        {
+          "code": "KART_KAMPANYASI",
+          "count": 1407
+        },
+        {
+          "code": "DIGER_KAMPANYA",
+          "count": 467
+        },
+        {
+          "code": "DIGER",
+          "count": 170
+        },
+        {
+          "code": "YATIRIM_URUNU",
+          "count": 147
+        },
+        {
+          "code": "TICARI_FINANSMAN",
+          "count": 100
+        },
+        {
+          "code": "KATILMA_HESABI",
+          "count": 70
+        },
+        {
+          "code": "KART_URUNU",
+          "count": 63
+        },
+        {
+          "code": "KONUT_FINANSMANI",
+          "count": 59
+        },
+        {
+          "code": "IHTIYAC_FINANSMANI",
+          "count": 31
+        },
+        {
+          "code": "SIGORTA_TEKAFUL_URUNU",
+          "count": 22
+        },
+        {
+          "code": "TASIT_FINANSMANI",
+          "count": 21
+        },
+        {
+          "code": "DIGER_FINANSMAN",
+          "count": 19
+        },
+        {
+          "code": "ODEME_TRANSFER_HIZMETI",
+          "count": 4
+        }
+      ],
+      "review_document_count": 1014,
+      "searchable_document_count": 1566
+    },
+    "pending_fact_reviews": 437,
+    "quality_status": {
+      "accepted": 1566,
+      "review": 1014
+    },
+    "schema_ready": true,
+    "searchable_documents_missing_embeddings": 0
+  },
+  "zip": {
+    "archive_rows": 2580,
+    "banks": {
+      "Albaraka T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 325,
+      "D\u00fcnya Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 59,
+      "Hayat Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 185,
+      "Kuveyt T\u00fcrk Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 492,
+      "T\u00fcrkiye Emlak Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 242,
+      "T\u00fcrkiye Finans Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 473,
+      "Vak\u0131f Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 394,
+      "Ziraat Kat\u0131l\u0131m Bankas\u0131 A.\u015e.": 410
+    },
+    "end_date": "2026-08-21",
+    "live_url_version_overlap": 317,
+    "start_date": "2016-01-01",
+    "unique_archive_texts": 2580,
+    "unique_archive_urls": 1739
+  }
+}

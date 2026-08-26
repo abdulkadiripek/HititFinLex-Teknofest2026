@@ -1,0 +1,173 @@
+{
+  "paket": "HititFinLex_VeriSeti_v1.0_2026-08-24",
+  "surum": "v1.0",
+  "olusturma_tarihi": "2026-08-24",
+  "proje": "HititFinLex — TEKNOFEST 2026 TYDA 2. Senaryo (Katılım Bankacılığı)",
+  "korpus": {
+    "kayit": 3351,
+    "canli": 771,
+    "arsiv": 2580,
+    "banka": 10,
+    "karakter": 8181060,
+    "kelime": 1043573,
+    "icerik_tarih_araligi": [
+      "2016-01-01",
+      "2026-08-21"
+    ],
+    "toplama_tarih_araligi": [
+      "2026-08-14",
+      "2026-08-24"
+    ]
+  },
+  "veri_seti": {
+    "dokuman": 3351,
+    "pasaj": 7238,
+    "span": 10501,
+    "span_dagilimi": {
+      "KAMPANYA_SURESI": 2296,
+      "TAKSIT_SAYISI": 1936,
+      "ODUL_MIKTARI": 1036,
+      "HARCAMA_ESIGI": 971,
+      "MASRAF_DURUMU": 902,
+      "VADE_SURESI": 877,
+      "INDIRIM_ORANI": 773,
+      "ALISVERIS_PUANI": 500,
+      "FINANSMAN_TUTARI": 437,
+      "HEDEF_KITLE": 369,
+      "TAHSIS_UCRETI": 252,
+      "KAR_PAYLASIM_ORANI": 90,
+      "KAR_PAYI_ORANI": 62
+    },
+    "tur_dagilimi": {
+      "Kart Kampanyası": 1393,
+      "Yatırım Ürünü Kampanyası": 667,
+      "Finansman Kampanyası": 520,
+      "Diğer / Kampanya Değil": 310,
+      "Alışveriş Puanı Kampanyası": 136,
+      "Taşıt Finansmanı Kampanyası": 108,
+      "Yeni Müşteri Kampanyası": 96,
+      "İhtiyaç Finansmanı Kampanyası": 66,
+      "Konut Finansmanı Kampanyası": 55
+    },
+    "bolumler": {
+      "bilgi_cikarim": {
+        "train": 5015,
+        "val": 1177,
+        "test": 1046
+      },
+      "siniflandirma": {
+        "train": 2346,
+        "val": 504,
+        "test": 501
+      }
+    },
+    "sizinti_denetimi": "temiz",
+    "etiket_durumu": "silver (kural tabanlı ön etiketleme, insan doğrulaması bekliyor)"
+  },
+  "dosyalar": {
+    "dokuman/VERI_KARTI.md": {
+      "bayt": 18184,
+      "satir": null
+    },
+    "dokuman/veri_seti_README.md": {
+      "bayt": 11823,
+      "satir": null
+    },
+    "dokuman/veri_toplama_README.md": {
+      "bayt": 29342,
+      "satir": null
+    },
+    "korpus/korpus_arsiv.jsonl": {
+      "bayt": 11870302,
+      "satir": 2670
+    },
+    "korpus/korpus_canli.jsonl": {
+      "bayt": 2714440,
+      "satir": 771
+    },
+    "korpus/korpus_tum.csv": {
+      "bayt": 12939355,
+      "satir": null
+    },
+    "korpus/korpus_tum.jsonl": {
+      "bayt": 14336949,
+      "satir": 3351
+    },
+    "LICENSE": {
+      "bayt": 11558,
+      "satir": null
+    },
+    "OKUBENI.md": {
+      "bayt": 10545,
+      "satir": null
+    },
+    "ozet/toplama_ozeti_arsiv.json": {
+      "bayt": 8681,
+      "satir": null
+    },
+    "ozet/toplama_ozeti_canli.json": {
+      "bayt": 5430,
+      "satir": null
+    },
+    "ozet/veri_seti_ozeti.json": {
+      "bayt": 3466,
+      "satir": null
+    },
+    "semalar/bankalar.yaml": {
+      "bayt": 18804,
+      "satir": null
+    },
+    "semalar/etiket_semasi.yaml": {
+      "bayt": 7074,
+      "satir": null
+    },
+    "semalar/kurallar.yaml": {
+      "bayt": 9156,
+      "satir": null
+    },
+    "veri_seti/bilgi_cikarim/test.jsonl": {
+      "bayt": 705562,
+      "satir": 1046
+    },
+    "veri_seti/bilgi_cikarim/test_bio.jsonl": {
+      "bayt": 950179,
+      "satir": 1046
+    },
+    "veri_seti/bilgi_cikarim/train.jsonl": {
+      "bayt": 3401256,
+      "satir": 5015
+    },
+    "veri_seti/bilgi_cikarim/train_bio.jsonl": {
+      "bayt": 4597381,
+      "satir": 5015
+    },
+    "veri_seti/bilgi_cikarim/val.jsonl": {
+      "bayt": 758554,
+      "satir": 1177
+    },
+    "veri_seti/bilgi_cikarim/val_bio.jsonl": {
+      "bayt": 992583,
+      "satir": 1177
+    },
+    "veri_seti/etiketler_sinif.json": {
+      "bayt": 307,
+      "satir": null
+    },
+    "veri_seti/etiketler_span.json": {
+      "bayt": 271,
+      "satir": null
+    },
+    "veri_seti/siniflandirma/test.jsonl": {
+      "bayt": 1262562,
+      "satir": 501
+    },
+    "veri_seti/siniflandirma/train.jsonl": {
+      "bayt": 7774754,
+      "satir": 2346
+    },
+    "veri_seti/siniflandirma/val.jsonl": {
+      "bayt": 1321009,
+      "satir": 504
+    }
+  }
+}

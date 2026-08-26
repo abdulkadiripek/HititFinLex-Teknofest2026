@@ -1,14 +1,12 @@
 import vinext from "vinext";
 import { defineConfig } from "vite";
+import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
   "00000000-0000-4000-8000-000000000000";
 
-// The current frontend does not use D1 or R2. Keeping these bindings optional
-// lets the source package run locally without a Sites-specific manifest.
-const d1: string | null = null;
-const r2: string | null = null;
+const { d1, r2 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";

@@ -24,6 +24,11 @@ PERCENT_LABELS = {
     "KAR_PAYLASIM_ORANI",
 }
 
+MONTH_PATTERN = (
+    r"ocak|subat|mart|nisan|mayis|haziran|temmuz|agustos|"
+    r"eylul|ekim|kasim|aralik"
+)
+
 
 def _fold_text(value: str) -> str:
     translated = value.translate(str.maketrans({"ı": "i", "İ": "I"}))
@@ -95,5 +100,17 @@ def validate_entity_surface(label: str, value: str) -> str | None:
         folded,
     ):
         return "duration_entity_missing_unit"
+
+    if label == "KAMPANYA_TARIH_ARALIGI":
+        textual_dates = re.findall(
+            rf"\b\d{{1,2}}\s+(?:{MONTH_PATTERN})(?:\s+20\d{{2}})?\b",
+            folded,
+        )
+        numeric_dates = re.findall(
+            r"\b\d{1,2}[./-]\d{1,2}[./-]20\d{2}\b",
+            folded,
+        )
+        if len(textual_dates) + len(numeric_dates) < 2:
+            return "date_range_incomplete"
 
     return None

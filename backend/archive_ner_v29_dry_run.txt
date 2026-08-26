@@ -1,0 +1,802 @@
+Pipeline: historical_v2_9
+Mode: DRY_RUN
+Dataset ZIP: C:\Users\PC\Documents\katilim_finans_app\HititFinLex_VeriSeti_2.zip
+Archive rows: 2580
+Duplicate live text: 0
+Historical versions of live URLs: 317
+Unchanged records skipped: 0
+Selected documents: 100
+[1/100] key=albaraka-a20250806-b7e1b0768205 date=2025-08-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.7989 campaign=EVET:0.9968 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED KAR_PAYI_ORANI               0.8566 | %3,20 | rule_and_confidence_passed
+    EVIDENCE | %3,20 kar payı oranıyla sunduğumuz çevre dostu taşıt finansmanı kampanyamızla, çevreci bir tercihi ekonomik hale getiriyoruz.
+  ACCEPTED VADE_SURESI                  0.9971 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | .200.001-2.000.000 TL aralığında olan taşıtlar için ise değerin azami %20'sine kadar ve 12 ay vade uygulanabilmektedir.
+[2/100] key=albaraka-a20160119-4e7ceb21c387 date=2016-01-19 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9550 campaign=HAYIR:0.9980 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[3/100] key=albaraka-a20210412-740c215f0f0e date=2021-04-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9635 campaign=HAYIR:0.9991 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+[4/100] key=albaraka-a20181213-0e0a70fe920b date=2018-12-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9594 campaign=HAYIR:0.9985 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[5/100] key=albaraka-a20210412-0e0a70fe920b date=2021-04-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9802 campaign=HAYIR:0.9989 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+[6/100] key=albaraka-a20210509-905356593b63 date=2021-05-09 bank=Albaraka Türk Katılım Bankası A.Ş. product=KATILMA_HESABI score=0.9934 campaign=HAYIR:0.9993 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9945 | 1 yıl | rule_and_confidence_passed
+    EVIDENCE | ra Dönem Kâr Payı Ödemeli Katılma Hesap ile 1 yıl vadeli olarak açtığınız hesaplarda tercihinize göre 1 aylık, 3 aylık veya 6 aylık dönemlerle kâr payı ödemeleri alabilirsiniz.
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | TMSF | deposit_guarantee
+    EVIDENCE | Kârlı Hesaplarınızın toplamının 150.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Kârlı Hesaplarınızın toplamının 150.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+[7/100] key=albaraka-a20260416-905356593b63 date=2026-04-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=KATILMA_HESABI score=0.9933 campaign=HAYIR:0.9994 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9943 | 1 yıl | rule_and_confidence_passed
+    EVIDENCE | ra Dönem Kâr Payı Ödemeli Katılma Hesap ile 1 yıl vadeli olarak açtığınız hesaplarda tercihinize göre 1 aylık, 3 aylık veya 6 aylık dönemlerle
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | TMSF | deposit_guarantee
+    EVIDENCE | Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence
+[8/100] key=albaraka-a20260731-59c8c39a6db1 date=2026-07-31 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9943 campaign=HAYIR:0.9989 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+[9/100] key=albaraka-a20160111-8eba6f64549a date=2016-01-11 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9814 campaign=HAYIR:0.9978 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[10/100] key=albaraka-a20160229-ad5ac8cd6dfd date=2016-02-29 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9822 campaign=HAYIR:0.9983 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[11/100] key=albaraka-a20170106-9629cea42678 date=2017-01-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9841 campaign=HAYIR:0.9980 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[12/100] key=albaraka-a20170706-add505e32ca0 date=2017-07-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9844 campaign=HAYIR:0.9979 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[13/100] key=albaraka-a20190711-4acdca683d57 date=2019-07-11 bank=Albaraka Türk Katılım Bankası A.Ş. product=KATILMA_HESABI score=0.9933 campaign=HAYIR:0.9993 decision=ACCEPTED basis=high_confidence_model_over_body_rule reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=3
+  ACCEPTED VADE_SURESI                  0.9941 | 1 yıl | rule_and_confidence_passed
+    EVIDENCE | ra Dönem Kâr Payı Ödemeli Kârlı Hesap ile 1 yıl vadeli olarak açtığınız hesaplarda tercihinize göre 1 aylık, 3 aylık veya 6 aylık dönemlerle kâr payı ödemeleri alabilirsiniz.
+  REJECTED VADE_SURESI                  0.9881 | 1 yıldan | fact_not_in_evidence
+    EVIDENCE | yıldan uzun vadeli (Dönemsel kâr payı ödemeli) hesaplar için %10
+  REJECTED VADE_SURESI                  0.6075 | AYLIK | entity_missing_number
+    EVIDENCE | AYLIK ÖDEMELİ
+  REJECTED VADE_SURESI                  0.7321 | 6 AYLIK | fact_not_in_evidence
+    EVIDENCE | AYLIK ÖDEMELİ
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | TMSF | deposit_guarantee
+    EVIDENCE | Gerçek kişilere ait hesapların toplamının 100.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Gerçek kişilere ait hesapların toplamının 100.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+[14/100] key=albaraka-a20210302-4acdca683d57 date=2021-03-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=KATILMA_HESABI score=0.9933 campaign=HAYIR:0.9993 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED VADE_SURESI                  0.9942 | 1 yıl | rule_and_confidence_passed
+    EVIDENCE | ra Dönem Kâr Payı Ödemeli Katılma Hesap ile 1 yıl vadeli olarak açtığınız hesaplarda tercihinize göre 1 aylık, 3 aylık veya 6 aylık dönemlerle kâr payı ödemeleri alabilirsiniz.
+  REJECTED VADE_SURESI                  0.9885 | 1 yıldan | fact_not_in_evidence
+    EVIDENCE | yıldan uzun vadeli (Dönemsel kâr payı ödemeli) hesaplar için %0
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | TMSF | deposit_guarantee
+    EVIDENCE | Gerçek kişilere ait hesapların toplamının 100.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+  ACCEPTED MEVDUAT_GUVENCESI            0.9800 | Tasarruf Mevduatı Sigorta Fonu | deposit_guarantee
+    EVIDENCE | Gerçek kişilere ait hesapların toplamının 100.000 TL'ye kadar olan kısmı Tasarruf Mevduatı Sigorta Fonu (TMSF) tarafından güvence altındadır.
+[15/100] key=albaraka-a20241204-56161fd73feb date=2024-12-04 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=0 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | Business Kart ile Elektorik Ürün Harcamanıza 250 TL’ye varan Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9957 | 15 Kasım 2024 - 15 Aralık 2024 | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 15 Kasım 2024 - 15 Aralık 2024 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 2.000 TL ve üzeri ilk harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Kasım 2024 - 15 Aralık 2024 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 2.000 TL ve üzeri ilk harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 250 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Kasım 2024 - 15 Aralık 2024 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 2.000 TL ve üzeri ilk harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 15 Kasım 2024 - 15 Aralık 2024 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 2.000 TL ve üzeri ilk harcamaya 250 TL Worldpuan hediye!
+[16/100] key=albaraka-a20251215-0702b385b6a2 date=2025-12-15 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=0 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | Business Kart ile Elektronik Ürün Harcamanıza 500 TL Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9964 | 15 Kasım 2025 - 15 Aralık 2025 | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 15 Kasım 2025 - 15 Aralık 2025 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 5.000 TL ve üzeri ilk harcamaya 500 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9722 | 5.000 TL | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 15 Kasım 2025 - 15 Aralık 2025 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 5.000 TL ve üzeri ilk harcamaya 500 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Kasım 2025 - 15 Aralık 2025 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 5.000 TL ve üzeri ilk harcamaya 500 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 5.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 15 Kasım 2025 - 15 Aralık 2025 tarihleri arasında elektrik-elektronik ürünlerinde tek seferde gerçekleştireceğiniz 5.000 TL ve üzeri ilk harcamaya 500 TL Worldpuan hediye!
+[17/100] key=albaraka-a20210116-4d9d635287f2 date=2021-01-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9511 campaign=EVET:0.9977 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+[18/100] key=albaraka-a20160101-5ed1b2965702 date=2016-01-01 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9539 campaign=HAYIR:0.9976 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[19/100] key=albaraka-a20160513-5ed1b2965702 date=2016-05-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9554 campaign=HAYIR:0.9985 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[20/100] key=albaraka-a20200928-94ccf9ed7876 date=2020-09-28 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9319 campaign=HAYIR:0.9990 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[21/100] key=albaraka-a20210302-6f9c1256d0bd date=2021-03-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9314 campaign=HAYIR:0.9984 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[22/100] key=albaraka-a20210506-6f9c1256d0bd date=2021-05-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.8663 campaign=HAYIR:0.9523 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[23/100] key=albaraka-a20190822-27f098634647 date=2019-08-22 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9848 campaign=EVET:0.9974 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=0 rejected=3
+  REJECTED INDIRIM_ORANI                0.6505 | 25 | percent_entity_missing_marker
+    EVIDENCE | %25 Devlet Katkısı ile Bireysel emeklilik planınızı başlatmak için sizi şubelerimize bekliyoruz.
+  REJECTED ODUL_TUTARI                  0.4907 | 85 TL | fact_not_in_evidence
+    EVIDENCE | 5 TL Katkı Payı ile başlama imkanı
+  REJECTED VADE_SURESI                  0.6671 | yıl | entity_missing_number
+    EVIDENCE | Sözleşme erken çıkışlarda 0-3 yıl arası sözleşme sona ererse Brüt Asgari ücretin %25’i, 3-6 yıl arası sözleşme sona ererse Brüt Asgari ücretin %15’i, 6-10 yıla kadar sözleşme sona ererse Brüt Asgari ücretin %10’u çıkışa ertelenmiş aidat olarak tahsil edilecektir.
+[24/100] key=albaraka-a20170706-67847854e459 date=2017-07-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9535 campaign=HAYIR:0.9957 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[25/100] key=albaraka-a20210116-67847854e459 date=2021-01-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.7591 campaign=EVET:0.9977 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9918 | 4 | rule_and_confidence_passed
+    EVIDENCE | Hac bedelinin en az %25’i peşin tahsil edilecek olup geri kalan tutar 4 eşit taksite bölünecektir.
+[26/100] key=albaraka-a20190709-98272391b5c1 date=2019-07-09 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_URUNU score=0.9053 campaign=HAYIR:0.9843 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[27/100] key=albaraka-a20190915-3c8abe67605f date=2019-09-15 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8750 campaign=EVET:0.9972 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED KAR_PAYI_ORANI               0.5616 | %1,39 | below_review_threshold
+    EVIDENCE | El araçlar için tüm vadelerde %1,39 kar oranıyla finansman fırsatı Albaraka Türk’te!
+  ACCEPTED INDIRIM_ORANI                0.9920 | %35 | rule_and_confidence_passed
+    EVIDENCE | utowax’dan Araç Bakım hizmetlerinde müşterilerimize özel %35’e varan indirim fırsatı
+[28/100] key=albaraka-a20191113-3c8abe67605f date=2019-11-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9117 campaign=EVET:0.9977 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=1 rejected=0
+  REVIEW   VADE_SURESI                  0.9529 | 48 Ay | context_rule_failed
+    EVIDENCE | 5-48 Ay
+  ACCEPTED INDIRIM_ORANI                0.9908 | %35 | rule_and_confidence_passed
+    EVIDENCE | utowax’dan Araç Bakım hizmetlerinde müşterilerimize özel %35’e varan indirim fırsatı
+[29/100] key=albaraka-a20190716-c37c0960f7a6 date=2019-07-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=KONUT_FINANSMANI score=0.5452 campaign=EVET:0.9870 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[30/100] key=albaraka-a20201124-c37c0960f7a6 date=2020-11-24 bank=Albaraka Türk Katılım Bankası A.Ş. product=KONUT_FINANSMANI score=0.4635 campaign=EVET:0.9841 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[31/100] key=albaraka-a20190712-950ce5492838 date=2019-07-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9763 campaign=EVET:0.9967 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=3 rejected=2
+  ACCEPTED TAKSIT_SAYISI                0.9883 | 30 | rule_and_confidence_passed
+    EVIDENCE | ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED VADE_SURESI                  0.9951 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED INDIRIM_ORANI                0.9907 | %50 | rule_and_confidence_passed
+    EVIDENCE | yrıca Finansman Kullanan müşterilerimize özel Yurtdışı numune ve evrak gönderimleri için Kargomkolay.com’dan %50’ye varan indirim fırsatı.
+  REVIEW   FINANSMAN_TUTARI             0.9430 | 20.000 USD | context_rule_failed
+    EVIDENCE | inansman tutar alt limiti 20.000 USD veya EUR, üst limiti 500.000 USD ve EUR olarak belirlenmiştir.
+  REVIEW   FINANSMAN_TUTARI             0.9765 | 500.000 USD | context_rule_failed
+    EVIDENCE | inansman tutar alt limiti 20.000 USD veya EUR, üst limiti 500.000 USD ve EUR olarak belirlenmiştir.
+  REJECTED VADE_SURESI                  0.9942 | 365 gündür | duration_entity_missing_unit
+    EVIDENCE | Vadeli ihracat finansmanı ürünü tek taksit ve azami vade 365 gündür.
+  REJECTED TAKSIT_SAYISI                0.6123 | tek | entity_missing_number
+    EVIDENCE | Vadeli ihracat finansmanı ürünü tek taksit ve azami vade 365 gündür.
+  REVIEW   FINANSMAN_TUTARI             0.8378 | 2.000.000 USD | context_rule_failed
+    EVIDENCE | * Abonman poliçemizin maksimum limiti gemi için 2.000.000 USD, kamyon/tren/uçak için 500.000 USD’ dir.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 30 taksit | installment_count
+    EVIDENCE | 6 ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED HEDEF_KITLE                  0.9200 | İhracatçılara | target_audience
+    EVIDENCE | Albaraka Türk’ten İhracatçılara yönelik uygun vade ve avantajlı oranlar ile finansman imkanı!
+[32/100] key=albaraka-a20210116-950ce5492838 date=2021-01-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9765 campaign=EVET:0.9967 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=3 rejected=2
+  ACCEPTED TAKSIT_SAYISI                0.9883 | 30 | rule_and_confidence_passed
+    EVIDENCE | ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED VADE_SURESI                  0.9951 | 36 aya | rule_and_confidence_passed
+    EVIDENCE | ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED INDIRIM_ORANI                0.9907 | %50 | rule_and_confidence_passed
+    EVIDENCE | yrıca Finansman Kullanan müşterilerimize özel Yurtdışı numune ve evrak gönderimleri için Kargomkolay.com’dan %50’ye varan indirim fırsatı.
+  REVIEW   FINANSMAN_TUTARI             0.9423 | 20.000 USD | context_rule_failed
+    EVIDENCE | inansman tutar alt limiti 20.000 USD veya EUR, üst limiti 500.000 USD ve EUR olarak belirlenmiştir.
+  REVIEW   FINANSMAN_TUTARI             0.9764 | 500.000 USD | context_rule_failed
+    EVIDENCE | inansman tutar alt limiti 20.000 USD veya EUR, üst limiti 500.000 USD ve EUR olarak belirlenmiştir.
+  REJECTED VADE_SURESI                  0.9942 | 365 gündür | duration_entity_missing_unit
+    EVIDENCE | Vadeli ihracat finansmanı ürünü tek taksit ve azami vade 365 gündür.
+  REJECTED TAKSIT_SAYISI                0.6123 | tek | entity_missing_number
+    EVIDENCE | Vadeli ihracat finansmanı ürünü tek taksit ve azami vade 365 gündür.
+  REVIEW   FINANSMAN_TUTARI             0.8378 | 2.000.000 USD | context_rule_failed
+    EVIDENCE | * Abonman poliçemizin maksimum limiti gemi için 2.000.000 USD, kamyon/tren/uçak için 500.000 USD’ dir.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 30 taksit | installment_count
+    EVIDENCE | 6 ay ödemesiz 30 taksit, toplam 36 aya varan vade imkânı.*
+  ACCEPTED HEDEF_KITLE                  0.9200 | İhracatçılara | target_audience
+    EVIDENCE | Albaraka Türk’ten İhracatçılara yönelik uygun vade ve avantajlı oranlar ile finansman imkanı!
+[33/100] key=albaraka-a20191023-17edff54215d date=2019-10-23 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8796 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED TAKSIT_SAYISI                0.9566 | 36 | fact_not_in_evidence
+    EVIDENCE | 6 aya
+  ACCEPTED FINANSMAN_TUTARI             0.9854 | 300.000 TL | rule_and_confidence_passed
+    EVIDENCE | ampanya kapsamındaki azami finansman tutarı 300.000 TL’dir.
+[34/100] key=albaraka-a20191209-17edff54215d date=2019-12-09 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8993 campaign=EVET:0.9973 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED TAKSIT_SAYISI                0.9581 | 36 | fact_not_in_evidence
+    EVIDENCE | 6 aya
+  ACCEPTED FINANSMAN_TUTARI             0.9854 | 300.000 TL | rule_and_confidence_passed
+    EVIDENCE | ampanya kapsamındaki azami finansman tutarı 300.000 TL’dir.
+[35/100] key=albaraka-a20190718-bd103a68c35d date=2019-07-18 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8939 campaign=EVET:0.9603 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=0 rejected=1
+  REJECTED TAKSIT_SAYISI                0.9678 | 12 | fact_not_in_evidence
+    EVIDENCE | 2 aya varan eşit taksitlerle Eğitim Finansmanı Albaraka’da.
+[36/100] key=albaraka-a20200806-f493c9560c41 date=2020-08-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9852 campaign=EVET:0.9967 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9968 | 60 Aydır | rule_and_confidence_passed
+    EVIDENCE | onut, Arsa ve İşyeri finansmanlarında maksimum vade 60 Aydır.
+[37/100] key=albaraka-a20170102-302346c5cebb date=2017-01-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9683 campaign=HAYIR:0.9986 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[38/100] key=albaraka-a20210116-302346c5cebb date=2021-01-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9834 campaign=EVET:0.9975 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[39/100] key=albaraka-a20200806-4eb270cb6ece date=2020-08-06 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9515 campaign=HAYIR:0.9744 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[40/100] key=albaraka-a20200928-f86305a6c4a8 date=2020-09-28 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.7882 campaign=HAYIR:0.9989 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[41/100] key=albaraka-a20210302-f86305a6c4a8 date=2021-03-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.7800 campaign=HAYIR:0.9986 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[42/100] key=albaraka-a20210115-13eae15f49b6 date=2021-01-15 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER score=0.9159 campaign=HAYIR:0.9990 decision=REVIEW basis=campaign_url_non_campaign_model_conflict reasons=campaign_url_non_campaign_model_conflict quality=review
+[43/100] key=albaraka-a20240930-ef12f0fbe4f1 date=2024-09-30 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=2 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Trend kredi kartınız ile tek seferde yapacağınız 100 TL ve üzeri harcamalarınıza 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 25 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Trend kredi kartınız ile tek seferde yapacağınız 100 TL ve üzeri harcamalarınıza 25 TL World Puan kazanma fırsatı!
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7759 | 9 | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7498 | - 9 Haziran | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 9 Mayıs- 9 Haziran 2022 | campaign_date_range
+    EVIDENCE | Kampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 25 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Trend kredi kartınız ile tek seferde yapacağınız 100 TL ve üzeri harcamalarınıza 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Trend kredi kartınız ile tek seferde yapacağınız 100 TL ve üzeri harcamalarınıza 25 TL World Puan kazanma fırsatı!
+[44/100] key=albaraka-a20231127-20d210246e4b date=2023-11-27 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.7486 campaign=EVET:0.9934 decision=REVIEW basis=low_product_confidence reasons=low_product_confidence quality=review
+[45/100] key=albaraka-a20240907-3818e25157fd date=2024-09-07 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9981 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[46/100] key=albaraka-a20250408-7fde257399de date=2025-04-08 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9905 campaign=EVET:0.9977 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=2
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 24.03.2025 – 30.06.2025 | campaign_date_range
+    EVIDENCE | 24.03.2025 – 30.06.2025 tarihleri arasında Albaraka Mobil’de yer alan “
+  REJECTED FINANSMAN_TUTARI             0.6735 | 50.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL bakiyeyi 1 ay boyunca Dijital Katılma Hesabınızda değerlendirin.
+  REJECTED VADE_SURESI                  0.9956 | 1 ay | fact_not_in_evidence
+    EVIDENCE | ay vadeden başlamalıdır
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Daha az vadeli açılan katılma hesapları kampanyadan yararlanamayacaklardır. | campaign_eligibility
+    EVIDENCE | Daha az vadeli açılan katılma hesapları kampanyadan yararlanamayacaklardır.
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için kampanya kapsamında katılma hesabı açtıktan sonra Albaraka Mobil’den “ | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için kampanya kapsamında katılma hesabı açtıktan sonra Albaraka Mobil’den “
+[47/100] key=albaraka-a20241108-6ce0f22bb2b3 date=2024-11-08 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 3 | rule_and_confidence_passed
+    EVIDENCE | lbaraka Kredi Kartınızla İGDAŞ Faturalarınızda 3 Taksit Fırsatı!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 1 Ekim 2024-31 Mayıs 2025 | campaign_date_range
+    EVIDENCE | 1 Ekim 2024-31 Mayıs 2025 tarihleri arasında İGDAŞ Vezneleri, İGDAŞ internet sitesi, İGDAŞ POS cihazları, Albaraka Türk İnternet Şubesi veya Albaraka Mobil uygulaması üzerinden Albaraka Türk kredi kartları ile yapılacak ödemeler 3 taksite bölünecektir.
+  REJECTED HARCAMA_UST_LIMITI           0.5003 | 25.000 TL | below_review_threshold
+    EVIDENCE | ampanya minimum 1.000 TL maksimum 25.000 TL tutarındaki işlemlerde geçerli olacaktır.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 3 Taksit | installment_count
+    EVIDENCE | Albaraka Kredi Kartınızla İGDAŞ Faturalarınızda 3 Taksit Fırsatı!
+[48/100] key=albaraka-a20251015-6ce0f22bb2b3 date=2025-10-15 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9980 | 3 | rule_and_confidence_passed
+    EVIDENCE | lbaraka Kredi Kartınızla İGDAŞ Faturalarınızda 3 Taksit Fırsatı!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 1 Ekim 2024-31 Mayıs 2025 | campaign_date_range
+    EVIDENCE | 1 Ekim 2024-31 Mayıs 2025 tarihleri arasında İGDAŞ Vezneleri, İGDAŞ internet sitesi, İGDAŞ POS cihazları, Albaraka Türk İnternet Şubesi veya Albaraka Mobil uygulaması üzerinden Albaraka Türk kredi kartları ile yapılacak ödemeler 3 taksite bölünecektir.
+  REJECTED HARCAMA_UST_LIMITI           0.5609 | 25.000 TL | below_review_threshold
+    EVIDENCE | ampanya minimum 1.000 TL maksimum 25.000 TL tutarındaki işlemlerde geçerli olacaktır.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 3 Taksit | installment_count
+    EVIDENCE | Albaraka Kredi Kartınızla İGDAŞ Faturalarınızda 3 Taksit Fırsatı!
+[49/100] key=albaraka-a20250519-12fd9a14fe0c date=2025-05-19 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=9 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 01.04.2025-30.04.2025 | campaign_date_range
+    EVIDENCE | 01.04.2025-30.04.2025 tarihleri arasında, müşterilerimiz Albaraka World Özellikli kredi kartları ile tek seferde yapacakları her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanılabilir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için harcamanızdan önce Albaraka Mobil üzerinden " | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için harcamanızdan önce Albaraka Mobil üzerinden "
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için minimum harcama tutarı tek seferde 2.000 TL ve üzerinde olmalıdır. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için minimum harcama tutarı tek seferde 2.000 TL ve üzerinde olmalıdır.
+[50/100] key=albaraka-a20250612-2be72060ee88 date=2025-06-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=8 review=0 rejected=1
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.9761 | 05.2025-31.05.2025 | fact_not_in_evidence
+    EVIDENCE | 5.2025-31.05.2025 tarihleri arasında, müşterilerimiz Albaraka World Özellikli kredi kartları ile tekseferde yapacakları her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Wor
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Albaraka World Özellikli kredi kartınız ile tek seferde yapacağınız her 2.000 TL ve üzeri market harcamasına 100 TL, toplamda 500 TL'ye varan Worldpuan kazanın!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için harcamanızdan önce Albaraka Mobil üzerinden " | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için harcamanızdan önce Albaraka Mobil üzerinden "
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için minimum harcama tutarı tek seferde 2.000 TL ve üzerinde olmalıdır. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için minimum harcama tutarı tek seferde 2.000 TL ve üzerinde olmalıdır.
+[51/100] key=albaraka-a20240803-afeca1cbc136 date=2024-08-03 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9637 campaign=EVET:0.9950 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[52/100] key=albaraka-a20260208-afeca1cbc136 date=2026-02-08 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9639 campaign=EVET:0.9950 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[53/100] key=albaraka-a20251112-d6f39793febb date=2025-11-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9981 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[54/100] key=albaraka-a20260120-6ac5cfa37891 date=2026-01-20 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9971 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[55/100] key=albaraka-a20251102-c66b6d1e6134 date=2025-11-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[56/100] key=albaraka-a20260310-b721ef30cafa date=2026-03-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=1 rejected=0
+  REVIEW   INDIRIM_ORANI                0.8495 | %10 | context_rule_failed
+    EVIDENCE | iziksel mağazalarda ya da çevrim içi platformlarda yapacağınız market harcamalarınızda %10 iade kazanın,
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Toplamda 2.000 TL’ye varan iade kazanma fırsatını kaçırmayın!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 12 Şubat 2026 - 22 Mart 2026 | campaign_date_range
+    EVIDENCE | 12 Şubat 2026 - 22 Mart 2026
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 12 Şubat 2026- 22 Mart 2026 | campaign_date_range
+    EVIDENCE | 12 Şubat 2026- 22 Mart 2026
+[57/100] key=albaraka-a20240417-e0491fb7542c date=2024-04-17 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9977 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[58/100] key=albaraka-a20250821-5981d08d2810 date=2025-08-21 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9959 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Müşterilerimizin kampanyadan yararlanabilmesi için Özel Bankacılık Kredi Kartı’nın | campaign_eligibility
+    EVIDENCE | Müşterilerimizin kampanyadan yararlanabilmesi için Özel Bankacılık Kredi Kartı’nın
+[59/100] key=albaraka-a20240413-e99bbb145d99 date=2024-04-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9575 campaign=EVET:0.9948 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[60/100] key=albaraka-a20210714-0821b976efc0 date=2021-07-14 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.5600 campaign=EVET:0.9974 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[61/100] key=albaraka-a20220207-0821b976efc0 date=2022-02-07 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9154 campaign=EVET:0.9974 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.6255 | 48 | duration_entity_missing_unit
+    EVIDENCE | 7-48 Ay
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Avantajlı finansman oranından faydalanabilmek için HGS, Trafik Sigortası, Kasko sigortasının bankamız üzerinden yapılması ve en az 1 adet Otomatik Ödeme talimatının verilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Avantajlı finansman oranından faydalanabilmek için HGS, Trafik Sigortası, Kasko sigortasının bankamız üzerinden yapılması ve en az 1 adet Otomatik Ödeme talimatının verilmesi gerekmektedir.
+[62/100] key=albaraka-a20231210-cadb0d392cbc date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9959 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9944 | %10 | rule_and_confidence_passed
+    EVIDENCE | rmine’den Albaraka Türk Bireysel Kredi Kartlarına Tüm İndirimlere Ek %10 İndirim Fırsatı!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için ödeme esnasında Albaraka Türk Bireysel Kredi Kartınızı kullanmanız yeterlidir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için ödeme esnasında Albaraka Türk Bireysel Kredi Kartınızı kullanmanız yeterlidir.
+[63/100] key=albaraka-a20250519-cadb0d392cbc date=2025-05-19 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9959 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED INDIRIM_ORANI                0.9943 | %10 | rule_and_confidence_passed
+    EVIDENCE | rmine’den Albaraka Türk Bireysel Kredi Kartlarına Tüm İndirimlere Ek %10 İndirim Fırsatı!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için ödeme esnasında Albaraka Türk Bireysel Kredi Kartınızı kullanmanız yeterlidir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için ödeme esnasında Albaraka Türk Bireysel Kredi Kartınızı kullanmanız yeterlidir.
+[64/100] key=albaraka-a20210603-7150bbcd89c3 date=2021-06-03 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.3580 campaign=EVET:0.9924 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=1 rejected=1
+  REVIEW   VADE_SURESI                  0.9177 | 60 Ay | context_rule_failed
+    EVIDENCE | 7-60 Ay
+  REJECTED VADE_SURESI                  0.8134 | 60 | duration_entity_missing_unit
+    EVIDENCE | 7-60 Ay
+[65/100] key=albaraka-a20241114-7150bbcd89c3 date=2024-11-14 bank=Albaraka Türk Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8296 campaign=EVET:0.9946 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=1 rejected=1
+  REVIEW   VADE_SURESI                  0.7325 | 60 Ay | context_rule_failed
+    EVIDENCE | 7-60 Ay
+  REJECTED VADE_SURESI                  0.8601 | 60 | duration_entity_missing_unit
+    EVIDENCE | 7-60 Ay
+[66/100] key=albaraka-a20220923-3aab964f7899 date=2022-09-23 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5914 | 9 | below_review_threshold
+    EVIDENCE | Eylül-9 Ekim tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim & kırtasiye & ofis malzemeleri sektöründe tek seferde yapacağınız 300 TL ve üzeri harcamalarınızda 50 TL iade k
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 300 TL | spend_threshold
+    EVIDENCE | 9 Eylül-9 Ekim tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim & kırtasiye & ofis malzemeleri sektöründe tek seferde yapacağınız 300 TL ve üzeri harcamalarınızda 50 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9647 | 50 TL | rule_and_confidence_passed
+    EVIDENCE | ampanya kart bazında olup, bu kampanya kapsamında bir kart için en fazla 50 TL iade kazanılabilir.
+  ACCEPTED ODUL_TUTARI                  0.9600 | 300 TL | reward_amount
+    EVIDENCE | 9 Eylül-9 Ekim tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim & kırtasiye & ofis malzemeleri sektöründe tek seferde yapacağınız 300 TL ve üzeri harcamalarınızda 50 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 9 Eylül-9 Ekim tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim & kırtasiye & ofis malzemeleri sektöründe tek seferde yapacağınız 300 TL ve üzeri harcamalarınızda 50 TL iade kazanma fırsatı!
+[67/100] key=albaraka-a20241212-3aab964f7899 date=2024-12-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 9-30 Eylül tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim-kırtasiye-ofis malzemeleri sektöründe farklı günlerde ve tek seferde yapacağınız 500 TL ve üzeri harcamalarınızda 50 TL, toplamda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 9-30 Eylül tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim-kırtasiye-ofis malzemeleri sektöründe farklı günlerde ve tek seferde yapacağınız 500 TL ve üzeri harcamalarınızda 50 TL, toplamda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9624 | 100 TL | rule_and_confidence_passed
+    EVIDENCE | ampanya müşteri bazında olup, bu kampanya kapsamında bir kart için tek seferde 50 TL, toplamda en fazla 100 TL iade kazanılabilir.
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 9-30 Eylül tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim-kırtasiye-ofis malzemeleri sektöründe farklı günlerde ve tek seferde yapacağınız 500 TL ve üzeri harcamalarınızda 50 TL, toplamda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | 9-30 Eylül tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim-kırtasiye-ofis malzemeleri sektöründe farklı günlerde ve tek seferde yapacağınız 500 TL ve üzeri harcamalarınızda 50 TL, toplamda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 9-30 Eylül tarihleri arasında Albaraka bireysel kredi kartınız ile eğitim-kırtasiye-ofis malzemeleri sektöründe farklı günlerde ve tek seferde yapacağınız 500 TL ve üzeri harcamalarınızda 50 TL, toplamda 100 TL iade kazanma fırsatı!
+[68/100] key=albaraka-a20220602-5c0f24474241 date=2022-06-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=1 rejected=1
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 750 TL | spend_threshold
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9666 | 50 TL | rule_and_confidence_passed
+    EVIDENCE | üşteri aynı kredi kartı üzerinden kampanya koşullarına uygun gerçekleştirdiği harcamalarda maksimum 50 TL iade kazanabilir.
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5195 | 1 | below_review_threshold
+    EVIDENCE | ampanya 1 Haziran- 1 Temmuz 2022 tarihleri arasında geçerlidir.
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6500 | 1 Temmuz | below_auto_threshold
+    EVIDENCE | ampanya 1 Haziran- 1 Temmuz 2022 tarihleri arasında geçerlidir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 1 Haziran- 1 Temmuz 2022 | campaign_date_range
+    EVIDENCE | Kampanya 1 Haziran- 1 Temmuz 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 750 TL | reward_amount
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb. | campaign_eligibility
+    EVIDENCE | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb.
+[69/100] key=albaraka-a20250214-5c0f24474241 date=2025-02-14 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 750 TL | spend_threshold
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9655 | 50 TL | rule_and_confidence_passed
+    EVIDENCE | üşteri aynı kredi kartı üzerinden kampanya koşullarına uygun gerçekleştirdiği harcamalarda maksimum 50 TL iade kazanabilir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 1 Haziran- 1 Temmuz 2022 | campaign_date_range
+    EVIDENCE | Kampanya 1 Haziran- 1 Temmuz 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 750 TL | reward_amount
+    EVIDENCE | 1 Haziran-1 Temmuz tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 750 TL ve üzeri elektronik harcamalarında 50 TL iade!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb. | campaign_eligibility
+    EVIDENCE | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb.
+[70/100] key=albaraka-a20221213-a272ac5da98c date=2022-12-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=2 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8776 | 12 | below_auto_threshold
+    EVIDENCE | 2 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7882 | -12 Ocak | below_auto_threshold
+    EVIDENCE | 2 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+[71/100] key=albaraka-a20231210-a272ac5da98c date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9963 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=1 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8347 | 12 | below_auto_threshold
+    EVIDENCE | 2 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | 12 Aralık-12 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile giyim sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 100 TL iade kazanma fırsatı!
+[72/100] key=albaraka-a20220518-45488a4b0582 date=2022-05-18 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=2 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8685 | 9 | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 75 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8180 | - 9 Haziran | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 9 Mayıs- 9 Haziran 2022 | campaign_date_range
+    EVIDENCE | Kampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 75 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb. | campaign_eligibility
+    EVIDENCE | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb.
+[73/100] key=albaraka-a20231210-45488a4b0582 date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=2 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 75 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6596 | 9 | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6888 | - 9 Haziran | below_auto_threshold
+    EVIDENCE | ampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 9 Mayıs- 9 Haziran 2022 | campaign_date_range
+    EVIDENCE | Kampanya 9 Mayıs- 9 Haziran 2022 tarihleri arasında geçerlidir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 75 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka bireysel kredi kartınız ile tek seferde yapacağınız 500 TL ve üzeri sağlık harcamalarında 75 TL World Puan kazanma fırsatı!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb. | campaign_eligibility
+    EVIDENCE | Kampanyaya katılım kampanya koşulunu sağlayan bireysel kredi kartı harcaması sonrası otomatik olarak gerçekleşecek olup müşterinin SMS vb.
+[74/100] key=albaraka-a20221207-42ab8461a01b date=2022-12-07 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=2 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7150 | 7 | below_auto_threshold
+    EVIDENCE | Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan ka
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8296 | -7 | below_auto_threshold
+    EVIDENCE | Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan kazanma fır
+  ACCEPTED HARCAMA_ESIGI                0.9708 | 1.000 TL | rule_and_confidence_passed
+    EVIDENCE | Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 75 TL | reward_amount
+    EVIDENCE | 7 Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 75 TL | spend_threshold
+    EVIDENCE | 7 Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 7 Aralık-7 Ocak tarihleri arasında Albaraka bireysel kredi kartınız ile seyahat ve konaklama sektöründe tek seferde yapacağınız 1.000 TL ve üzeri harcamalarınızda 75 TL Worldpuan kazanma fırsatı!
+[75/100] key=albaraka-a20231210-2f42415fdbda date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2000 TL | spend_threshold
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9608 | 100 TL | rule_and_confidence_passed
+    EVIDENCE | aynı kredi kartı üzerinden kampanya koşullarına uygun gerçekleştirdiği harcamalarda maksimum 100 TL iade kazanabilir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Müşterinin kampanyaya katılım sağlayabilmesi için tek seferde Büro ve Ticari Mobilya, Mobilya, Mefruşat Mağazaları, Perde, Pencere Kaplama Mağazaları, Şömine ve Aksesuarları Dükkanları, Yer Kaplama Dükkanları, Züccaciye ve Cam Dükkanları sektörlerinde tek seferde gerçekleştirilen harcama tutarı minimum 2.000 TL olmalıdır.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2000 TL | reward_amount
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+[76/100] key=albaraka-a20241108-2f42415fdbda date=2024-11-08 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9972 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=1 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6415 | 18 | below_auto_threshold
+    EVIDENCE | ireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2000 TL | spend_threshold
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9608 | 100 TL | rule_and_confidence_passed
+    EVIDENCE | aynı kredi kartı üzerinden kampanya koşullarına uygun gerçekleştirdiği harcamalarda maksimum 100 TL iade kazanabilir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Müşterinin kampanyaya katılım sağlayabilmesi için tek seferde Büro ve Ticari Mobilya, Mobilya, Mefruşat Mağazaları, Perde, Pencere Kaplama Mağazaları, Şömine ve Aksesuarları Dükkanları, Yer Kaplama Dükkanları, Züccaciye ve Cam Dükkanları sektörlerinde tek seferde gerçekleştirilen harcama tutarı minimum 2.000 TL olmalıdır.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2000 TL | reward_amount
+    EVIDENCE | Bireysel kredi kartınız ile 18 Temmuz-18 Ağustos tarihleri arasında mobilya ve dekorasyon sektöründe tek seferde gerçekleştireceğiniz 2000 TL ve üzeri alışverişlerde 100 TL iade!
+[77/100] key=albaraka-a20220809-5c1b7bb85350 date=2022-08-09 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9984 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=1 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6267 | 30 | below_auto_threshold
+    EVIDENCE | Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+[78/100] key=albaraka-a20231210-5c1b7bb85350 date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9983 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka bireysel kredi kartlarınız giyim sektöründe yapılacak olan tek seferde 500 TL ve üzeri alışverişe 50 TL World Puan kazanma fırsatı!
+[79/100] key=albaraka-a20231210-c9711af1d388 date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 25 TL | reward_amount
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 25 TL | spend_threshold
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+[80/100] key=albaraka-a20240807-c9711af1d388 date=2024-08-07 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9982 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=1 rejected=1
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6664 | 1 | below_auto_threshold
+    EVIDENCE | Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5046 | 31 | below_review_threshold
+    EVIDENCE | Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9706 | 50 TL | rule_and_confidence_passed
+    EVIDENCE | Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 25 TL | spend_threshold
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 25 TL | reward_amount
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Mart-31 Mart tarihleri arasında Albaraka bireysel kredi kartlarınız ile yemek sektöründe yapılacak olan 3 kez 50 TL ve üzeri alışverişe 25 TL World Puan kazanma fırsatı!
+[81/100] key=albaraka-a20220518-158dfba3af79 date=2022-05-18 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5166 | 9 | below_review_threshold
+    EVIDENCE | Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+[82/100] key=albaraka-a20241016-158dfba3af79 date=2024-10-16 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 500 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | 9 Mayıs-9 Haziran tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 500 TL ve üzeri akaryakıt harcamalarınızda 50 TL World Puan kazanma fırsatı!
+[83/100] key=albaraka-a20231210-acddd47c27dc date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9977 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.4809 | 30 | below_review_threshold
+    EVIDENCE | Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+[84/100] key=albaraka-a20240919-acddd47c27dc date=2024-09-19 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9974 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=2 rejected=0
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6775 | 1 | below_auto_threshold
+    EVIDENCE | Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6956 | 30 | below_auto_threshold
+    EVIDENCE | Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 1 Nisan-30 Nisan tarihleri arasında Albaraka Business Kartınız ile yapacağınız tek seferde 1.000 TL ve üzeri elektronik harcamalarında 50 TL World Puan kazanma fırsatı!
+[85/100] key=albaraka-a20260208-db1726c20e68 date=2026-02-08 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.500 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 250 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1000 TL | reward_amount
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1000 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.500 TL | reward_amount
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | Albaraka Business Kart ile gıda ve market sektöründe tek seferde yapacağınız 2.500 TL ve üzeri ilk harcamanızda 250, ikinci harcamanızda 250, üçüncü harcamanızda 250 TL, dördüncü harcamanızda 250 TL olmak üzere toplamda 1000 TL değerinde Worldpuan kazanma fırsatı!
+[86/100] key=albaraka-a20231210-a7cac1e5367a date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 450 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 150 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 450 TL | reward_amount
+    EVIDENCE | Business Kart ile 450 TL’ye varan Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 07 Ağustos 2023 - 11 Eylül 2023 | campaign_date_range
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 150 TL | reward_amount
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+[87/100] key=albaraka-a20250214-a7cac1e5367a date=2025-02-14 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9975 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=2 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 450 TL | reward_amount
+    EVIDENCE | Business Kart ile 450 TL’ye varan Worldpuan
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.8960 | 07 | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpu
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7529 | - 11 Eylül | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.000 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 150 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 07 Ağustos 2023 - 11 Eylül 2023 | campaign_date_range
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 450 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 150 TL | reward_amount
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 07 Ağustos 2023 - 11 Eylül 2023 tarihleri arasında gıda sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri üçüncü harcama ve sonrasında her harcamanıza 150 TL, toplamda 450 TL Worldpuan hediye!
+[88/100] key=albaraka-a20230524-f62d9d4649d1 date=2023-05-24 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9963 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=1 rejected=1
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5043 | 15 | below_review_threshold
+    EVIDENCE | usiness kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Wor
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6493 | 01 | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Business Kart ile Akaryakıt Harcamanıza 100 TL’ye varan Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 15 Mayıs 2023 - 01 Haziran 2023 | campaign_date_range
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | Business kartınız ile 15 Mayıs 2023 - 01 Haziran 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri ikinci harcamanıza 50 TL, üçüncü harcamanıza 50 TL, toplamda 100 TL Worldpuan hediye!
+[89/100] key=albaraka-a20231210-ba9f92e924b4 date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9963 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=3 rejected=0
+  REVIEW   HARCAMA_ESIGI                0.7235 | 250 TL | context_rule_failed
+    EVIDENCE | usiness Kart ile Akaryakıt Harcamanıza 250 TL’ye varan Worldpuan
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7088 | 03 Temmuz | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6636 | 03 Ağustos | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9759 | 1.000 TL | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 150 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | Business Kart ile Akaryakıt Harcamanıza 250 TL’ye varan Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 03 Temmuz 2023 - 03 Ağustos 2023 | campaign_date_range
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+[90/100] key=albaraka-a20241013-ba9f92e924b4 date=2024-10-13 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9963 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=2 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | Business Kart ile Akaryakıt Harcamanıza 250 TL’ye varan Worldpuan
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.7397 | 03 Temmuz | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan
+  REVIEW   KAMPANYA_TARIH_ARALIGI       0.6528 | 03 Ağustos | below_auto_threshold
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9753 | 1.000 TL | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9724 | 100 TL | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 150 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 03 Temmuz 2023 - 03 Ağustos 2023 | campaign_date_range
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Business kartınız ile 03 Temmuz 2023 - 03 Ağustos 2023 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 1.000 TL ve üzeri üçüncü harcamaya 100 TL, dördüncü harcamaya 150 TL, toplamda 250 TL Worldpuan hediye!
+[91/100] key=albaraka-a20241202-7ab47fbe481c date=2024-12-02 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=0 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | Business Kart ile Akaryakıt Harcamanıza 250 TL’ye varan Worldpuan
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9950 | 15 Temmuz 2024 - 31 Ağustos 2024 | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 15 Temmuz 2024 - 31 Ağustos 2024 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri ikinci harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9715 | 2.000 TL | rule_and_confidence_passed
+    EVIDENCE | usiness kartınız ile 15 Temmuz 2024 - 31 Ağustos 2024 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri ikinci harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 250 TL | spend_threshold
+    EVIDENCE | Business kartınız ile 15 Temmuz 2024 - 31 Ağustos 2024 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri ikinci harcamaya 250 TL Worldpuan hediye!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.000 TL | reward_amount
+    EVIDENCE | Business kartınız ile 15 Temmuz 2024 - 31 Ağustos 2024 tarihleri arasında akaryakıt sektöründe gerçekleştireceğiniz 2.000 TL ve üzeri ikinci harcamaya 250 TL Worldpuan hediye!
+[92/100] key=albaraka-a20250711-68a0c3843ba4 date=2025-07-11 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9963 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=7 review=0 rejected=0
+  ACCEPTED ODUL_TUTARI                  0.9600 | 400 TL | reward_amount
+    EVIDENCE | Business Kart ile Akaryakıt Harcamanıza 400 TL’ye varan Worldpuan
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2500 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile Akaryakıt sektöründe tek seferde yapacağınız 2500 TL ve üzeri ilk harcamanızda 100, ikinci harcamanızda 100, üçüncü harcamanızda 100 TL, dördüncü harcamanızda 100 TL olmak üzere toplamda 400 TL değerinde Wordpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile Akaryakıt sektöründe tek seferde yapacağınız 2500 TL ve üzeri ilk harcamanızda 100, ikinci harcamanızda 100, üçüncü harcamanızda 100 TL, dördüncü harcamanızda 100 TL olmak üzere toplamda 400 TL değerinde Wordpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.8510 | 2.500 TL | rule_and_confidence_passed
+    EVIDENCE | üşterinin kampanyaya katılım sağlayabilmesi için farklı günlerde tek seferde akaryakıt sektörlerinde gerçekleştirilen harcama tutarı en az 2.500 TL ve en fazla 4 kez olmalıdır.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 400 TL | spend_threshold
+    EVIDENCE | Albaraka Business Kart ile Akaryakıt sektöründe tek seferde yapacağınız 2500 TL ve üzeri ilk harcamanızda 100, ikinci harcamanızda 100, üçüncü harcamanızda 100 TL, dördüncü harcamanızda 100 TL olmak üzere toplamda 400 TL değerinde Wordpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Albaraka Business Kart ile Akaryakıt sektöründe tek seferde yapacağınız 2500 TL ve üzeri ilk harcamanızda 100, ikinci harcamanızda 100, üçüncü harcamanızda 100 TL, dördüncü harcamanızda 100 TL olmak üzere toplamda 400 TL değerinde Wordpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2500 TL | reward_amount
+    EVIDENCE | Albaraka Business Kart ile Akaryakıt sektöründe tek seferde yapacağınız 2500 TL ve üzeri ilk harcamanızda 100, ikinci harcamanızda 100, üçüncü harcamanızda 100 TL, dördüncü harcamanızda 100 TL olmak üzere toplamda 400 TL değerinde Wordpuan kazanma fırsatı!
+[93/100] key=albaraka-a20250315-a81022bc28de date=2025-03-15 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=1
+  ACCEPTED ODUL_TUTARI                  0.9600 | 300 TL | reward_amount
+    EVIDENCE | Business Kart ile Gıda Harcamanıza 300 TL’ye varan Worldpuan
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 3.000 TL | spend_threshold
+    EVIDENCE | tek seferde gıda sektörlerinde gerçekleştirilen harcama tutarı en az 3.000 TL ve 3 kez olmalıdır.
+  REJECTED HARCAMA_ESIGI                0.8363 | 3000 TL | fact_not_in_evidence
+    EVIDENCE | 000 TL ve üzeri
+[94/100] key=albaraka-a20221201-3ca3b3e9c23c date=2022-12-01 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.4545 | 4 | below_review_threshold
+    EVIDENCE | Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+[95/100] key=albaraka-a20240912-3ca3b3e9c23c date=2024-09-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9977 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.5837 | 4 | below_review_threshold
+    EVIDENCE | Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 1.000 TL | spend_threshold
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 50 TL | reward_amount
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 50 TL | spend_threshold
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 1.000 TL | reward_amount
+    EVIDENCE | 4 Temmuz-4 Ağustos tarihleri arasında Albaraka Business Kartınız ile tek seferde yapacağınız 1.000 TL ve üzeri ulaşım harcamalarında 50 TL Worldpuan kazanma fırsatı!
+[96/100] key=albaraka-a20240512-4c438cd4bddb date=2024-05-12 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9916 campaign=EVET:0.9976 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9975 | 4 | rule_and_confidence_passed
+    EVIDENCE | vade farksız, azami 15.000 TL limitli, 3 aya varan ödemesiz dönem ve 4 taksit imkânı ile birlikte toplam 6 aya varan vade imkanıyla sunulan Pratik Finansman Kart (Karz-ı Hasen) başvurusunda bulunabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 4 taksit | installment_count
+    EVIDENCE | vade farksız, azami 15.000 TL limitli, 3 aya varan ödemesiz dönem ve 4 taksit imkânı ile birlikte toplam 6 aya varan vade imkanıyla sunulan Pratik Finansman Kart (Karz-ı Hasen) başvurusunda bulunabilirsiniz.
+  ACCEPTED BASVURU_KANALI               0.9600 | görüntülü görüşme | application_channel
+    EVIDENCE | Müşteri temsilcisine bağlanarak görüntülü görüşme ile başvurunuzu tamamlayın.
+[97/100] key=albaraka-a20260703-4c438cd4bddb date=2026-07-03 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9821 campaign=EVET:0.9968 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=10 review=0 rejected=1
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9969 | 1 Ocak 2026 – 31 Aralık 2026 | rule_and_confidence_passed
+    EVIDENCE | ampanyadan 1 Ocak 2026 – 31 Aralık 2026 tarihleri arasında Albaraka Mobil’i indirip “Müşteri Olmak İstiyorum” adımından ilerleyerek
+  ACCEPTED TAKSIT_SAYISI                0.9924 | 4 | rule_and_confidence_passed
+    EVIDENCE | vade farksız, azami 40.000 TL limitli, 3 aya varan ödemesiz dönem ve 4 taksit imkânı ile birlikte toplam 6 aya varan vade imkanıyla sunulan Pratik Finansman Kart (Karz-ı Hasen) başvurusunda bulunabilirsiniz.
+  ACCEPTED HARCAMA_UST_LIMITI           0.8690 | 20.000 TL | rule_and_confidence_passed
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9973 | 12 | rule_and_confidence_passed
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  REJECTED TAKSIT_SAYISI                0.9701 | 20.000 TL | count_entity_has_invalid_unit
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9971 | 3 | rule_and_confidence_passed
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9974 | 6 | rule_and_confidence_passed
+    EVIDENCE | Tablet alışverişlerinizde maksimum 6 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 12 taksit | installment_count
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 3 taksit | installment_count
+    EVIDENCE | Cep telefonlarında 20.000 TL’ye kadar olan alışverişlerinizde maksimum 12 taksit, 20.000 TL’nin üzerindeki alışverişleriniz için maksimum 3 taksit imkanına sahip olabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9700 | 4 taksit | installment_count
+    EVIDENCE | vade farksız, azami 40.000 TL limitli, 3 aya varan ödemesiz dönem ve 4 taksit imkânı ile birlikte toplam 6 aya varan vade imkanıyla sunulan Pratik Finansman Kart (Karz-ı Hasen) başvurusunda bulunabilirsiniz.
+  ACCEPTED BASVURU_KANALI               0.9600 | görüntülü görüşme | application_channel
+    EVIDENCE | Müşteri temsilcisine bağlanarak görüntülü görüşme ile başvurunuzu tamamlayın.
+[98/100] key=albaraka-a20240225-00a435869c2e date=2024-02-25 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9947 campaign=EVET:0.9976 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[99/100] key=albaraka-a20240403-00a435869c2e date=2024-04-03 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9766 campaign=EVET:0.9977 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED BASVURU_KANALI               0.9600 | görüntülü görüşme | application_channel
+    EVIDENCE | Müşteri temsilcisine bağlanarak görüntülü görüşme ile başvurunuzu tamamlayın.
+[100/100] key=albaraka-a20231210-592ae5961e1c date=2023-12-10 bank=Albaraka Türk Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9917 campaign=EVET:0.9981 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED BASVURU_KANALI               0.9600 | görüntülü görüşme | application_channel
+    EVIDENCE | Siz de Albaraka Mobil’de yer alan “Müşteri Olmak İstiyorum” butonuna tıklayarak görüntülü görüşme ile hemen müşteri olup, kredi kartı başvurusu yapabilirsiniz.
+Summary: {"archive_rows": 2580, "classification_accepted": 74, "classification_review": 26, "documents_with_accepted_facts": 60, "eligible_before_window": 2580, "facts_accepted": 246, "facts_rejected": 33, "facts_review": 35, "historical_versions_of_live_urls": 317, "mode": "dry_run", "ner_filtered_out": 68, "selected": 100}
+Completed at: 2026-08-26T09:43:11.229619+00:00

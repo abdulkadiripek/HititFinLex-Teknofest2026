@@ -1,0 +1,82 @@
+HITITFINLEX V2.9 - CAMPAIGN URL RESOLUTION PATCH
+================================================
+
+Purpose
+-------
+
+V2.9 fixes one systematic archive classification conflict:
+
+- A generic /kampanyalar/ URL is supporting evidence only.
+- A specific title rule is evaluated before the generic campaign URL.
+- High-confidence KART_KAMPANYASI predictions are no longer forced to
+  DIGER_KAMPANYA only because the URL contains /kampanyalar/.
+- Non-campaign model labels on campaign URLs remain in review unless a
+  specific title rule independently supports the product.
+- Genuine title/model conflicts remain in review.
+- The live 771 documents, frontend, NER rules and database schema are kept.
+
+
+1. STOP THE API
+---------------
+
+Press Ctrl+C in the API terminal.
+
+
+2. BACK UP THE TWO CHANGED RUNTIME FILES
+----------------------------------------
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  copy classifier_service.py classifier_service_v28_backup.py
+  copy archive_common_v28.py archive_common_v28_backup.py
+  copy archive_ingest_v28.py archive_ingest_v28_backup.py
+
+
+3. COPY THE V2.9 FILES
+----------------------
+
+Extract this ZIP. Copy all Python files from the extracted folder into the
+project root and approve replacement when Windows asks.
+
+
+4. RUN REGRESSION TESTS
+-----------------------
+
+  .venv\Scripts\activate
+  set PYTHONUTF8=1
+  python smoke_test_classifier_resolution_v29.py
+  python smoke_test_classifier_resolution_v24.py
+  python smoke_test_classifier_resolution_v23.py
+  python smoke_test_classifier_resolution_v21.py
+  python smoke_test_archive_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip
+  python smoke_test_fact_context_rules_v23.py
+  python smoke_test_coverage_rules_v27.py
+
+Expected new test result:
+
+  Classifier resolution V2.9: OK (5 cases)
+
+
+5. START THE API
+----------------
+
+  uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+
+6. REPEAT THE READ-ONLY 100-DOCUMENT CHECK
+------------------------------------------
+
+Open a second CMD window, activate the environment, then run:
+
+  python archive_ingest_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip --limit 100 --classification-only > archive_classification_v29_dry_run.txt
+
+Show the summary and remaining reviews:
+
+  findstr /C:"Archive rows:" /C:"Selected documents:" /C:"decision=REVIEW" /C:"ERROR:" /C:"Summary:" archive_classification_v29_dry_run.txt
+
+Expected conditions:
+
+- failed: 0
+- The 52 high-confidence card campaign conflicts are accepted.
+- Genuine old-page conflicts can remain in review.
+
+Do not use --write until this output is reviewed.

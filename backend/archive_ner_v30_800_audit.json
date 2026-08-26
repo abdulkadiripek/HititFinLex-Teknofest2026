@@ -1,0 +1,49 @@
+{
+  "accepted_cross_role_amount_count": 0,
+  "accepted_cross_role_amount_samples": [],
+  "accepted_incomplete_date_count": 0,
+  "accepted_incomplete_date_samples": [],
+  "accepted_labels": {
+    "HARCAMA_ESIGI": 13,
+    "INDIRIM_ORANI": 8,
+    "INDIRIM_TUTARI": 8,
+    "KAMPANYA_TARIH_ARALIGI": 4,
+    "ODUL_TUTARI": 2,
+    "TAKSIT_SAYISI": 27,
+    "UYGUNLUK_KOSULU": 8
+  },
+  "error_count": 0,
+  "error_samples": [],
+  "parsed_decisions": {
+    "ACCEPTED": 70,
+    "REJECTED": 18,
+    "REVIEW": 2
+  },
+  "rejected_labels": {
+    "HARCAMA_ESIGI": 4,
+    "KAMPANYA_TARIH_ARALIGI": 3,
+    "TAKSIT_SAYISI": 11
+  },
+  "report": "C:\\Users\\PC\\Documents\\katilim_finans_app\\archive_ner_v30_800.txt",
+  "review_labels": {
+    "HARCAMA_ESIGI": 1,
+    "ODUL_TUTARI": 1
+  },
+  "review_reasons": {
+    "context_rule_failed": 2
+  },
+  "summary": {
+    "archive_rows": 2580,
+    "classification_accepted": 23,
+    "classification_review": 17,
+    "documents_with_accepted_facts": 20,
+    "eligible_before_window": 2580,
+    "facts_accepted": 70,
+    "facts_rejected": 18,
+    "facts_review": 2,
+    "historical_versions_of_live_urls": 317,
+    "mode": "dry_run",
+    "ner_filtered_out": 3,
+    "selected": 40
+  }
+}

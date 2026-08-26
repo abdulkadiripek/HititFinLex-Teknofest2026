@@ -15,7 +15,9 @@ from psycopg.types.json import Jsonb
 
 from fact_context_rules import (
     AUTO_THRESHOLDS,
+    campaign_amount_roles,
     campaign_date_context_pass,
+    campaign_percent_roles,
     excluded_context_reason,
 )
 from fact_surface_rules import validate_entity_surface
@@ -23,7 +25,7 @@ from hybrid_search import get_connection
 from intake_service import ALLOWED_ENTITY_LABELS_BY_PRODUCT, PRODUCT_TITLES
 
 
-PIPELINE_VERSION = "ner_v4_rules_v2_3"
+PIPELINE_VERSION = "ner_v4_rules_v3_1"
 DEFAULT_API_URL = "http://127.0.0.1:8000"
 DEFAULT_CAMPAIGN_TYPE = "KONUT_FINANSMANI"
 DEFAULT_LIMIT = 50
@@ -466,7 +468,7 @@ def has_suspicious_characters(text: str) -> bool:
     )
 
 
-def context_rule_pass(label: str, evidence: str) -> bool:
+def context_rule_pass(label: str, evidence: str, value: str = "") -> bool:
     folded = fold_text(evidence)
     amount = has_amount(evidence)
     percent = has_percent(evidence)
@@ -476,6 +478,7 @@ def context_rule_pass(label: str, evidence: str) -> bool:
             cue in folded
             for cue in (
                 "finansman",
+                "inansman tutar",
                 "kredi tutari",
                 "kullanim tutari",
                 "finansman limiti",
@@ -484,7 +487,14 @@ def context_rule_pass(label: str, evidence: str) -> bool:
             )
         )
     if label == "VADE_SURESI":
-        return (
+        duration_range = bool(
+            re.search(
+                r"\b\d{1,3}\s*(?:-|\u2013|\u2014)\s*"
+                r"\d{1,3}\s*(?:ay|yil|gun)\b",
+                folded,
+            )
+        )
+        return duration_range or (
             "vade" in folded or "geri odeme suresi" in folded
         ) and bool(
             re.search(
@@ -495,11 +505,15 @@ def context_rule_pass(label: str, evidence: str) -> bool:
     if label == "TAKSIT_SAYISI":
         return "taksit" in folded and has_number(folded)
     if label == "KAR_PAYI_ORANI":
-        return (
+        roles = campaign_percent_roles(value, evidence) if value else set()
+        return percent and (
+            "finance_rate" in roles
+            or (
             "kar payi" in folded
             or "kar orani" in folded
             or "finansman orani" in folded
-        ) and percent
+            )
+        )
     if label == "KAR_PAYLASIM_ORANI":
         return "paylasim" in folded and (percent or has_number(folded))
     if label == "TAHSIS_UCRETI":
@@ -511,11 +525,22 @@ def context_rule_pass(label: str, evidence: str) -> bool:
     if label == "IPOTEK_TESIS_UCRETI":
         return "ipotek" in folded and "tesis" in folded and amount
     if label == "HARCAMA_ESIGI":
+        roles = campaign_amount_roles(value, evidence) if value else set()
         return (
             "harcama" in folded or "alisveris" in folded
-        ) and amount and any(
-            cue in folded
-            for cue in ("en az", "minimum", "alt limit", "esik", "ve uzeri")
+        ) and amount and (
+            "spend_threshold" in roles
+            if value
+            else any(
+                cue in folded
+                for cue in (
+                    "en az",
+                    "minimum",
+                    "alt limit",
+                    "esik",
+                    "ve uzeri",
+                )
+            )
         )
     if label == "HARCAMA_UST_LIMITI":
         return (
@@ -525,13 +550,29 @@ def context_rule_pass(label: str, evidence: str) -> bool:
             for cue in ("en fazla", "azami", "ust limit", "tavan", "kadar")
         )
     if label == "INDIRIM_ORANI":
-        return "indirim" in folded and percent
+        roles = campaign_percent_roles(value, evidence) if value else set()
+        return percent and (
+            "discount_percent" in roles
+            if value
+            else ("indirim" in folded or "iade" in folded)
+        )
     if label == "INDIRIM_TUTARI":
-        return "indirim" in folded and amount
+        roles = campaign_amount_roles(value, evidence) if value else set()
+        return amount and (
+            "discount_amount" in roles
+            if value
+            else "indirim" in folded
+        )
     if label == "ODUL_TUTARI":
-        return any(
-            cue in folded for cue in ("odul", "iade", "bonus")
-        ) and amount
+        roles = campaign_amount_roles(value, evidence) if value else set()
+        return amount and (
+            "reward_amount" in roles
+            if value
+            else any(
+                cue in folded
+                for cue in ("odul", "iade", "bonus", "worldpuan")
+            )
+        )
     if label == "KAMPANYA_TARIH_ARALIGI":
         return campaign_date_context_pass(evidence)
     if label == "MINIMUM_BAKIYE":
@@ -627,12 +668,12 @@ def decide_candidate(
     source_chunk: int,
     review_threshold: float,
 ) -> Candidate:
-    rule_passed = context_rule_pass(label, evidence)
+    rule_passed = context_rule_pass(label, evidence, value)
     auto_threshold = AUTO_THRESHOLDS.get(label, 0.95)
     folded_evidence = fold_text(evidence)
     fact_in_evidence = fold_text(value) in folded_evidence
     surface_error = validate_entity_surface(label, value)
-    context_exclusion = excluded_context_reason(label, evidence)
+    context_exclusion = excluded_context_reason(label, evidence, value)
 
     if not fact_in_evidence:
         decision = "rejected"

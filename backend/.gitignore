@@ -13,5 +13,8 @@ models/*_checkpoints/
 # old frontend scaffold copy (superseded by the HititFinLex repo; has its own nested git repo)
 frontend/
 
-# huggingface / misc caches
+# published as HititFinLex/dataset/ at repo root instead
+HititFinLex_VeriSeti_2.zip
+
+# misc caches
 *.tsbuildinfo

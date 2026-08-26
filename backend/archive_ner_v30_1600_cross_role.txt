@@ -1,0 +1,78 @@
+﻿[30/40] key=turkiye_finans-a20201113-1679f8258fc6 date=2020-11-13 bank=Türkiye Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.5118 campaign=EVET:0.9970 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=18 review=0 rejected=5
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | İnternet Üzerinden Alışverişlerinize 100 TL Bonus Puan Desteği
+  ACCEPTED ODUL_TUTARI                  0.9678 | 40 TL | rule_and_confidence_passed
+    EVIDENCE | appy Kart’tan 40 TL “Hoş Geldiniz Bonusu”
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 400 TL | spend_threshold
+    EVIDENCE | Öğretmenlere Özel Destek Paketi kapsamında internet üzerinden tek seferde yapacağınız 400 TL ve üzeri harcamalarınıza 100 TL bonus puan kazanabilir, puanlarınızla alışveriş yapabilirsiniz.
+  ACCEPTED ODUL_TUTARI                  0.9600 | 150 TL | reward_amount
+    EVIDENCE | Henüz Happy Kart sahibi değilseniz 30 Kasım 2020 tarihine kadar başvuru yapmanız ve 25 Aralık 2020 tarihine kadar kartınızla 150 TL değerinde harcama yapmanız halinde 40 TL hediye bonus kazanabilirsiniz.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 150 TL | spend_threshold
+    EVIDENCE | Happy Bonus kredi kartı başvurusu onaylanan ve 25 Aralık 2020 tarihine kadar kredi kartı ile ilk 150 TL ve üzeri harcama yapan müşterilerimiz 40 TL bonus kazanacaklardır.
+  ACCEPTED INDIRIM_ORANI                0.9939 | %15 | rule_and_confidence_passed
+    EVIDENCE | tedavili planlarda %20, ayakta tedavili planlarda standart prim üzerinden %15 indirim fırsatından yararlanabilirsiniz.
+  REJECTED ISLEM_ALT_LIMITI             0.4713 | 15 TL | below_review_threshold
+    EVIDENCE | Güncel tutar 15 TL olup SGK tarafından değiştirilebilir.
+  REJECTED VADE_SURESI                  0.6612 | 60 | fact_not_in_evidence
+    EVIDENCE | 0 Ay
+  ACCEPTED VADE_SURESI                  0.9972 | 48 ay | rule_and_confidence_passed
+    EVIDENCE | Taşıt Finansmanı’nın maksimum vadesi 48 ay olup, 0 km araçlarda araç değeri 120.000 TL'ye kadar, 2.
+  REJECTED FINANSMAN_TUTARI             0.8404 | 120.000 TL | conflicting_property_value_context
+    EVIDENCE | el araçlarda ise kasko değeri 120.000 TL'ye kadar olan finansman taleplerinde maksimum vade 60 aydır.
+  ACCEPTED VADE_SURESI                  0.9972 | 60 aydır | rule_and_confidence_passed
+    EVIDENCE | el araçlarda ise kasko değeri 120.000 TL'ye kadar olan finansman taleplerinde maksimum vade 60 aydır.
+  ACCEPTED VADE_SURESI                  0.9971 | 36 aydır | rule_and_confidence_passed
+    EVIDENCE | İhtiyaç Finansmanı’nın maksimum vadesi 36 aydır.
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.9506 | 12.11.2020 | date_range_incomplete
+    EVIDENCE | Kampanya 12.11.2020 – 30.11.2020 tarihleri arasında geçerlidir.
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.6972 | 30.11.2020 | date_range_incomplete
+    EVIDENCE | Kampanya 12.11.2020 – 30.11.2020 tarihleri arasında geçerlidir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 12.11.2020 – 30.11.2020 | campaign_date_range
+    EVIDENCE | Kampanya 12.11.2020 – 30.11.2020 tarihleri arasında geçerlidir.
+  ACCEPTED INDIRIM_ORANI                0.9700 | %1,37 | discount_percent
+    EVIDENCE | Öğretmenlere Özel Destek Paketi kapsamında aylık %1,37 ’den başlayan oranlarla İhtiyaç ve Taşıt Finansmanı kullanabilir, Happy Kartınızı kullanarak yapacağınız e-ticaret alışverişlerinizden 100 TL bonus kazanabilir, indirimli Tamamlayıcı Sağlık Sigortası ile COVID-19 tedavisi de dahil olmak üzere kendinizi güvenceye alabilirsiniz.
+  ACCEPTED INDIRIM_ORANI                0.9700 | %20 | discount_percent
+    EVIDENCE | Kampanya kapsamında Doğa Sigorta Tamamlayıcı Sağlık Sigortasından yatarak tedavili planlarda %20, ayakta tedavili planlarda standart prim üzerinden %15 indirim fırsatından yararlanabilirsiniz.
+  ACCEPTED BASVURU_KANALI               0.9600 | Mobil Şube | application_channel
+    EVIDENCE | Kampanya katılım başvurunuzu İnternet Şubesi ya da Mobil Şube üzerinden de yapabilirsiniz.
+  ACCEPTED BASVURU_KANALI               0.9600 | İnternet Şubesi | application_channel
+    EVIDENCE | Kampanya katılım başvurunuzu İnternet Şubesi ya da Mobil Şube üzerinden de yapabilirsiniz.
+  ACCEPTED BASVURU_KANALI               0.9600 | Şube | application_channel
+    EVIDENCE | Kampanya katılım başvurunuzu İnternet Şubesi ya da Mobil Şube üzerinden de yapabilirsiniz.
+  ACCEPTED INDIRIM_TUTARI               0.9600 | 100 TL | discount_amount
+    EVIDENCE | Öğretmenlere Özel Destek Paketi kapsamında aylık %1,37 ’den başlayan oranlarla İhtiyaç ve Taşıt Finansmanı kullanabilir, Happy Kartınızı kullanarak yapacağınız e-ticaret alışverişlerinizden 100 TL bonus kazanabilir, indirimli Tamamlayıcı Sağlık Sigortası ile COVID-19 tedavisi de dahil olmak üzere kendinizi güvenceye alabilirsiniz.
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan yararlanmak isteyen öğretmenlerimizin bankamızda kayıtlı meslek bilgisinin öğretmen/akademisyen olması gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan yararlanmak isteyen öğretmenlerimizin bankamızda kayıtlı meslek bilgisinin öğretmen/akademisyen olması gerekmektedir.
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Meslek grubu öğretmen/akademisyen olarak bildirmeyen müşterilerimiz kampanyadan yararlanamayacaktır. | campaign_eligibility
+    EVIDENCE | Meslek grubu öğretmen/akademisyen olarak bildirmeyen müşterilerimiz kampanyadan yararlanamayacaktır.
+[40/40] key=turkiye_finans-a20220625-2447eec4e8ed date=2022-06-25 bank=Türkiye Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9946 campaign=EVET:0.9926 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=6 review=6 rejected=1
+  REVIEW   ODUL_TUTARI                  0.9435 | 3.500 TL | context_rule_failed
+    EVIDENCE | GK emekli aylığını 36 ay boyunca Türkiye Finans’tan alma taahhüdü veren müşterilerimiz 3.500 TL'ye varan nakit promosyon fırsatından yararlanabileceklerdir.
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2,500 TL | reward_amount
+    EVIDENCE | Üstelik Türkiye Finans’a Davet Ettiğiniz Emekli Tanıdıklarınız İçin 2,500 TL’ye Varan Nakit Ödül de Sizi Bekliyor!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 250 TL | reward_amount
+    EVIDENCE | 31 Temmuz’a kadar maaşınızı Türkiye Finans’a taşıyın, 3.500 TL'ye varan nakit promosyonun yanı sıra Türkiye Finans’a davet ettiğiniz her bir emekli yakınınız için 250 TL, toplamda 2.500 TL nakit ödül fırsatından yararlanın.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 250 TL | spend_threshold
+    EVIDENCE | Türkiye Finans kredi kartınız ile ilk üç ay yapacağınız 250 TL ve üzeri harcamalar için aylık 100 TL, toplam 300 TL bonus kazanın.
+  REJECTED HARCAMA_ESIGI                0.9342 | 100 TL | excluded_reward_amount_context
+    EVIDENCE | ürkiye Finans kredi kartınız ile ilk 3 ay yapacağınız 250 TL ve üzeri harcamaya aylık 100 TL, toplamda 300 TL bonus kazanabilirsiniz.
+  ACCEPTED ODUL_TUTARI                  0.9160 | 300 TL | rule_and_confidence_passed
+    EVIDENCE | ürkiye Finans kredi kartınız ile ilk 3 ay yapacağınız 250 TL ve üzeri harcamaya aylık 100 TL, toplamda 300 TL bonus kazanabilirsiniz.
+  REVIEW   ODUL_TUTARI                  0.6770 | 1.000 TL | context_rule_failed
+    EVIDENCE | edek hesap başvurunuzun onaylanmasının ardından, emekli maaşınız yatmadan 3 gün önce hesabınızdan ücretsiz 1.000 TL'ye kadar para çekebilirsiniz.
+  REVIEW   ODUL_TUTARI                  0.6529 | 2000 TL | context_rule_failed
+    EVIDENCE | 700 anlaşmalı PTT ve Yapı Kredi ATM’lerinden günlük 2000 TL’ye kadar ücretsiz para çekebilirsiniz.
+  ACCEPTED INDIRIM_ORANI                0.9938 | %50 | rule_and_confidence_passed
+    EVIDENCE | iralık kasa hizmetimizden %50 indirimle yararlanabilirsiniz.
+  REVIEW   ODUL_TUTARI                  0.8222 | 750 TL | context_rule_failed
+    EVIDENCE | 2.500 TL'nin üzerindeyse 750 TL nakit promosyon ödenir.
+  REVIEW   ODUL_TUTARI                  0.7029 | 2.250 TL | context_rule_failed
+    EVIDENCE | 30 gün içerisinde en az 2 yeni fatura ödeme talimatı verilmesi durumunda maaş baremi 1.499 TL'ye kadarsa 1.150 TL, 1.500 TL-2.499 TL arasındaysa 1.425 TL, 2.500 TL'nin üzerindeyse 2.250 TL ek nakit promosyon ödenir.
+  REVIEW   ODUL_TUTARI                  0.9083 | 500 TL | context_rule_failed
+    EVIDENCE | TL'ye kadar 200 TL, 1.500 TL-2.499 TL arasındaysa 250 TL, 2.500 TL'nin üzerindeyse 500 TL ek nakit promosyon ödenir.
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2,500 TL | spend_threshold
+    EVIDENCE | 2,500 TL ve üzeri
+Summary: {"archive_rows": 2580, "classification_accepted": 21, "classification_review": 19, "documents_with_accepted_facts": 16, "eligible_before_window": 2580, "facts_accepted": 68, "facts_rejected": 26, "facts_review": 12, "historical_versions_of_live_urls": 317, "mode": "dry_run", "ner_filtered_out": 17, "selected": 40}
+Completed at: 2026-08-26T10:03:52.419896+00:00

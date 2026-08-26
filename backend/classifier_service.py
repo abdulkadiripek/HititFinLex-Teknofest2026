@@ -19,7 +19,12 @@ DEFAULT_PRODUCT_MODEL_DIR = (
 )
 MAX_LENGTH = 384
 BODY_RULE_OVERRIDE_THRESHOLD = 0.95
-URL_ADVISORY_RULE_REASONS = frozenset({"generic_finance_path"})
+URL_ADVISORY_RULE_REASONS = frozenset(
+    {
+        "campaign_path",
+        "generic_finance_path",
+    }
+)
 
 
 @dataclass
@@ -441,6 +446,17 @@ def resolve_classification(
         elif rule_scope == "url_advisory":
             if rule_label == product_label:
                 decision_basis = "url_advisory_model_agreement"
+            elif (
+                url_rule_reason == "campaign_path"
+                and product_label
+                not in {"KART_KAMPANYASI", "DIGER_KAMPANYA"}
+            ):
+                review_reasons.append(
+                    "campaign_url_non_campaign_model_conflict"
+                )
+                decision_basis = (
+                    "campaign_url_non_campaign_model_conflict"
+                )
             elif product_score >= threshold:
                 decision_basis = (
                     "high_confidence_model_over_url_advisory"

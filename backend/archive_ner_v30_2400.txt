@@ -1,0 +1,281 @@
+Pipeline: historical_v3_0
+Mode: DRY_RUN
+Dataset ZIP: C:\Users\PC\Documents\katilim_finans_app\HititFinLex_VeriSeti_2.zip
+Archive rows: 2580
+Duplicate live text: 0
+Historical versions of live URLs: 317
+Unchanged records skipped: 0
+Selected documents: 40
+[1/40] key=ziraat_katilim-a20250915-1c7d06027a77 date=2025-09-15 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9985 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[2/40] key=ziraat_katilim-a20260207-32879a32809b date=2026-02-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9984 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[3/40] key=ziraat_katilim-a20260518-32879a32809b date=2026-05-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9977 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[4/40] key=ziraat_katilim-a20250514-56afa2401947 date=2025-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9953 campaign=EVET:0.9980 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 3 | rule_and_confidence_passed
+    EVIDENCE | Machka’da 3 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[5/40] key=ziraat_katilim-a20260314-56afa2401947 date=2026-03-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 3 | rule_and_confidence_passed
+    EVIDENCE | Machka’da 3 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9974 | 4 | rule_and_confidence_passed
+    EVIDENCE | avi'de 4 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9972 | 2 | rule_and_confidence_passed
+    EVIDENCE | xxo’da 2 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[6/40] key=ziraat_katilim-a20260411-a67bbbd079ca date=2026-04-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9975 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=1 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 4 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 4 taksit
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 2 | rule_and_confidence_passed
+    EVIDENCE | esa’da 2 Taksit
+  REVIEW   ODUL_TUTARI                  0.6413 | 1.000 TL | context_rule_failed
+    EVIDENCE | iyim ve Ayakkabı Alışverişinizde Toplam 1.000 TL Bankkart Lira!
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[7/40] key=ziraat_katilim-a20260514-de4f1125e4f1 date=2026-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9980 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=3 rejected=0
+  REVIEW   ODUL_TUTARI                  0.9746 | 1.000 TL | context_rule_failed
+    EVIDENCE | n fazla 1.000 TL Bankkart Lira
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 14 Nisan 2026 - 8 Mayıs 2026 | campaign_date_range
+    EVIDENCE | 14 Nisan 2026 - 8 Mayıs 2026
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.500 TL | spend_threshold
+    EVIDENCE | 2.500 TL ve üzeri her alışverişiniz ile 100 TL, toplam 1.000 TL Bankkart Lira
+  REVIEW   HARCAMA_ESIGI                0.8698 | 100 TL | context_rule_failed
+    EVIDENCE | .500 TL ve üzeri her alışverişiniz ile 100 TL, toplam 1.000 TL Bankkart Lira
+  ACCEPTED TAKSIT_SAYISI                0.9977 | 2 | rule_and_confidence_passed
+    EVIDENCE | espo’da 2 Taksit
+  REVIEW   ODUL_TUTARI                  0.8557 | 450 TL | context_rule_failed
+    EVIDENCE | afe ve Restoran Harcamalarınıza Toplam 450 TL Bankkart Lira!
+[8/40] key=ziraat_katilim-a20260611-fe30fb850155 date=2026-06-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=4 rejected=0
+  REVIEW   ODUL_TUTARI                  0.9746 | 1.000 TL | context_rule_failed
+    EVIDENCE | n fazla 1.000 TL Bankkart Lira
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 14 Nisan 2026 - 8 Mayıs 2026 | campaign_date_range
+    EVIDENCE | 14 Nisan 2026 - 8 Mayıs 2026
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 2.500 TL | spend_threshold
+    EVIDENCE | 2.500 TL ve üzeri her alışverişiniz ile 100 TL, toplam 1.000 TL Bankkart Lira
+  REVIEW   HARCAMA_ESIGI                0.8698 | 100 TL | context_rule_failed
+    EVIDENCE | .500 TL ve üzeri her alışverişiniz ile 100 TL, toplam 1.000 TL Bankkart Lira
+  REVIEW   ODUL_TUTARI                  0.9385 | 450 TL | context_rule_failed
+    EVIDENCE | afe ve Restoran Harcamalarınıza Toplam 450 TL Bankkart Lira!
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 2 | rule_and_confidence_passed
+    EVIDENCE | espo’da 2 Taksit
+  REVIEW   ODUL_TUTARI                  0.8577 | 1.500 TL | context_rule_failed
+    EVIDENCE | arket Alışverişlerinize Toplam 1.500 TL Bankkart Lira!
+[9/40] key=ziraat_katilim-a20260207-21713dd7bfa8 date=2026-02-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9984 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 4 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 4 taksit fırsatından faydalanabilirsiniz.
+[10/40] key=ziraat_katilim-a20260410-21713dd7bfa8 date=2026-04-10 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9982 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 4 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 4 taksit fırsatından faydalanabilirsiniz.
+  ACCEPTED TAKSIT_SAYISI                0.9970 | 2 | rule_and_confidence_passed
+    EVIDENCE | enetton'da 2 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9975 | 3 | rule_and_confidence_passed
+    EVIDENCE | aik Sönmez’de 3 Taksit
+[11/40] key=ziraat_katilim-a20251207-263e05666549 date=2025-12-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9984 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 5 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 5 taksit fırsatından faydalanabilirsiniz.
+[12/40] key=ziraat_katilim-a20250514-0ff150511944 date=2025-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9949 campaign=EVET:0.9981 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 4 | rule_and_confidence_passed
+    EVIDENCE | Michelin’de 4 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[13/40] key=ziraat_katilim-a20260314-0ff150511944 date=2026-03-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9977 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=5 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9980 | 4 | rule_and_confidence_passed
+    EVIDENCE | Michelin’de 4 Taksit
+  ACCEPTED INDIRIM_ORANI                0.9956 | %25 | rule_and_confidence_passed
+    EVIDENCE | ROY Kart'la Biletinial Çocuk Etkinliklerinde %25 indirim!
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 6 | rule_and_confidence_passed
+    EVIDENCE | ETLAS'ta Peşin Fiyatına 6 Taksit
+  REJECTED HARCAMA_ESIGI                0.5057 | 450 TL | below_review_threshold
+    EVIDENCE | tomatik Fatura Ödeme Talimatlarınıza 450 TL'ye varan Bankkart Lira!
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 5 | rule_and_confidence_passed
+    EVIDENCE | ağlık Sektöründe +5 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[14/40] key=ziraat_katilim-a20250915-bd08c8b856b7 date=2025-09-15 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9984 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 6 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 6 taksitli
+[15/40] key=ziraat_katilim-a20260411-bd08c8b856b7 date=2026-04-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9974 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=1 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 6 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 6 taksitli
+  REVIEW   ODUL_TUTARI                  0.9524 | 3.000 TL | context_rule_failed
+    EVIDENCE | lektronik ve Beyaz Eşya Alışverişlerinize 3.000 TL Bankkart Lira!
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 4 | rule_and_confidence_passed
+    EVIDENCE | nplus’ta 4 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 9 | rule_and_confidence_passed
+    EVIDENCE | ğur Derin Dondurucu’da 9 Taksit
+[16/40] key=ziraat_katilim-a20250514-ea137f97f436 date=2025-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9926 campaign=EVET:0.9978 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 3 | rule_and_confidence_passed
+    EVIDENCE | Mitsubishi Electric’te 3 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[17/40] key=ziraat_katilim-a20251229-ea137f97f436 date=2025-12-29 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9934 campaign=EVET:0.9985 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 3 | rule_and_confidence_passed
+    EVIDENCE | Mitsubishi Electric’te 3 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[18/40] key=ziraat_katilim-a20260514-981f18453441 date=2026-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9938 campaign=EVET:0.9982 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 3 | rule_and_confidence_passed
+    EVIDENCE | Mitsubishi Electric’te 3 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9975 | 6 | rule_and_confidence_passed
+    EVIDENCE | larko Carrier’da 6 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9964 | 12 | rule_and_confidence_passed
+    EVIDENCE | Kombi’de 12 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[19/40] key=ziraat_katilim-a20260411-0805b367bfd9 date=2026-04-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=3 rejected=1
+  REVIEW   ODUL_TUTARI                  0.9491 | 1.000 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Ba
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 8 Nisan 2026 - 8 Mayıs 2026 | campaign_date_range
+    EVIDENCE | 8 Nisan 2026 - 8 Mayıs 2026
+  REVIEW   HARCAMA_UST_LIMITI           0.9136 | 39.999 TL | context_rule_failed
+    EVIDENCE | 5.000 TL - 39.999 TL
+  REJECTED HARCAMA_ESIGI                0.8473 | 250 TL | fact_not_in_evidence
+    EVIDENCE | 50 TL,
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 40.000 TL | spend_threshold
+    EVIDENCE | 40.000 TL ve üzeri
+  REVIEW   ODUL_TUTARI                  0.6337 | 250 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 9 | rule_and_confidence_passed
+    EVIDENCE | ilek Mobilya'da 9 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 6 | rule_and_confidence_passed
+    EVIDENCE | hakra'da 6 Taksit
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 15.000 TL | spend_threshold
+    EVIDENCE | Kampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+[20/40] key=ziraat_katilim-a20260515-c3a3dd49f8de date=2026-05-15 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9962 campaign=EVET:0.9978 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=5 review=3 rejected=1
+  REVIEW   ODUL_TUTARI                  0.9491 | 1.000 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Ba
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 8 Mayıs 2026 - 8 Haziran 2026 | campaign_date_range
+    EVIDENCE | 8 Mayıs 2026 - 8 Haziran 2026
+  REVIEW   HARCAMA_UST_LIMITI           0.9135 | 39.999 TL | context_rule_failed
+    EVIDENCE | 5.000 TL - 39.999 TL
+  REJECTED HARCAMA_ESIGI                0.8470 | 250 TL | fact_not_in_evidence
+    EVIDENCE | 50 TL,
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 40.000 TL | spend_threshold
+    EVIDENCE | 40.000 TL ve üzeri
+  REVIEW   ODUL_TUTARI                  0.6337 | 250 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 6 | rule_and_confidence_passed
+    EVIDENCE | hakra'da 6 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 9 | rule_and_confidence_passed
+    EVIDENCE | ellona'da 9 Taksit
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 15.000 TL | spend_threshold
+    EVIDENCE | Kampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+[21/40] key=ziraat_katilim-a20260611-588a1423b92e date=2026-06-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=6 review=3 rejected=1
+  REVIEW   ODUL_TUTARI                  0.9491 | 1.000 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Ba
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 8 Nisan 2026 - 8 Mayıs 2026 | campaign_date_range
+    EVIDENCE | 8 Nisan 2026 - 8 Mayıs 2026
+  REVIEW   HARCAMA_UST_LIMITI           0.9065 | 39.999 TL | context_rule_failed
+    EVIDENCE | 5.000 TL - 39.999 TL
+  REJECTED HARCAMA_ESIGI                0.8097 | 250 TL | fact_not_in_evidence
+    EVIDENCE | 50 TL,
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 40.000 TL | spend_threshold
+    EVIDENCE | 40.000 TL ve üzeri
+  REVIEW   ODUL_TUTARI                  0.6337 | 250 TL | context_rule_failed
+    EVIDENCE | ampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 6 | rule_and_confidence_passed
+    EVIDENCE | elebek’te 6 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 8 | rule_and_confidence_passed
+    EVIDENCE | nza Home'da 8 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 9 | rule_and_confidence_passed
+    EVIDENCE | daş’ta 9 Taksit
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 15.000 TL | spend_threshold
+    EVIDENCE | Kampanya müşteri bazındadır ve bir müşteri en fazla 1.000 TL Bankkart Lira kazanılabilecektir (İlk 15.000 TL ve üzeri alışverişinde yalnızca bir kez 250 TL Bankkart Lira veya 40.000 TL ve üzeri ilk alışverişinde yalnızca bir kez 1.000 TL Bankkart Lira kazanabilecektir).
+[22/40] key=ziraat_katilim-a20251229-c08ba0c419f2 date=2025-12-29 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9959 campaign=EVET:0.9985 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 9 | rule_and_confidence_passed
+    EVIDENCE | ModaLife'ta 9 Taksit
+[23/40] key=ziraat_katilim-a20260410-c08ba0c419f2 date=2026-04-10 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9984 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 9 | rule_and_confidence_passed
+    EVIDENCE | ModaLife'ta 9 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9972 | 7 | rule_and_confidence_passed
+    EVIDENCE | oğtaş’ta 7 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 6 | rule_and_confidence_passed
+    EVIDENCE | nza Home'da 6 Taksit
+[24/40] key=ziraat_katilim-a20260518-8cc607d6073b date=2026-05-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9983 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9980 | 9 | rule_and_confidence_passed
+    EVIDENCE | ModaLife'ta 9 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 6 | rule_and_confidence_passed
+    EVIDENCE | hakra'da 6 Taksit
+[25/40] key=ziraat_katilim-a20251114-44d5817f1a8c date=2025-11-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9983 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[26/40] key=ziraat_katilim-a20260518-44d5817f1a8c date=2026-05-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9957 campaign=EVET:0.9981 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[27/40] key=ziraat_katilim-a20260207-7b91e0cbe8fc date=2026-02-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9983 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[28/40] key=ziraat_katilim-a20250514-8a2d83cbf5f4 date=2025-05-14 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9954 campaign=EVET:0.9981 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9980 | 9 | rule_and_confidence_passed
+    EVIDENCE | Mondi’de 9 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[29/40] key=ziraat_katilim-a20260118-8a2d83cbf5f4 date=2026-01-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9986 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9980 | 9 | rule_and_confidence_passed
+    EVIDENCE | Mondi’de 9 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[30/40] key=ziraat_katilim-a20260207-69be82de0270 date=2026-02-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9985 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 9 | rule_and_confidence_passed
+    EVIDENCE | Mondihome'da 9 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[31/40] key=ziraat_katilim-a20260518-69be82de0270 date=2026-05-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9980 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9979 | 9 | rule_and_confidence_passed
+    EVIDENCE | Mondihome'da 9 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 6 | rule_and_confidence_passed
+    EVIDENCE | oğtaş’ta 6 Taksit
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 5 | rule_and_confidence_passed
+    EVIDENCE | lfemo'da 5 Taksit
+  ACCEPTED UYGUNLUK_KOSULU              0.9100 | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir. | campaign_eligibility
+    EVIDENCE | Kampanyadan faydalanabilmek için işlemlerin Bankkart ile Bankkart POS'undan gerçekleştirilmesi gerekmektedir.
+[32/40] key=ziraat_katilim-a20260207-f9c7e63afd42 date=2026-02-07 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9959 campaign=EVET:0.9985 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 12 | rule_and_confidence_passed
+    EVIDENCE | Monster Notebook'ta Peşin Fiyatına 12 Taksit
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 70.000 TL | spend_threshold
+    EVIDENCE | 70.000 TL ve üzeri
+  REJECTED HARCAMA_UST_LIMITI           0.6840 | 70.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL'ye kadar
+  ACCEPTED TAKSIT_SAYISI                0.9983 | 6 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 6 taksit
+[33/40] key=ziraat_katilim-a20260509-f9c7e63afd42 date=2026-05-09 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9981 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=4 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9981 | 12 | rule_and_confidence_passed
+    EVIDENCE | onster Notebook'ta Peşin Fiyatına 12 Taksit
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 70.000 TL | spend_threshold
+    EVIDENCE | 70.000 TL ve üzeri
+  REJECTED HARCAMA_UST_LIMITI           0.6356 | 70.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL'ye kadar
+  ACCEPTED TAKSIT_SAYISI                0.9984 | 6 | rule_and_confidence_passed
+    EVIDENCE | eşin fiyatına 6 taksit
+  ACCEPTED TAKSIT_SAYISI                0.9978 | 3 | rule_and_confidence_passed
+    EVIDENCE | roy'da 3 Taksit
+[34/40] key=ziraat_katilim-a20250702-623bc8d8f55e date=2025-07-02 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9985 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[35/40] key=ziraat_katilim-a20260518-623bc8d8f55e date=2026-05-18 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9976 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[36/40] key=ziraat_katilim-a20260115-0641ce7cd9a6 date=2026-01-15 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9978 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[37/40] key=ziraat_katilim-a20260203-0641ce7cd9a6 date=2026-02-03 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9961 campaign=EVET:0.9979 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[38/40] key=ziraat_katilim-a20250915-d2a2d7da0939 date=2025-09-15 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9984 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[39/40] key=ziraat_katilim-a20260410-d2a2d7da0939 date=2026-04-10 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9960 campaign=EVET:0.9972 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[40/40] key=ziraat_katilim-a20260411-9abecae95322 date=2026-04-11 bank=Ziraat Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9956 campaign=EVET:0.9979 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+Summary: {"archive_rows": 2580, "classification_accepted": 27, "classification_review": 13, "documents_with_accepted_facts": 27, "eligible_before_window": 2580, "facts_accepted": 78, "facts_rejected": 6, "facts_review": 18, "historical_versions_of_live_urls": 317, "mode": "dry_run", "ner_filtered_out": 0, "selected": 40}
+Completed at: 2026-08-26T10:04:05.051892+00:00

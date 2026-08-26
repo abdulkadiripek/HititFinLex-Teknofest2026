@@ -1,0 +1,81 @@
+{
+  "accepted_amount_role_mismatch_count": 0,
+  "accepted_amount_role_mismatch_samples": [],
+  "accepted_cross_role_amount_count": 0,
+  "accepted_cross_role_amount_samples": [],
+  "accepted_incomplete_date_count": 0,
+  "accepted_incomplete_date_samples": [],
+  "accepted_labels": {
+    "BASVURU_KANALI": 4,
+    "BASVURU_SON_TARIHI": 2,
+    "HARCAMA_ESIGI": 9,
+    "INDIRIM_ORANI": 11,
+    "INDIRIM_TUTARI": 2,
+    "KAMPANYA_TARIH_ARALIGI": 7,
+    "KAR_PAYI_ORANI": 3,
+    "MASRAF_DURUMU": 4,
+    "ODUL_TUTARI": 12,
+    "TAKSIT_SAYISI": 1,
+    "UYGUNLUK_KOSULU": 5,
+    "VADE_SURESI": 9
+  },
+  "accepted_valid_dual_role_amount_count": 2,
+  "accepted_valid_dual_role_amount_samples": [
+    {
+      "document": 40,
+      "roles": [
+        "HARCAMA_ESIGI",
+        "ODUL_TUTARI"
+      ],
+      "value": "2.500tl"
+    },
+    {
+      "document": 40,
+      "roles": [
+        "HARCAMA_ESIGI",
+        "ODUL_TUTARI"
+      ],
+      "value": "250tl"
+    }
+  ],
+  "error_count": 0,
+  "error_samples": [],
+  "parsed_decisions": {
+    "ACCEPTED": 69,
+    "REJECTED": 30,
+    "REVIEW": 7
+  },
+  "rejected_labels": {
+    "FINANSMAN_TUTARI": 3,
+    "HARCAMA_ESIGI": 5,
+    "ISLEM_ALT_LIMITI": 1,
+    "KAMPANYA_TARIH_ARALIGI": 5,
+    "ODUL_TUTARI": 6,
+    "TAKSIT_SAYISI": 3,
+    "VADE_SURESI": 7
+  },
+  "report": "C:\\Users\\PC\\Documents\\katilim_finans_app\\archive_ner_v31_1600.txt",
+  "review_labels": {
+    "FINANSMAN_TUTARI": 3,
+    "ODUL_TUTARI": 2,
+    "VADE_SURESI": 2
+  },
+  "review_reasons": {
+    "below_auto_threshold": 4,
+    "context_rule_failed": 3
+  },
+  "summary": {
+    "archive_rows": 2580,
+    "classification_accepted": 21,
+    "classification_review": 19,
+    "documents_with_accepted_facts": 16,
+    "eligible_before_window": 2580,
+    "facts_accepted": 69,
+    "facts_rejected": 30,
+    "facts_review": 7,
+    "historical_versions_of_live_urls": 317,
+    "mode": "dry_run",
+    "ner_filtered_out": 17,
+    "selected": 40
+  }
+}

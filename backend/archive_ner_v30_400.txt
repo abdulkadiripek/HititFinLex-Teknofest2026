@@ -1,0 +1,225 @@
+Pipeline: historical_v3_0
+Mode: DRY_RUN
+Dataset ZIP: C:\Users\PC\Documents\katilim_finans_app\HititFinLex_VeriSeti_2.zip
+Archive rows: 2580
+Duplicate live text: 0
+Historical versions of live URLs: 317
+Unchanged records skipped: 0
+Selected documents: 40
+[1/40] key=hayat_finans-a20250212-fe9508c0eedf date=2025-02-12 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9863 campaign=EVET:0.9976 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=1 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9977 | 12 | rule_and_confidence_passed
+    EVIDENCE | eşin Fiyatına 12 Taksit
+  REJECTED TAKSIT_SAYISI                0.5722 | 3 | fact_not_in_evidence
+    EVIDENCE | Ay Erteleme Avantajı!
+  REVIEW   VADE_SURESI                  0.7851 | 3 ay | context_rule_failed
+    EVIDENCE | stelik 3 ay erteleme fırsatıyla!
+[2/40] key=hayat_finans-a20250124-3886482db734 date=2025-01-24 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9815 campaign=EVET:0.9975 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=1 rejected=0
+  REVIEW   VADE_SURESI                  0.8269 | 12 aya | below_auto_threshold
+    EVIDENCE | ayat Finanslılar’a özel Gündoğdu Mobilya mağazalarında 12 aya kadar vade farksız alışveriş fırsatı Bana Bunu Al İş Ortağım'da!
+[3/40] key=hayat_finans-a20241109-bc234167b4df date=2024-11-09 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9891 campaign=EVET:0.9975 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9772 | 9 | rule_and_confidence_passed
+    EVIDENCE | Konfor Mağazalarında 9 Ay Taksit Avantajı!
+  REJECTED VADE_SURESI                  0.8009 | ay | entity_missing_number
+    EVIDENCE | onfor mağazalarında şimdi al 2025’te öde üstelik 300.000 TL’ye kadar 9 ay taksit fırsatı Bana Bunu Al İş Ortağım’da!
+[4/40] key=hayat_finans-a20250212-bc234167b4df date=2025-02-12 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9887 campaign=EVET:0.9975 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9757 | 9 | rule_and_confidence_passed
+    EVIDENCE | Konfor Mağazalarında 9 Ay Taksit Avantajı!
+  REJECTED VADE_SURESI                  0.8025 | ay | entity_missing_number
+    EVIDENCE | onfor mağazalarında şimdi al 2025’te öde üstelik 300.000 TL’ye kadar 9 ay taksit fırsatı Bana Bunu Al İş Ortağım’da!
+[5/40] key=hayat_finans-a20240305-942813a2a03e date=2024-03-05 bank=Hayat Finans Katılım Bankası A.Ş. product=YATIRIM_URUNU score=0.9951 campaign=HAYIR:0.9992 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED YATIRIM_ARACI                0.9900 | Kıymetli Maden Alım Satım | investment_instrument_from_title
+    EVIDENCE | Döviz / Kıymetli Maden Alım Satım
+[6/40] key=hayat_finans-a20250212-942813a2a03e date=2025-02-12 bank=Hayat Finans Katılım Bankası A.Ş. product=YATIRIM_URUNU score=0.9948 campaign=HAYIR:0.9993 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED YATIRIM_ARACI                0.9900 | Kıymetli Maden Alım Satım | investment_instrument_from_title
+    EVIDENCE | FX Platformu (Döviz/Kıymetli Maden Alım Satım)
+  ACCEPTED BASVURU_KANALI               0.9600 | Mobil uygulaması | application_channel
+    EVIDENCE | Hayat Finans Mobil uygulaması aracılığıyla döviz alım satım işlemlerinizi avantajlı kurlarımız ile yapabilir, aldığınız dövizi transfer edebilirsiniz.
+[7/40] key=hayat_finans-a20240305-ab245d01d70e date=2024-03-05 bank=Hayat Finans Katılım Bankası A.Ş. product=YATIRIM_URUNU score=0.9260 campaign=HAYIR:0.9982 decision=ACCEPTED basis=high_confidence_model reasons=- quality=accepted
+[8/40] key=hayat_finans-a20241212-eeba521915a5 date=2024-12-12 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.6937 campaign=EVET:0.9970 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED ODUL_TUTARI                  0.9600 | 100 TL | reward_amount
+    EVIDENCE | Her Faturaya 100 TL İade!
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 11 Kasım 2024 - 1 Ocak 2025 | campaign_date_range
+    EVIDENCE | 11 Kasım 2024 - 1 Ocak 2025 tarihleri arasında otomatik ödeme talimatı verilerek gerçekleşen fatura ödemelerinin 100 TL’si hesaba iade olacaktır.
+  REJECTED HARCAMA_ESIGI                0.4404 | 100 TL | fact_not_in_evidence
+    EVIDENCE | 00 TL altı faturalarda, fatura bedeli kadar iade gerçekleşecektir.
+  ACCEPTED ODUL_TUTARI                  0.9600 | 500 TL | reward_amount
+    EVIDENCE | Bir müşterinin verdiği tüm otomatik ödeme talimatlarından alabileceği toplam fatura iade bedeli 500 TL’dir.
+[9/40] key=hayat_finans-a20240620-9cb773303ab4 date=2024-06-20 bank=Hayat Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9953 campaign=EVET:0.9973 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[10/40] key=hayat_finans-a20240226-b557962f586f date=2024-02-26 bank=Hayat Finans Katılım Bankası A.Ş. product=YATIRIM_URUNU score=0.9935 campaign=HAYIR:0.9991 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED YATIRIM_ARACI                0.9900 | Hisse Senedi İşlemleri | investment_instrument_from_title
+    EVIDENCE | Hisse Senedi İşlemleri (Çok Yakında!)
+[11/40] key=hayat_finans-a20241109-b557962f586f date=2024-11-09 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER score=0.9721 campaign=HAYIR:0.9992 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[12/40] key=hayat_finans-a20250124-a80a37d9d91d date=2025-01-24 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9891 campaign=EVET:0.9929 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+[13/40] key=hayat_finans-a20260413-819f56b9d0d4 date=2026-04-13 bank=Hayat Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9391 campaign=EVET:0.9952 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[14/40] key=hayat_finans-a20240329-fdcdda0cdd7c date=2024-03-29 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9903 campaign=EVET:0.9972 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=1
+  REJECTED INDIRIM_ORANI                0.5158 | % | fact_not_in_evidence
+    EVIDENCE | 10 nakit iade
+  ACCEPTED INDIRIM_ORANI                0.9700 | %10 | discount_percent
+    EVIDENCE | %10 nakit iade
+  ACCEPTED VADE_SURESI                  0.9963 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | le gıdadan kozmetiğe, giyimden elektroniğe tüm ihtiyaçlarınızı 18 aya varan vadelerle ödeyebilir,
+[15/40] key=hayat_finans-a20240424-fdcdda0cdd7c date=2024-04-24 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9902 campaign=EVET:0.9973 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=1
+  REJECTED INDIRIM_ORANI                0.4873 | % | fact_not_in_evidence
+    EVIDENCE | 10 nakit iade
+  ACCEPTED INDIRIM_ORANI                0.9700 | %10 | discount_percent
+    EVIDENCE | %10 nakit iade
+  ACCEPTED VADE_SURESI                  0.9963 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | le gıdadan kozmetiğe, giyimden elektroniğe tüm ihtiyaçlarınızı 18 aya varan vadelerle ödeyebilir,
+[16/40] key=hayat_finans-a20250319-d9b687435d00 date=2025-03-19 bank=Hayat Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9906 campaign=EVET:0.9973 decision=REVIEW basis=title_rule_model_conflict reasons=title_rule_model_conflict quality=review
+[17/40] key=hayat_finans-a20251117-14ea08e1c861 date=2025-11-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9832 campaign=EVET:0.9954 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9965 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | Alfemo Mobilya mağazalarında gelir belgesiz, Üstelik 300.000 TL’ye kadar 3 ay ertelemeli 12 ay vade farksız Bana Bunu Al İş Ortağım'da!
+[18/40] key=hayat_finans-a20260413-14ea08e1c861 date=2026-04-13 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9845 campaign=EVET:0.9965 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED VADE_SURESI                  0.9964 | 12 ay | rule_and_confidence_passed
+    EVIDENCE | lfemo Mobilya mağazalarında gelir belgesiz, Üstelik 300.000 TL’ye kadar 3 ay ertelemeli 12 ay vade farksız Bana Bunu Al İş Ortağım'da!
+  REJECTED VADE_SURESI                  0.5055 | 12 | duration_entity_missing_unit
+    EVIDENCE | lfemo Mobilya mağazalarında 300.000 TL’ye kadar gelir belgesiz, 12 ay peşin fiyatına kredi imkanı ile dilediğiniz mobilyayı hemen alın, ihtiyaçlarınızı tamamlayın.
+[19/40] key=hayat_finans-a20250321-4a45c851669b date=2025-03-21 bank=Hayat Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.8023 campaign=EVET:0.9973 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=0 review=1 rejected=0
+  REVIEW   ODUL_TUTARI                  0.9508 | 1.000 TL | context_rule_failed
+    EVIDENCE | ampanya kapsamında davet kodunu paylaşan Hayat Finans müşterileri, müşteri olan her arkadaşı için 200 TL, toplamda en fazla 5 arkadaşı için 1.000 TL’ye varan kazanç elde edebilir.
+[20/40] key=hayat_finans-a20251210-4a45c851669b date=2025-12-10 bank=Hayat Finans Katılım Bankası A.Ş. product=KART_KAMPANYASI score=0.9828 campaign=EVET:0.9979 decision=ACCEPTED basis=high_confidence_model_over_url_advisory reasons=- quality=accepted
+  FACTS accepted=0 review=1 rejected=0
+  REVIEW   ODUL_TUTARI                  0.9550 | 1.000 TL | context_rule_failed
+    EVIDENCE | er müşteri en fazla 5 arkadaşını davet ederek toplamda 1.000 TL kazanabilir.
+[21/40] key=hayat_finans-a20251117-79396a9a6abe date=2025-11-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.8204 campaign=EVET:0.9967 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=2
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.8428 | 16 | fact_not_in_evidence
+    EVIDENCE | 6 Ekim – 31 Aralık 2025
+  REJECTED KAMPANYA_TARIH_ARALIGI       0.6507 | – 31 Aralık | date_range_incomplete
+    EVIDENCE | 6 Ekim – 31 Aralık 2025
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | • İlgili ay döneminde en az 100 TL ve üzeri Banka kartı ya da QR harcaması yapılması gerekmektedir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 16 Ekim – 31 Aralık 2025 | campaign_date_range
+    EVIDENCE | 16 Ekim – 31 Aralık 2025
+[22/40] key=hayat_finans-a20251129-79396a9a6abe date=2025-11-29 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9066 campaign=EVET:0.9974 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED HARCAMA_ESIGI                0.9700 | 100 TL | spend_threshold
+    EVIDENCE | • İlgili ay döneminde en az 100 TL ve üzeri Banka kartı ya da QR harcaması yapılması gerekmektedir.
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 16 Ekim – 31 Aralık 2025 | campaign_date_range
+    EVIDENCE | 16 Ekim – 31 Aralık 2025
+[23/40] key=hayat_finans-a20250710-8245c015ce6b date=2025-07-10 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9771 campaign=EVET:0.9975 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED INDIRIM_ORANI                0.9700 | %5 | discount_percent
+    EVIDENCE | Hayat Finans’tan Geri Ödeme Fırsatı: Seçili Harcamalara %5'e Varan Nakit İade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.500 TL | reward_amount
+    EVIDENCE | Aylık 2.500 TL’ye kadar nakit iade fırsatını kaçırmayın!
+  REJECTED FINANSMAN_TUTARI             0.6211 | 50.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL
+  ACCEPTED VADE_SURESI                  0.9974 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | Mobilyadan elektroniğe, sağlıktan restoran harcamalarına kadar fiziki işyerlerinde QR ile alışveriş yapın, ödemelerinizi 18 aya varan vadelerle kolayca gerçekleştirin.
+[24/40] key=hayat_finans-a20251117-8245c015ce6b date=2025-11-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9707 campaign=EVET:0.9973 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=3 review=0 rejected=1
+  ACCEPTED INDIRIM_ORANI                0.9700 | %10 | discount_percent
+    EVIDENCE | Hayat Finans’tan Geri Ödeme Fırsatı: Seçili Harcamalara %10'a Varan Nakit İade!
+  ACCEPTED ODUL_TUTARI                  0.9600 | 2.500 TL | reward_amount
+    EVIDENCE | Aylık 2.500 TL’ye kadar nakit iade fırsatını kaçırmayın!
+  REJECTED FINANSMAN_TUTARI             0.4497 | 50.000 TL | fact_not_in_evidence
+    EVIDENCE | 0.000 TL
+  ACCEPTED VADE_SURESI                  0.9971 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | Mobilyadan elektroniğe, sağlıktan restoran harcamalarına kadar fiziki işyerlerinde QR ile alışveriş yapın, ödemelerinizi 18 aya varan vadelerle kolayca gerçekleştirin.
+[25/40] key=hayat_finans-a20250516-5be280a39342 date=2025-05-16 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9881 campaign=EVET:0.9970 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.9939 | 36 Aya | fact_not_in_evidence
+    EVIDENCE | 6 Aya Varan Vade Seçenekleri
+[26/40] key=hayat_finans-a20250710-f4dd64c1ddeb date=2025-07-10 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9790 campaign=EVET:0.9880 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.9949 | 36 Aya | fact_not_in_evidence
+    EVIDENCE | 6 Aya Varan Vade Seçenekleri
+[27/40] key=hayat_finans-a20251117-f4dd64c1ddeb date=2025-11-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9790 campaign=EVET:0.9880 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=0 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.9949 | 36 Aya | fact_not_in_evidence
+    EVIDENCE | 6 Aya Varan Vade Seçenekleri
+[28/40] key=hayat_finans-a20250710-3d724994fdc5 date=2025-07-10 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9788 campaign=EVET:0.9969 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9967 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Çetmen mağazalarında 18 aya kadar vade farksız alışveriş fırsatı Bana Bunu Al İş Ortağım'da!
+  ACCEPTED VADE_SURESI                  0.9709 | 3 Ay | rule_and_confidence_passed
+    EVIDENCE | 8 Aya Kadar Vade ve 3 Ay Erteleme Fırsatı!
+[29/40] key=hayat_finans-a20260413-3d724994fdc5 date=2026-04-13 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9853 campaign=EVET:0.9967 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=0 rejected=0
+  ACCEPTED VADE_SURESI                  0.9967 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Çetmen mağazalarında 18 aya kadar vade farksız alışveriş fırsatı Bana Bunu Al İş Ortağım'da!
+  ACCEPTED VADE_SURESI                  0.9742 | 3 Ay | rule_and_confidence_passed
+    EVIDENCE | Çetmen Mağazalarında 18 Aya Kadar Vade ve 3 Ay Erteleme Fırsatı!
+[30/40] key=hayat_finans-a20250806-7767a1117762 date=2025-08-06 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9842 campaign=EVET:0.9973 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=1 rejected=0
+  ACCEPTED VADE_SURESI                  0.9960 | 3 ay | rule_and_confidence_passed
+    EVIDENCE | ampanya 3 ay vade ile sınırlıdır.
+  ACCEPTED TAKSIT_SAYISI                0.9934 | 3 | rule_and_confidence_passed
+    EVIDENCE | Üstelik %0 kar oranı ve peşin fiyatına vade farksız 3 taksit avantajıyla dilediğiniz Apple ürününe hemen sahip olun!
+  REVIEW   FINANSMAN_TUTARI             0.9699 | 75.000 TL | context_rule_failed
+    EVIDENCE | ampanya üst limiti 75.000 TL’dir.
+[31/40] key=hayat_finans-a20260122-7767a1117762 date=2026-01-22 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9871 campaign=EVET:0.9976 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=2 review=1 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9899 | 3 | rule_and_confidence_passed
+    EVIDENCE | Üstelik %0 kar oranı ve peşin fiyatına vade farksız 3 taksit avantajıyla dilediğiniz Apple ürününe hemen sahip olun!
+  REJECTED VADE_SURESI                  0.9741 | ay | entity_missing_number
+    EVIDENCE | ana Bunu Al İş Ortağım ile %0 kar oranı ve vade farksız 3 ay taksit imkanı ile Apple Fırsatları!
+  ACCEPTED VADE_SURESI                  0.9959 | 3 ay | rule_and_confidence_passed
+    EVIDENCE | ampanya 3 ay vade ile sınırlıdır.
+  REVIEW   FINANSMAN_TUTARI             0.9371 | 75.000 TL | context_rule_failed
+    EVIDENCE | ampanya üst limiti 75.000 TL’dir.
+[32/40] key=hayat_finans-a20251005-d6c9b6b71d8d date=2025-10-05 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9860 campaign=EVET:0.9939 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.5562 | 3 | duration_entity_missing_unit
+    EVIDENCE | 00.000 TL’ye kadar peşin fiyatına 3 ay ertelemeli 15
+  ACCEPTED VADE_SURESI                  0.9962 | 15
+ay | rule_and_confidence_passed
+    EVIDENCE | 00.000 TL’ye kadar peşin fiyatına 3 ay ertelemeli 15 ay vade farksız ödeme fırsatı
+[33/40] key=hayat_finans-a20251210-d6c9b6b71d8d date=2025-12-10 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9858 campaign=EVET:0.9939 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  REJECTED VADE_SURESI                  0.5546 | 3 | duration_entity_missing_unit
+    EVIDENCE | 00.000 TL’ye kadar peşin fiyatına 3 ay ertelemeli 15
+  ACCEPTED VADE_SURESI                  0.9962 | 15
+ay | rule_and_confidence_passed
+    EVIDENCE | 00.000 TL’ye kadar peşin fiyatına 3 ay ertelemeli 15 ay vade farksız ödeme fırsatı
+[34/40] key=hayat_finans-a20260515-3cd5730120a6 date=2026-05-15 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9817 campaign=EVET:0.9975 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9976 | 3 | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Troy mağazalarında 3 aya varan taksit fırsatı Bana Bunu Al İş Ortağımda!
+  REJECTED FINANSMAN_TUTARI             0.4402 | 80.000TL | money_entity_missing_currency
+    EVIDENCE | ampanya üst limiti 80.000TL'dir.
+[35/40] key=hayat_finans-a20250617-6657f6ea5a27 date=2025-06-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9899 campaign=EVET:0.9959 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9518 | 36 | rule_and_confidence_passed
+    EVIDENCE | 36 aya kadar taksit seçenekleri ile ödemelerinizi rahatça planlayın.
+[36/40] key=hayat_finans-a20251005-6657f6ea5a27 date=2025-10-05 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9904 campaign=EVET:0.9963 decision=ACCEPTED basis=title_rule_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=0
+  ACCEPTED TAKSIT_SAYISI                0.9587 | 36 | rule_and_confidence_passed
+    EVIDENCE | 36 aya kadar taksit seçenekleri ile ödemelerinizi rahatça planlayın.
+[37/40] key=hayat_finans-a20250916-8ad1c55251af date=2025-09-16 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9865 campaign=EVET:0.9970 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED VADE_SURESI                  0.9968 | 18 aya | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Konfor mağazalarında 18 aya kadar vade farksız alışveriş fırsatı Bana Bunu Al İş Ortağımda!
+  REJECTED FINANSMAN_TUTARI             0.5758 | 300.000TL | money_entity_missing_currency
+    EVIDENCE | ampanya üst limiti 300.000TL'dir.
+[38/40] key=hayat_finans-a20260515-8ad1c55251af date=2026-05-15 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9845 campaign=EVET:0.9961 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=0 rejected=1
+  ACCEPTED TAKSIT_SAYISI                0.9953 | 18 | rule_and_confidence_passed
+    EVIDENCE | ayat Finanslılara özel Konfor mağazalarında 18 aya varan taksit fırsatı Bana Bunu Al İş Ortağımda!
+  REJECTED FINANSMAN_TUTARI             0.7609 | 300.000TL | money_entity_missing_currency
+    EVIDENCE | ampanya üst limiti 300.000TL'dir.
+[39/40] key=hayat_finans-a20250617-f2b88581e5de date=2025-06-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.6594 campaign=EVET:0.9918 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+  FACTS accepted=1 review=1 rejected=1
+  REVIEW   VADE_SURESI                  0.9351 | 3 ay | context_rule_failed
+    EVIDENCE | ygun kâr oranlı finansman seçeneği ve taksit ödemelerinizi 3 ay öteleme avantajı sunuyor.
+  REJECTED VADE_SURESI                  0.7150 | 36 | fact_not_in_evidence
+    EVIDENCE | 6 aya varan esnek ödeme seçenekleri
+  ACCEPTED KAMPANYA_TARIH_ARALIGI       0.9900 | 27.05.2025 ile 10.06.2025 | campaign_date_range
+    EVIDENCE | 27.05.2025 ile 10.06.2025 tarihleri arasında Kurban Bayramı kampanyasından yararlanabilirsiniz.
+[40/40] key=hayat_finans-a20250617-33cb1d69f0e9 date=2025-06-17 bank=Hayat Finans Katılım Bankası A.Ş. product=DIGER_KAMPANYA score=0.9715 campaign=EVET:0.9979 decision=ACCEPTED basis=url_advisory_model_agreement reasons=- quality=accepted
+Summary: {"archive_rows": 2580, "classification_accepted": 36, "classification_review": 4, "documents_with_accepted_facts": 27, "eligible_before_window": 2580, "facts_accepted": 42, "facts_rejected": 21, "facts_review": 7, "historical_versions_of_live_urls": 317, "mode": "dry_run", "ner_filtered_out": 5, "selected": 40}
+Completed at: 2026-08-26T10:03:33.972136+00:00

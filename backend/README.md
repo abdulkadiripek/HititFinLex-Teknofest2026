@@ -77,28 +77,40 @@ NER ve sınıflandırma çıkarımı yerel GPU üzerinde, LLM cevapları yerel O
 
 ```text
 katilim_finans_app/
-├── api.py                       # FastAPI giriş noktası (tüm REST uçları)
+├── api.py                       # FastAPI giriş noktası (tüm REST uçları, /history/* dahil)
 ├── ner_service.py                # Türkçe NER servisi (ner_v4_best)
 ├── classifier_service.py         # Kampanya + ürün sınıflandırıcıları
 ├── hybrid_search.py               # BM25 + pgvector hibrit arama
+├── historical_search_v28.py       # Tarihsel/arşiv aramanın hibrit arama katmanı
 ├── intake_service.py              # Yeni belge alım / doğrulama akışı
 ├── review_service.py              # İnsan inceleme kuyruğu (human_review_v1)
 ├── extract_comparison_facts.py    # Karşılaştırma fact'lerinin çıkarımı
 ├── fact_context_rules.py / fact_surface_rules.py
 ├── coverage_rules_v27.py          # Alan kapsama kuralları
+├── archive_*.py                   # Belgeleri tarihsel arşive taşıyan/denetleyen bakım script'leri
+│                                     (api.py'nin çalışma zamanında import ETMEDİĞİ, elle
+│                                     çalıştırılan toplu işler)
 ├── train_ner.py / train_classifier.py / train_product_v2.py
 ├── generate_embeddings.py         # BGE-M3 embedding üretimi
 ├── import_dataset.py              # Ham veri setinin veritabanına aktarımı
 ├── smoke_test_*.py                # Güvenli, mutasyonsuz doğrulama testleri
-├── data/                          # Etiketli eğitim/doğrulama veri setleri
+├── data/                          # Etiketli eğitim/doğrulama veri setleri (çalışma kopyası)
 ├── models/                        # Eğitilmiş model klasörleri (git'e dahil değil, bkz. Modeller)
 └── requirements.txt
 ```
 
+> Aynı dosyanın `_v21_backup`, `_v27_backup`, `_v30_backup` gibi sürüm
+> numaralı kopyaları, geliştirme sürecindeki ara sürümlerin arşividir;
+> `api.py`'nin fiilen import ettiği, sürüm eki olmayan dosyalar
+> güncel/kullanılan sürümlerdir.
+
 ## Veri seti
 
-`data/` klasörü, yarışma kapsamında toplanan ve etiketlenen tüm veri
-setlerini içerir ve bu depoyla birlikte herkese açık olarak paylaşılmıştır:
+Bu reponun köküne ait resmî, sürümlenmiş veri seti paketi için
+[`../dataset/`](../dataset) klasörüne bakın (**HititFinLex Veri Seti
+v1.0** — ham korpus, şemalar, veri kartı ve kendi lisansıyla). Aşağıdaki
+`data/` klasörü ise eğitim script'lerinin doğrudan okuduğu çalışma
+kopyasıdır ve aynı içeriğin bir alt kümesini barındırır:
 
 | Klasör | İçerik |
 | --- | --- |

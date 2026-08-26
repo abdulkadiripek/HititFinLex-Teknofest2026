@@ -8,6 +8,7 @@ proje dokümantasyonu maddelerini karşılar.
 
 ## İçindekiler
 
+- [Tarihsel arşiv katmanı](#tarihsel-arşiv-katmanı)
 - [Sistem mimarisi ve veri akışı](#sistem-mimarisi-ve-veri-akışı)
 - [Kullanılan NLP yaklaşımı](#kullanılan-nlp-yaklaşımı)
 - [Veri seti](#veri-seti)
@@ -18,6 +19,17 @@ proje dokümantasyonu maddelerini karşılar.
 - [Karşılaşılan problemler ve çözüm yaklaşımları](#karşılaşılan-problemler-ve-çözüm-yaklaşımları)
 - [Model çıktı örnekleri](#model-çıktı-örnekleri)
 - [Model performans değerlendirmesi](#model-performans-değerlendirmesi)
+
+## Tarihsel arşiv katmanı
+
+Güncel veriye ek olarak sistem, belgelerin zaman içindeki değişimini de
+saklar: `archive_*.py` script'leri (bakım/toplu iş, `api.py` tarafından
+çalışma zamanında import edilmez) belgeleri arşive taşır ve denetler;
+`historical_search_v28.py` bu arşiv üzerinde hibrit arama yapar. Frontend
+bunu `/history/overview`, `/history/search`, `/history/comparison`
+(`as_of` tarih parametresiyle) ve `/history/chat` uçları üzerinden
+"son 1 ay / 3 ay / 6 ay / 1 yıl / tüm arşiv" seçenekleriyle sunar — bkz.
+kök `README.md#özellikler`.
 
 ## Sistem mimarisi ve veri akışı
 

@@ -1,0 +1,225 @@
+# =============================================================================
+# HititFinLex — Kural Tabanlı Ön Etiketleme Desenleri
+#
+# Bu dosyadaki desenler ETİKET ÖNERİSİ üretir, kesin etiket üretmez.
+# Her öneri bir güven skoruyla işaretlenir; eşiğin altındakiler insan
+# doğrulamasına düşer (bkz. etiket_semasi.yaml -> otomatik_kabul_esigi).
+#
+# Alanlar
+# -------
+# desen         : Python re söz dizimi. YAML tek tırnak içinde yazılır ki
+#                 ters bölü karakterleri olduğu gibi kalsın.
+# baglam        : Eşleşmenin çevresinde ARANAN kalıp. Yoksa öneri üretilmez.
+#                 "%25" tek başına indirim mi kâr payı mı belli değildir;
+#                 anlamı bağlam verir.
+# baglam_disi   : Çevresinde bu kalıp varsa öneri ÜRETİLMEZ (yanlış pozitif
+#                 kesici). Örn. "kâr payı uygulanmaz" bir oran değildir.
+# pencere       : Bağlamın aranacağı karakter yarıçapı (varsayılan 70).
+# guven         : 0-1. Deseni ne kadar güvenilir bulduğumuz.
+# =============================================================================
+
+KAR_PAYI_ORANI:
+  - desen: '%\s?\d{1,2}(?:[.,]\d{1,2})?'
+    baglam: 'k[âa]r\s*pay[ıi]'
+    baglam_disi: 'uygulanmaz|al[ıi]nmaz|yoktur|k[âa]r\s*pay[ıi]\s*yok|indirim|iade|puan'
+    pencere: 70
+    guven: 0.92
+  - desen: '\d{1,2}(?:[.,]\d{1,2})?\s?%'
+    baglam: 'k[âa]r\s*pay[ıi]'
+    baglam_disi: 'uygulanmaz|al[ıi]nmaz|yoktur|indirim|iade|puan'
+    pencere: 70
+    guven: 0.85
+  # "oran" kelimesi finansman bağlamında geçtiğinde de kâr payı kastedilir
+  - desen: '%\s?\d{1,2}(?:[.,]\d{1,2})?'
+    baglam: 'finansman\s*oran|[öo]zel\s*oran|oranl[ıi]\s*finansman'
+    baglam_disi: 'indirim|iade|komisyon|KDV|puan'
+    pencere: 60
+    guven: 0.75
+
+KAR_PAYLASIM_ORANI:
+  # "98/2" biçimi. baglam_disi zorunlu: "7/24 açarak" ifadesi yakındaki
+  # "paylaşım oranlı" kelimesi yüzünden paylaşım oranı sanılıyordu (ölçüldü).
+  - desen: '\b\d{1,2}\s?/\s?\d{1,2}\b'
+    baglam: 'payla[şs][ıi]m\s*oran|kat[ıi]lma\s*oran|kat[ıi]l[ıi]m\s*oran'
+    baglam_disi: '7\s?/\s?24|24\s?/\s?7'
+    pencere: 60
+    guven: 0.90
+  # "%99 kâr paylaşım oranı" biçimi. Hayat Finans paylaşım oranını yalnızca
+  # böyle yazıyor; yalnızca "98/2" desenine bakan kural bunları kaçırıyordu.
+  # Kâr payı ORANI ile karıştırılmamalı: bu, kârın müşteri/banka arasındaki
+  # bölüşüm yüzdesidir, finansman maliyeti değil.
+  - desen: '%\s?\d{1,3}(?:[.,]\d{1,2})?'
+    baglam: 'payla[şs][ıi]m\s*oran|k[âa]r\s*payla[şs][ıi]m|payla[şs][ıi]m[ıi]\s*oran'
+    pencere: 60
+    guven: 0.88
+  # NOT: "\d+ kâr paylaşım oranı" gibi etiket kelimelerini de yutan bir desen
+  # denendi ve kaldırıldı: "98/2 kâr paylaşım oranı" ifadesinden "2 kâr
+  # paylaşım oranı" parçasını yakalıyor, uzun eşleşme önceliği yüzünden de
+  # doğru olan "98/2" span'ini eziyordu. Yukarıdaki iki desen her iki yazım
+  # biçimini de zaten kapsıyor.
+
+FINANSMAN_TUTARI:
+  - desen: '\b\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?\s*(?:TL|₺|Türk\s*Liras[ıi])'
+    baglam: 'finansman|kredi|limit|destek|kulland[ıi]r'
+    baglam_disi: 'hediye|iade|çeki|kazan|puan|masraf|ücret|indirim'
+    pencere: 90
+    guven: 0.80
+  - desen: '\b\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?\s*(?:TL|₺)\s*[’\x27]?ye\s*(?:varan|kadar)'
+    baglam: 'finansman|kredi|limit|destek'
+    baglam_disi: 'hediye|iade|çeki|puan'
+    pencere: 90
+    guven: 0.88
+
+VADE_SURESI:
+  - desen: '\b\d{1,3}\s*ay\b(?:[’\x27]?[ae]\s*(?:varan|kadar))?'
+    baglam: 'vade|geri\s*[öo]deme|[öo]deme\s*plan|finansman|kredi'
+    baglam_disi: 'taksit'
+    pencere: 80
+    guven: 0.85
+  - desen: '\b\d{1,2}\s*y[ıi]l\b(?:[’\x27]?[ae]\s*(?:varan|kadar))?'
+    baglam: 'vade|geri\s*[öo]deme|finansman|kredi'
+    pencere: 80
+    guven: 0.80
+  - desen: '\bvade\s*:?\s*\d{1,3}\s*(?:ay|y[ıi]l)\b'
+    pencere: 0
+    guven: 0.95
+
+TAKSIT_SAYISI:
+  - desen: '\b\d{1,2}\s*(?:aya\s*varan\s*)?taksit\b'
+    pencere: 0
+    guven: 0.93
+  - desen: '\bpe[şs]in\s*fiyat[ıi]na\s*\d{1,2}\s*(?:aya\s*varan\s*)?taksit\b'
+    pencere: 0
+    guven: 0.96
+
+TAHSIS_UCRETI:
+  - desen: '\b\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?\s*(?:TL|₺)'
+    baglam: 'tahsis\s*[üu]cret|dosya\s*masraf|ekspertiz|komisyon|i[şs]lem\s*[üu]cret'
+    baglam_disi: 'al[ıi]nmaz|al[ıi]nmamakta|yoktur|[üu]cretsiz'
+    pencere: 70
+    guven: 0.85
+
+MASRAF_DURUMU:
+  - desen: 'masrafs[ıi]z'
+    pencere: 0
+    guven: 0.95
+  - desen: 'vade\s*farks[ıi]z'
+    pencere: 0
+    guven: 0.95
+  - desen: 'dosya\s*masraf[ıi]\s*(?:al[ıi]nma(?:z|makta(?:d[ıi]r)?)|yok(?:tur)?)'
+    pencere: 0
+    guven: 0.95
+  - desen: 'tahsis\s*[üu]cret[ıi]?\s*(?:al[ıi]nma(?:z|makta(?:d[ıi]r)?)|yok(?:tur)?)'
+    pencere: 0
+    guven: 0.95
+  - desen: 'k[âa]r\s*pay[ıi]\s*yok'
+    pencere: 0
+    guven: 0.90
+  - desen: '[üu]cretsiz'
+    baglam: 'kart|aidat|havale|EFT|[çc]ekim|hesap'
+    pencere: 60
+    guven: 0.70
+
+HARCAMA_ESIGI:
+  # "500 TL ve üzeri" kalıbı eşiğin en güvenilir işareti; ödül tutarları
+  # "…'ye varan / kadar" ile yazılır, eşikler "…ve üzeri / üzerinde" ile.
+  - desen: '\b\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?\s*(?:TL|₺)\s*(?:ve\s*[üu]zeri|ve\s*[üu]st[üu]|[üu]zerindeki?)'
+    pencere: 0
+    guven: 0.90
+  - desen: '\b\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?\s*(?:TL|₺)'
+    baglam: 'minimum|asgari|en\s*az|alt\s*limit|ge[çc]erlidir.{0,20}harcama'
+    baglam_disi: 'varan|kadar|hediye|iade|[öo]d[üu]l'
+    pencere: 45
+    guven: 0.80
+
+ODUL_MIKTARI:
+  - desen: '\b\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?\s*(?:TL|₺)(?:[’\x27]?ye\s*(?:varan|kadar))?'
+    baglam: 'nakit\s*iade|hediye|[çc]ek[ıi]|kazan|[öo]d[üu]l|para\s*iade|bonus'
+    baglam_disi: 'finansman|masraf|tahsis|limit'
+    pencere: 80
+    guven: 0.83
+
+INDIRIM_ORANI:
+  - desen: '%\s?\d{1,2}(?:[.,]\d{1,2})?'
+    baglam: 'indirim'
+    baglam_disi: 'k[âa]r\s*pay[ıi]'
+    pencere: 50
+    guven: 0.90
+  - desen: '\d{1,2}\s?%\s*indirim'
+    pencere: 0
+    guven: 0.93
+
+ALISVERIS_PUANI:
+  - desen: '\b\d{1,3}(?:\.\d{3})*\s*(?:TL|₺)?\s*(?:[’\x27]?ye\s*varan\s*)?(?:Worldpuan|ChipPara|Paraf\s*Para|Bankkart\s*Lira|para\s*puan|puan|mil)\b'
+    pencere: 0
+    guven: 0.88
+
+KAMPANYA_SURESI:
+  - desen: '\b\d{1,2}\s+(?:Ocak|[ŞS]ubat|Mart|Nisan|May[ıi]s|Haziran|Temmuz|A[ğg]ustos|Eyl[üu]l|Ekim|Kas[ıi]m|Aral[ıi]k)\s+\d{4}(?:\s*(?:tarihine\s*kadar|tarihinde))?'
+    pencere: 0
+    guven: 0.90
+  - desen: '\b\d{1,2}\s+(?:Ocak|[ŞS]ubat|Mart|Nisan|May[ıi]s|Haziran|Temmuz|A[ğg]ustos|Eyl[üu]l|Ekim|Kas[ıi]m|Aral[ıi]k)(?:\s+\d{4})?\s*[-–]\s*\d{1,2}\s+(?:Ocak|[ŞS]ubat|Mart|Nisan|May[ıi]s|Haziran|Temmuz|A[ğg]ustos|Eyl[üu]l|Ekim|Kas[ıi]m|Aral[ıi]k)\s+\d{4}'
+    pencere: 0
+    guven: 0.94
+  - desen: '\b\d{2}[./]\d{2}[./]\d{4}\s*[-–]\s*\d{2}[./]\d{2}[./]\d{4}'
+    pencere: 0
+    guven: 0.94
+  - desen: '\b\d{2}[./]\d{2}[./]\d{4}'
+    baglam: 'kampanya|ge[çc]erli|tarih|son\s*ba[şs]vuru'
+    pencere: 70
+    guven: 0.82
+
+HEDEF_KITLE:
+  - desen: 'yeni\s*m[üu][şs]teri(?:ler)?(?:imiz)?(?:e|ne)?(?:\s*[öo]zel)?'
+    pencere: 0
+    guven: 0.90
+  - desen: 'mevcut\s*m[üu][şs]teri(?:ler)?(?:imiz)?(?:e|ne)?(?:\s*[öo]zel)?'
+    pencere: 0
+    guven: 0.90
+  - desen: 'maa[şs]\s*m[üu][şs]teri(?:ler)?(?:imiz)?(?:e|ne)?'
+    pencere: 0
+    guven: 0.92
+  - desen: '\bKOB[İI][’\x27]?\w*'
+    pencere: 0
+    guven: 0.85
+  - desen: '\b(?:emekli|[öo][ğg]renci|gen[çc]|esnaf|[çc]ift[çc]i)(?:ler)?(?:imiz)?(?:e|ne)?\s*[öo]zel'
+    pencere: 0
+    guven: 0.85
+
+# =============================================================================
+# KAMPANYA TÜRÜ KURALLARI (doküman sınıflandırma)
+# URL, başlık ve gövde ayrı ağırlıklarla puanlanır; en yüksek puanlı tür seçilir.
+# =============================================================================
+kampanya_turu_kurallari:
+
+  KONUT_FINANSMANI:
+    anahtarlar: ['konut\s*finansman', 'konut\s*kredi', 'ev\s*sahibi', 'mortgage', 'konut-finansman']
+    guven: 0.90
+
+  TASIT_FINANSMANI:
+    anahtarlar: ['ta[şs][ıi]t\s*finansman', 'ara[çc]\s*finansman', 'oto\s*finansman', 'ta[şs][ıi]t\s*kredi', 'tasit-finansman', 'arac-finansman']
+    guven: 0.90
+
+  IHTIYAC_FINANSMANI:
+    anahtarlar: ['ihtiya[çc]\s*finansman', 'ihtiya[çc]\s*kredi', 'ihtiyac-finansman', 'bireysel\s*finansman']
+    guven: 0.88
+
+  FINANSMAN:
+    anahtarlar: ['finansman', '\bkredi\b', 'murabaha', 'leasing', 'destek\s*paketi']
+    guven: 0.70
+
+  ALISVERIS_PUANI:
+    anahtarlar: ['worldpuan', 'chippara', 'paraf\s*para', 'bankkart\s*lira', 'al[ıi][şs]veri[şs]\s*puan', '\bpuan\s*kazan', '\bmil\s*kazan']
+    guven: 0.85
+
+  KART:
+    anahtarlar: ['kredi\s*kart', 'banka\s*kart', '\bkart\b', 'kartlar', 'taksit\s*f[ıi]rsat', 'pe[şs]in\s*fiyat[ıi]na']
+    guven: 0.75
+
+  YENI_MUSTERI:
+    anahtarlar: ['yeni\s*m[üu][şs]teri', 'm[üu][şs]teri\s*ol', 'ho[şs]\s*geldin', 'arkada[şs][ıi]n[ıi]\s*getir', 'davet\s*et']
+    guven: 0.80
+
+  YATIRIM_URUNU:
+    anahtarlar: ['yat[ıi]r[ıi]m', 'kat[ıi]lma\s*hesab', 'kat[ıi]l[ıi]m\s*fonu', 'alt[ıi]n\s*hesab', 'g[üu]m[üu][şs]\s*hesab', 'sukuk', 'kira\s*sertifika', 'hisse', 'fon\b', 'birikim']
+    guven: 0.80

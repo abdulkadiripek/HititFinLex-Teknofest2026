@@ -1,0 +1,450 @@
+# =============================================================================
+# HititFinLex - Katılım Bankaları Veri Toplama Konfigürasyonu
+# TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması / 2. Senaryo
+#
+# Banka listesi ve resmî web adresleri BDDK Kuruluş Listesi'nden
+# (https://www.bddk.org.tr/Kurulus/Liste/77) doğrulanarak alınmıştır.
+# Doğrulama tarihi: 2026-08-14  (10 kuruluşun tamamı "faaliyette")
+#
+# Her bankanın robots.txt ve sitemap.xml durumu tek tek yoklanmış,
+# aşağıdaki "sitemap_urls" / "seed_paths" değerleri gözleme dayanarak
+# yazılmıştır (tahmin değildir). Site yapısı değişirse yalnızca bu dosya
+# güncellenir; kod değişikliği gerekmez.
+# =============================================================================
+
+defaults:
+  # --- Kimlik --------------------------------------------------------------
+  # NOT: Aşağıdaki iletişim adresini kendi takım adresinizle değiştirin.
+  # Bot'un kendini tanıtması scraping etiğinin bir parçasıdır.
+  user_agent: >-
+    HititFinLexBot/1.0 (+TEKNOFEST 2026 TYDA 2. Senaryo, akademik arastirma;
+    iletisim: takim-iletisim@example.com)
+
+  # --- Hız sınırlama (agresif scraping yok) --------------------------------
+  request_delay_seconds: 2.0      # aynı host'a iki istek arası asgari bekleme
+  delay_jitter_seconds: 1.0       # 0..jitter arası rastgele ek bekleme
+  default_crawl_delay: 2.0        # robots.txt Crawl-delay yoksa kullanılacak
+  max_crawl_delay: 15.0           # robots'taki uçuk değerlere karşı tavan
+
+  # --- Ağ ------------------------------------------------------------------
+  timeout_seconds: 30
+  max_retries: 3
+  backoff_factor: 2.0             # 2s, 4s, 8s ...
+  verify_tls: true
+
+  # --- robots.txt ----------------------------------------------------------
+  respect_robots: true            # false yapmak şartname ihlalidir, dokunmayın
+
+  # --- Keşif / sınırlar ----------------------------------------------------
+  max_pages_per_bank: 120
+  max_crawl_depth: 2              # sitemap yoksa link taramasının derinliği
+  max_links_per_page: 300
+
+  # --- Playwright (JS fallback) --------------------------------------------
+  allow_playwright: true
+  playwright_wait_ms: 3500        # networkidle sonrası ek bekleme
+  playwright_timeout_ms: 45000
+  # Statik istekten dönen temiz metin bu eşiğin altındaysa Playwright denenir
+  js_fallback_min_chars: 400
+
+  # --- İçerik kalitesi -----------------------------------------------------
+  min_text_length: 200            # bu uzunluğun altındaki sayfalar kaydedilmez
+
+  # --- Geçmişe dönük toplama (python main.py --arsiv) ----------------------
+  # Kampanya sayfaları kısa ömürlüdür; kaldırılmış kampanyaların metni
+  # Internet Archive'ın Wayback Machine'inde duruyor ve NLP eğitimi için
+  # hâlâ geçerli veridir. CDX API ücretsiz ve anahtarsızdır.
+  # Bu blok yalnızca --arsiv koşusunda okunur, canlı toplamayı etkilemez.
+  arsiv:
+    baslangic_yili: 2016          # bu yıldan önceki yakalamalar alınmaz
+    bitis_yili: null              # null = bugüne kadar
+    url_basina_azami_yakalama: 2  # aynı sayfanın kaç sürümü (zamana yayılır)
+    azami_kayit: 400              # banka başına azami arşiv kaydı
+    cdx_azami_satir: 20000        # tek CDX sorgusundan alınacak azami satır
+    # Arşiv sağlayıcısına aynı anda kaç istek gitsin.
+    #
+    # ÖLÇÜM (2026-08-24, sıralı koşu): 3.181 isteğin ortalama ağ süresi
+    # 2,58 sn ve toplam koşunun %91'i bu bekleme idi; hız sınırı beklemesi
+    # yalnızca %9. Etkin hız istek başına ~57 KB/sn -> darboğaz bant
+    # genişliği değil, gecikme. Yani tek çare istekleri üst üste bindirmek.
+    #
+    # İŞÇİ SAYISI KIYASLAMASI (49 sayfa, saniye/sayfa):
+    #   1 isci -> 2,57   (0 yeniden deneme)
+    #   4 isci -> 0,74   (0 yeniden deneme)   <-- seçilen
+    #   6 isci -> 0,86   (4 yeniden deneme)
+    #   8 isci -> 0,74   (2 yeniden deneme, 1 hata)
+    # 4'ten sonra kazanç yok, archive.org kısmaya başlıyor. Çıktının sıralı
+    # koşuyla birebir aynı olduğu doğrulandı.
+    #
+    # Bu ayar YALNIZCA web.archive.org'a uygulanır; banka siteleri her zaman
+    # katı sıralı taranır. 429/503 görülürse bu değeri düşürün.
+    eszamanli_istek: 4
+    # CDX'e gönderilen sunucu taraflı kaba filtre. Kesin eleme yine
+    # global_include/exclude kalıplarıyla Python tarafında yapılır; buradaki
+    # amaç yüz binlerce satırlık yanıtı hiç indirmemek.
+    url_filtresi: '.*(kampanya|firsat|avantaj|indirim|finansman|kredi|kart|yatirim|katilma|hesap|urun|sigorta|leasing|kira-sertifikasi|altin).*'
+
+  # --- Türkçe dışı sayfaları ele (dataset TR olacak) -----------------------
+  language_exclude_patterns:
+    - '/en/'
+    - '/en$'
+    - '/eng/'
+    - '/ar/'
+    - '/ar$'
+    - '/ru/'
+    - '/de/'
+    - '-en$'
+    - '/english'
+
+  # --- Tüm bankalar için ortak URL filtreleri ------------------------------
+  # include: bir URL bu kalıplardan en az birine uymalı
+  global_include_patterns:
+    - 'kampanya'
+    - 'finansman'
+    - 'kredi'
+    - 'kart'
+    - 'yatirim'
+    - 'yatırım'
+    - 'urun'
+    - 'ürün'
+    - 'hesap'
+    - 'birikim'
+    - 'altin'
+    - 'altın'
+    - 'sigorta'
+    - 'leasing'
+    - 'bireysel'
+    - 'kobi'
+    - 'ticari'
+    - 'kiralama'
+    - 'sukuk'
+    - 'katilim-fonu'
+    - 'katılım-fonu'
+    - 'fon'
+    - 'doviz'
+    - 'döviz'
+    - 'emeklilik'
+    - 'tasit'
+    - 'taşıt'
+    - 'konut'
+    # Kâr payı / ücret sayfaları: NLP aşamasının en kritik alanı olan
+    # "kâr payı oranı" ile tahsis ücreti ve masraf bilgileri yalnızca bu
+    # sayfalarda tablo halinde yayınlanıyor. Kampanya metinlerinde oran
+    # genelde geçmiyor; ölçüldü (143 kayıtta %7,7 ve hepsi "kâr payı yok"
+    # tarzı olumsuz cümle). Bu yüzden ayrıca hedefleniyorlar.
+    # Kalıplar bilerek dar: bare 'ucret' yazıldığında "ücretsiz lounge",
+    # "ücretsiz HGS" gibi onlarca ayrıcalık sayfası da eşleşiyor ve gerçek
+    # tabloları kotadan atıyor (ölçüldü). Ücret sayfası adı bankadan bankaya
+    # değişiyor ama hepsi "urun ... ucret" biçiminde:
+    #   /urun-ve-hizmet-ucretleri, /urun-hizmet-ve-ucretleri, /urun-hizmet-ucretleri.aspx
+    - 'kar-payi'
+    - 'kâr-payı'
+    - 'kar-paylasim'
+    - 'kar-oranlari'
+    - 'oranlari'
+    - 'urun[-_a-z]*ucret'
+    - 'hizmet-ucretleri'
+    - 'masraf-tablo'
+    - 'ucret-tarife'
+
+  # exclude: bu kalıplardan birine uyan URL hiçbir zaman toplanmaz
+  global_exclude_patterns:
+    - '\.pdf$'
+    - '\.docx?$'
+    - '\.xlsx?$'
+    - '\.zip$'
+    - '\.jpe?g$'
+    - '\.png$'
+    - '\.gif$'
+    - '\.svg$'
+    - '\.mp4$'
+    - '/arama'
+    - '/search'
+    - '\?s='
+    - 'search='
+    - '/basvuru-formu'
+    - '/iletisim-formu'
+    - '/teklif-formu'
+    - '/login'
+    - '/giris'
+    - '/cikis'
+    - '/logout'
+    - '/sepet'
+    - '/cerez'
+    - '/çerez'
+    - '/kvkk'
+    - '/aydinlatma'
+    - '/gizlilik'
+    - '/sitemap'
+    - '/rss'
+    - '/feed'
+    - '/etiket/'
+    - '/tag/'
+    - '/yatirimci-iliskileri'   # finansal raporlar; ürün metni değil
+    - '/ihale'
+    - '/kariyer'
+    - '/insan-kaynaklari'
+    - '/hesaplama'        # hesap makinesi araçları: JS widget, metin yok
+    - '/icazet'
+    - '/index\.html$'
+    - '/sozlesme'
+    - '/faaliyet-raporu'
+    # NOT: 'fiyat-listesi', 'ucret-', 'ucretleri' kalıpları başlangıçta
+    # gürültü sayılıp buradaydı. Ölçüm gösterdi ki tam tersi: tahsis ücreti,
+    # dosya masrafı ve kâr payı oranı tabloları yalnızca o sayfalarda.
+    # Kaldırıldılar ve include listesine taşındılar.
+    - 'kisisel-veri'
+    - 'hakkimizda'
+    - 'subeler'
+    - 'sube-ve-atm'
+    - '/atm'
+    - 'musteri-ol'
+    - 'bilgi-toplumu'
+    - 'surdurulebilirlik'
+
+# =============================================================================
+# BANKALAR
+# Sıra BDDK listesindeki alfabetik sırayla aynıdır.
+# =============================================================================
+banks:
+
+  # ---------------------------------------------------------------------------
+  - key: adil_katilim
+    ad: "Adil Katılım Bankası A.Ş."
+    base_url: "https://www.adilkatilim.com.tr"
+    scraper: "scrapers.adil_katilim.AdilKatilimScraper"
+    # Gözlem (2026-08-14): robots.txt 200 dönüyor ancak gövdesi tamamen boş
+    # (kural yok => her şeye izin). sitemap.xml ise XML değil, SPA kabuğunu
+    # (index.html, ~918 KB) döndürüyor -> sitemap KULLANILAMAZ.
+    # İçerik tamamen istemci tarafında render ediliyor -> Playwright ZORUNLU.
+    #
+    # ÖNEMLİ: Banka henüz ürün/kampanya yayınına geçmemiş. Render edilmiş DOM
+    # incelendiğinde site bir "yakında" tanıtım sayfasından ibaret; gezinilebilir
+    # tek rotalar kurumsal bilgi sayfaları. Ayrıca SPA catch-all olduğu için
+    # /kampanyalar, /urunler gibi OLMAYAN rotalar da aynı ana sayfayı render
+    # ediyor. Bu yüzden seed listesi yalnızca gerçekten var olan rotaları içerir;
+    # uydurma rotalar eklenirse aynı metin defalarca indirilir (parmak izi
+    # tekilleştirmesi elese de boşuna Playwright render'ı maliyeti doğar).
+    sitemap_urls: []
+    seed_paths:
+      - "/"
+      - "/katilim-bankaciligi"
+    requires_javascript: true
+    # Arşiv gözlemi (2026-08-24): CDX'te eşleşen kampanya/ürün URL'i yok —
+    # banka yeni, site hâlâ "yakında" sayfası. Boşuna sorgu atmamak için kapalı.
+    arsiv:
+      etkin: false
+    notes: >-
+      Tamamen istemci tarafında render edilen SPA ve şu an ürün/kampanya
+      içeriği yayında değil. Playwright kurulu değilse banka atlanır ve özet
+      raporda "atlandi" durumuyla raporlanır. Banka ürünlerini yayına
+      aldığında yalnızca seed_paths listesini genişletmek yeterlidir.
+
+  # ---------------------------------------------------------------------------
+  - key: albaraka
+    ad: "Albaraka Türk Katılım Bankası A.Ş."
+    base_url: "https://www.albaraka.com.tr"
+    scraper: "scrapers.albaraka.AlbarakaScraper"
+    # BDDK'daki albarakaturk.com.tr adresi kalıcı olarak albaraka.com.tr/tr
+    # adresine yönleniyor; canonical host doğrudan yazıldı.
+    extra_allowed_hosts: ["www.albarakaturk.com.tr", "albarakaturk.com.tr"]
+    sitemap_urls:
+      - "https://www.albaraka.com.tr/sitemap.xml"
+    seed_paths:
+      - "/tr"
+      - "/tr/kampanyalar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): albaraka.com.tr'de 1.629, taşınmadan önceki
+    # albarakaturk.com.tr'de 4 benzersiz kampanya/ürün URL'i arşivlenmiş.
+    arsiv:
+      alan_adlari: ["albaraka.com.tr", "albarakaturk.com.tr"]
+      azami_kayit: 400
+    # robots.txt'te tanımlı Disallow kuralları (RobotsPolicy zaten uygular,
+    # buradaki liste yalnızca belgeleme amaçlıdır):
+    #   /tr/ticari-ve-kurumsal*, *search*, *arama*, /*slug, */TranslateTool*
+    extra_exclude_patterns:
+      - '/ticari-ve-kurumsal'
+      - 'slug'
+      - 'TranslateTool'
+    notes: "Sitemap'in ilk kaydı hatalı (<loc>url</loc>); geçersiz loc'lar elenir."
+
+  # ---------------------------------------------------------------------------
+  - key: dunya_katilim
+    ad: "Dünya Katılım Bankası A.Ş."
+    base_url: "https://dunyakatilim.com.tr"
+    scraper: "scrapers.dunya_katilim.DunyaKatilimScraper"
+    # www.dunyakatilim.com.tr -> 308 -> dunyakatilim.com.tr (www'suz canonical)
+    extra_allowed_hosts: ["www.dunyakatilim.com.tr"]
+    # robots.txt kendi sitemap'ini farklı bir host'ta (blueprint.com.tr)
+    # gösteriyor; o adrese GİTMİYORUZ. Kendi domain'indeki sitemap geçerli.
+    sitemap_urls:
+      - "https://dunyakatilim.com.tr/sitemap.xml"
+    seed_paths:
+      - "/"
+      - "/kampanyalar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 66 benzersiz URL; banka yeni olduğu için
+    # 2022 öncesini sorgulamak anlamsız.
+    arsiv:
+      baslangic_yili: 2022
+    notes: "Statik HTML; kampanya sayfaları /kampanyalar/<slug> yapısında."
+
+  # ---------------------------------------------------------------------------
+  - key: hayat_finans
+    ad: "Hayat Finans Katılım Bankası A.Ş."
+    base_url: "https://hayatfinans.com.tr"
+    scraper: "scrapers.hayat_finans.HayatFinansScraper"
+    # www -> www'suz yönlendirme var; sitemap www host'unda yayınlanıyor
+    # ama içindeki loc'lar www'suz. İkisi de kabul edilir.
+    extra_allowed_hosts: ["www.hayatfinans.com.tr"]
+    sitemap_urls:
+      - "https://www.hayatfinans.com.tr/sitemap.xml"
+    seed_paths:
+      - "/"
+      - "/kampanyalar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 169 benzersiz URL.
+    arsiv:
+      baslangic_yili: 2021
+
+  # ---------------------------------------------------------------------------
+  - key: kuveyt_turk
+    ad: "Kuveyt Türk Katılım Bankası A.Ş."
+    base_url: "https://www.kuveytturk.com.tr"
+    scraper: "scrapers.kuveyt_turk.KuveytTurkScraper"
+    sitemap_urls:
+      - "https://www.kuveytturk.com.tr/sitemap.xml"
+    seed_paths:
+      - "/"
+      - "/kampanyalar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 2.947 benzersiz URL — arşivi en zengin banka.
+    # Kotayı yükseltiyoruz; canlı koşuda da sitemap büyüklüğü sınırlayıcıydı.
+    arsiv:
+      azami_kayit: 600
+    extra_exclude_patterns:
+      - '/blog/etiket/'      # robots.txt Disallow
+      - '/kampanya-arsivi'   # süresi dolmuş kampanyalar; güncel veri seti isteniyor
+    notes: "Sitemap büyük (~590 KB); max_pages_per_bank sınırı burada etkili."
+
+  # ---------------------------------------------------------------------------
+  - key: tom_bank
+    ad: "T.O.M. Katılım Bankası A.Ş."
+    base_url: "https://www.tombank.com.tr"
+    scraper: "scrapers.tom_bank.TomBankScraper"
+    # robots.txt ve sitemap.xml YOK (ikisi de 404) -> link taraması.
+    sitemap_urls: []
+    seed_paths:
+      - "/"
+      - "/kampanyalar.html"
+      - "/urunlerimiz.html"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 9 yakalama; banka 2023'te kuruldu ve
+    # arşivde kampanya sayfası yok. Kapalı.
+    arsiv:
+      etkin: false
+    # Site .html uzantılı düz sayfalardan oluşuyor; global include kalıpları
+    # (kampanya/finansman/kart...) bu isimlerin çoğunu yakalamıyor.
+    # Bu yüzden banka özelinde tüm .html sayfalarına izin veriyoruz.
+    extra_include_patterns:
+      - '\.html$'
+    notes: "Küçük statik site (~15 ürün sayfası). Göreli linkler kullanıyor."
+
+  # ---------------------------------------------------------------------------
+  - key: emlak_katilim
+    ad: "Türkiye Emlak Katılım Bankası A.Ş."
+    base_url: "https://www.emlakkatilim.com.tr"
+    scraper: "scrapers.emlak_katilim.EmlakKatilimScraper"
+    # BDDK'daki emlakbank.com.tr adresi emlakkatilim.com.tr/tr'ye yönleniyor.
+    extra_allowed_hosts: ["www.emlakbank.com.tr", "emlakbank.com.tr"]
+    # /sitemap.xml bir sitemapindex; TR alt sitemap'i doğrudan veriyoruz.
+    sitemap_urls:
+      - "https://www.emlakkatilim.com.tr/XML/www.emlakkatilim.com.tr_tr_sitemap.xml"
+    seed_paths:
+      - "/tr"
+      - "/tr/bireysel/finansmanlar"
+      - "/tr/bireysel/hesaplar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): emlakkatilim.com.tr'de 448, katılım
+    # bankasına dönüşmeden önceki emlakbank.com.tr'de 89 benzersiz URL.
+    arsiv:
+      alan_adlari: ["emlakkatilim.com.tr", "emlakbank.com.tr"]
+      azami_kayit: 400
+
+  # ---------------------------------------------------------------------------
+  - key: turkiye_finans
+    ad: "Türkiye Finans Katılım Bankası A.Ş."
+    base_url: "https://www.turkiyefinans.com.tr"
+    scraper: "scrapers.turkiye_finans.TurkiyeFinansScraper"
+    # /sitemap.xml bir sitemapindex ama işaret ettiği sitemap0.xml XML değil,
+    # HTML sayfası dönüyor (SharePoint kaynaklı). Sitemap yine de denenir;
+    # doğrulama başarısız olursa otomatik link taramasına düşülür.
+    sitemap_urls:
+      - "https://www.turkiyefinans.com.tr/sitemap.xml"
+    seed_paths:
+      - "/tr-tr/Sayfalar/default.aspx"
+      - "/tr-tr/kampanyalar/Sayfalar/default.aspx"
+      - "/tr-tr/bireysel/Sayfalar/default.aspx"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 1.041 benzersiz URL.
+    arsiv:
+      azami_kayit: 500
+    extra_include_patterns:
+      - '\.aspx$'
+    extra_exclude_patterns:
+      - '/_layouts/'
+      - '/_vti_bin/'
+      - '/_catalogs/'
+      - 'BotDetectCaptcha'
+      - '/Demo/'
+    notes: "SharePoint tabanlı; sayfalar .aspx uzantılı. Sitemap güvenilmez."
+
+  # ---------------------------------------------------------------------------
+  - key: vakif_katilim
+    ad: "Vakıf Katılım Bankası A.Ş."
+    base_url: "https://www.vakifkatilim.com.tr"
+    scraper: "scrapers.vakif_katilim.VakifKatilimScraper"
+    # /sitemap.xml 404; robots.txt dile getirdiği için sitemap-tr.xml kullanılır.
+    sitemap_urls:
+      - "https://www.vakifkatilim.com.tr/sitemap-tr.xml"
+    # NOT: /tr/kampanyalar 404 verir; kampanyalar segment altındadır.
+    seed_paths:
+      - "/tr"
+      - "/tr/kendim-icin/kampanyalar"
+      - "/tr/isim-icin"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 683 benzersiz URL. Canlı sitemap'i süresi
+    # dolmuş kampanyalarla dolu olan banka; arşiv bunları tarihiyle getiriyor.
+    arsiv:
+      azami_kayit: 450
+    extra_exclude_patterns:
+      - '/tr/diger/gayrimenkuller'   # satılık gayrimenkul ilanları, ürün değil
+      - '/unigate'
+      - '/documents/'
+      - '/plugins/'
+
+  # ---------------------------------------------------------------------------
+  - key: ziraat_katilim
+    ad: "Ziraat Katılım Bankası A.Ş."
+    base_url: "https://www.ziraatkatilim.com.tr"
+    scraper: "scrapers.ziraat_katilim.ZiraatKatilimScraper"
+    # Drupal; /sitemap.xml bir sitemapindex (?page=1..8).
+    sitemap_urls:
+      - "https://www.ziraatkatilim.com.tr/sitemap.xml"
+    seed_paths:
+      - "/"
+      - "/kampanyalar"
+    requires_javascript: false
+    # Arşiv gözlemi (2026-08-24): 911 benzersiz URL.
+    arsiv:
+      azami_kayit: 500
+    extra_exclude_patterns:
+      - '/core/'
+      - '/profiles/'
+      - '/modules/'
+      - '/themes/'
+      - '/user/'
+      - '/node/add'
+      - '/comment/reply'
+      - '/index.php/'
+      - '/media/oembed'

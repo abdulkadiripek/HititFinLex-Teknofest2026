@@ -1,0 +1,92 @@
+HITITFINLEX V3.0 - HISTORICAL NER QUALITY PATCH
+===============================================
+
+V3.0 preserves the frontend, the 771 live documents and the V2.9 classifier.
+It fixes historical fact extraction quality before any database write.
+
+Main fixes
+----------
+
+- Separates spend thresholds and rewards using local amount context.
+- Rejects incomplete date-range fragments.
+- Extracts full Turkish date ranges with or without a year.
+- Accepts explicit USD/EUR finance limits.
+- Rejects insurance policy limits as finance amounts.
+- Recognizes compact maturity ranges such as 5-48 Ay.
+- Recognizes percentage cashback as a discount rate.
+- Deduplicates normalized NER and deterministic-rule facts.
+- Skips incomplete campaign eligibility fragments.
+
+
+1. STOP THE API
+---------------
+
+Press Ctrl+C in the API terminal.
+
+
+2. BACK UP THE CHANGED FILES
+----------------------------
+
+  cd /d C:\Users\PC\Documents\katilim_finans_app
+  copy fact_context_rules.py fact_context_rules_v29_backup.py
+  copy fact_surface_rules.py fact_surface_rules_v29_backup.py
+  copy coverage_rules_v27.py coverage_rules_v29_backup.py
+  copy ingest_ner_facts.py ingest_ner_facts_v29_backup.py
+  copy intake_service.py intake_service_v29_backup.py
+  copy archive_quality_v28.py archive_quality_v29_backup.py
+  copy archive_common_v28.py archive_common_v29_backup.py
+
+
+3. COPY THE V3.0 FILES
+----------------------
+
+Extract this ZIP. Copy all Python files from the extracted folder into the
+project root and approve replacement when Windows asks.
+
+
+4. RUN TESTS
+------------
+
+  .venv\Scripts\activate
+  set PYTHONUTF8=1
+  python smoke_test_ner_quality_v30.py
+  python smoke_test_classifier_resolution_v29.py
+  python smoke_test_classifier_resolution_v24.py
+  python smoke_test_fact_context_rules_v23.py
+  python smoke_test_fact_surface_rules.py
+  python smoke_test_coverage_rules_v27.py
+  python smoke_test_archive_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip
+
+Expected new result:
+
+  NER quality V3.0: OK (15 cases)
+
+
+5. START THE API
+----------------
+
+  uvicorn api:app --reload --host 127.0.0.1 --port 8000
+
+
+6. REPEAT THE READ-ONLY 100-DOCUMENT NER CHECK
+----------------------------------------------
+
+Open a second CMD window, activate the environment, then run:
+
+  python archive_ingest_v28.py --dataset-zip HititFinLex_VeriSeti_2.zip --limit 100 --show-evidence > archive_ner_v30_dry_run.txt
+
+Audit the result:
+
+  python audit_archive_ner_report_v30.py archive_ner_v30_dry_run.txt > archive_ner_v30_audit.json
+  type archive_ner_v30_audit.json
+
+Critical expected conditions:
+
+- error_count: 0
+- accepted_cross_role_amount_count: 0
+- accepted_incomplete_date_count: 0
+
+The accepted and rejected totals will change. Lower accepted totals are
+expected because false cross-labeled facts are removed.
+
+Do not use --write until the V3.0 audit output is reviewed.
