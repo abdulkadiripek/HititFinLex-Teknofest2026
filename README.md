@@ -29,6 +29,7 @@ geliştirilmiştir.
 - [Kurulum](#kurulum)
 - [Ortam değişkenleri](#ortam-değişkenleri)
 - [Test ve build](#test-ve-build)
+- [Takım](#takım)
 - [Proje dokümantasyonu](#proje-dokümantasyonu)
 - [Lisans](#lisans)
 - [Yol haritası](#yol-haritası)
@@ -238,6 +239,17 @@ npm run build   # bash scripts/build-verified.sh üzerinden doğrulanmış build
 npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
 ```
+
+## Takım
+
+**HititFinLex**
+
+| Rol | İsim |
+| --- | --- |
+| Danışman | Emre Deniz |
+| Üye | Doğukan Ayas |
+| Üye | Tuğba Melisa Güngör Kurnaz |
+| Üye | Abdulkadir İpek |
 
 ## Proje dokümantasyonu
 
