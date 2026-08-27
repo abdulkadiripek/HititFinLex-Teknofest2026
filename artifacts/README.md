@@ -53,13 +53,13 @@ ve uygulamanın model yükleme testinden sonra atomik olarak devreye alın.
 Kaynak kurulumunun kilitleri (`package-lock.json`, `backend/requirements.txt`)
 `source-manifest.json` içinde ayrıca sürümlenip doğrulanır.
 
-## Doğrulanmış yerel release varlıkları
+## Yayımlanmış ve doğrulanmış release varlıkları
 
 27 Ağustos 2026'da oluşturulan gerçek model ZIP'lerinin boyut ve SHA-256
 değerleri [`model-release-manifest.json`](model-release-manifest.json), gerçek
 güncel ve tarihsel PostgreSQL custom-format yedeklerinin kayıtları ise
 [`database-release-manifest.json`](database-release-manifest.json) içindedir.
-Bu manifestlerde `download_url: null`, dosyanın henüz kimliği doğrulanmış bir
-release hedefine yüklenmediği anlamına gelir. Upload başarıyla bitmeden URL
-tahmin etmeyin; sonrasında URL'yi doldurup indirilen baytları aynı SHA-256 ile
-yeniden doğrulayın.
+13 varlık 27 Ağustos 2026'da [`api-v1.3.0` GitHub Release'ine](https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/tag/api-v1.3.0)
+yüklendi. Model ZIP'leri ile iki dump'ın GitHub tarafından raporlanan boyut ve
+SHA-256 digest'leri manifest kayıtlarıyla birebir eşleşti; `download_url`
+alanları gerçek asset URL'lerini içerir.

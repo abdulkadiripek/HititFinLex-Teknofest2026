@@ -13,7 +13,7 @@
     "start": "node scripts/start-production.mjs",
     "test": "npm run build && npm run test:smoke",
     "test:smoke": "node --test tests/rendered-html.test.mjs tests/frontend-safety.test.mjs",
-    "lint": "node scripts/run-with-env.mjs eslint app build scripts tests vite.config.ts next.config.ts eslint.config.mjs",
+    "lint": "node scripts/run-with-env.mjs eslint app scripts tests vite.config.ts next.config.ts eslint.config.mjs",
     "typecheck": "node scripts/run-with-env.mjs tsc --noEmit",
     "artifacts": "node scripts/artifact-manifest.mjs"
   },

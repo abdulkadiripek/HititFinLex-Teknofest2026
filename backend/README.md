@@ -274,8 +274,9 @@ doğrulanmadan modeller açılmaz veya yedek geri yüklenmez.
 Gerçek yerel paketlerin boyut/checksum kayıtları
 [`model-release-manifest.json`](../artifacts/model-release-manifest.json) ve
 [`database-release-manifest.json`](../artifacts/database-release-manifest.json)
-içindedir; `download_url: null` yayımlama yapılmadığını, URL'nin tahmin
-edilmemesi gerektiğini belirtir.
+içindedir. Varlıklar [`api-v1.3.0` GitHub Release'inde](https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/tag/api-v1.3.0)
+yayımlandı; manifestlerdeki boyut ve SHA-256 değerleri GitHub asset digest'leriyle
+eşleştirildi.
 
 ## Çalıştırma
 

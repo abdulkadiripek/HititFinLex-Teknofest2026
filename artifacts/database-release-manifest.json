@@ -2,6 +2,7 @@
   "schema_version": 1,
   "package": "hititfinlex-database-release",
   "version": "1.3.0",
+  "publication_status": "published_and_sha256_verified",
   "created_on": "2026-08-27",
   "repository": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026",
   "target_release_tag": "api-v1.3.0",
@@ -31,7 +32,7 @@
       "pg_restore_toc_entries": 108,
       "pg_restore_list_verified": true,
       "source_hash_matches": true,
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-database-current-prerestore-v1.3.0.dump"
     },
     {
       "name": "hititfinlex-database-historical-v1.3.0.dump",
@@ -44,7 +45,7 @@
       "pg_restore_toc_entries": 138,
       "pg_restore_list_verified": true,
       "source_hash_matches": true,
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-database-historical-v1.3.0.dump"
     }
   ],
   "validation": {
@@ -52,7 +53,8 @@
     "validator": "pg_restore (PostgreSQL) 18.6",
     "operation": "pg_restore --list --verbose",
     "all_assets_passed": true,
-    "checksum_file": "DATABASE_SHA256SUMS.txt"
+    "checksum_file": "DATABASE_SHA256SUMS.txt",
+    "github_asset_digest_verified": true
   },
   "documentation": "VERITABANI_PAKETI_README.md"
 }

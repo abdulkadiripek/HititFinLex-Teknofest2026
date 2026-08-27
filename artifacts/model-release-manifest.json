@@ -2,8 +2,9 @@
   "schema_version": 1,
   "release": "api-v1.3.0",
   "intended_github_release_tag": "api-v1.3.0",
+  "release_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/tag/api-v1.3.0",
   "checksum_file": "MODEL_SHA256SUMS.txt",
-  "publication_status": "local_verified_pending_authenticated_upload",
+  "publication_status": "published_and_sha256_verified",
   "license_file": "THIRD_PARTY_MODELS.md",
   "runtime_files_per_model": [
     "config.json",
@@ -23,25 +24,25 @@
       "filename": "hititfinlex-models-api-v1.3.0.zip",
       "bytes": 1230459171,
       "sha256": "146e18bd90aaa1b889034aa3e0a151a20510ec0f609e72d6a13255e79a7d25f7",
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-models-api-v1.3.0.zip"
     },
     {
       "filename": "hititfinlex-model-ner-v4.zip",
       "bytes": 408739050,
       "sha256": "4339bd7bf31ce6319958789ab77e100f6fc01ea420dabc6939b3cbfcbe0c1f44",
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-model-ner-v4.zip"
     },
     {
       "filename": "hititfinlex-model-classifier-campaign-v1.zip",
       "bytes": 410844800,
       "sha256": "131e20d198e6cd99c06b63cabfceae3d5484bc80151f70a5835e0fa2d2d31a26",
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-model-classifier-campaign-v1.zip"
     },
     {
       "filename": "hititfinlex-model-classifier-product-v2.zip",
       "bytes": 410876426,
       "sha256": "5738636551e29caf3a1d13b80270c320a0204a1daab615477b1025d9e9a72aec",
-      "download_url": null
+      "download_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/download/api-v1.3.0/hititfinlex-model-classifier-product-v2.zip"
     }
   ],
   "models": [
@@ -61,5 +62,5 @@
       "path": "models/classifier_product_v2_best"
     }
   ],
-  "note": "download_url is populated only after the release asset upload succeeds; do not publish this manifest with a guessed URL"
+  "note": "GitHub-reported asset sizes and sha256 digests were verified against this manifest after upload."
 }
