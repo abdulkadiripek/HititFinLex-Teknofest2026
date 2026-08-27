@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "release": "api-v1.3.0",
+  "checksum_algorithm": "sha256",
+  "license_file": "THIRD_PARTY_MODELS.md",
+  "runtime_files": [
+    "config.json",
+    "model.safetensors",
+    "test_results.json",
+    "tokenizer.json",
+    "tokenizer_config.json"
+  ],
+  "forbidden_release_files": [
+    "training_args.bin",
+    "classifier_training_summary.json",
+    "classifier_product_v2_training_summary.json"
+  ],
+  "packages": [
+    {
+      "artifact_id": "ner",
+      "component_version": "ner-v4",
+      "archive_name": "hititfinlex-model-ner-v4.zip",
+      "archive_root": "ner_v4_best",
+      "install_target": "backend/models/ner_v4_best"
+    },
+    {
+      "artifact_id": "campaign",
+      "component_version": "classifier-campaign-v1",
+      "archive_name": "hititfinlex-model-classifier-campaign-v1.zip",
+      "archive_root": "classifier_campaign_v1_best",
+      "install_target": "backend/models/classifier_campaign_v1_best"
+    },
+    {
+      "artifact_id": "product",
+      "component_version": "classifier-product-v2",
+      "archive_name": "hititfinlex-model-classifier-product-v2.zip",
+      "archive_root": "classifier_product_v2_best",
+      "install_target": "backend/models/classifier_product_v2_best"
+    }
+  ]
+}

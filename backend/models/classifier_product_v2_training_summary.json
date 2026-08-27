@@ -2,7 +2,7 @@
   "product": {
     "task": "product_v2",
     "model_name": "dbmdz/bert-base-turkish-cased",
-    "best_model_dir": "C:\\Users\\PC\\Documents\\katilim_finans_app\\models\\classifier_product_v2_best",
+    "best_model_dir": "models/classifier_product_v2_best",
     "labels": [
       "DIGER",
       "DIGER_FINANSMAN",

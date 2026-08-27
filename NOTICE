@@ -1,0 +1,13 @@
+HititFinLex
+Copyright 2026 HititFinLex contributors
+
+This product is licensed under the Apache License, Version 2.0.
+
+The repository includes a derived dataset containing excerpts from publicly
+available participation-bank web pages and references to Internet Archive
+captures. The underlying third-party page content, names, and trademarks are
+not relicensed by the project's Apache-2.0 license. See THIRD_PARTY_DATA.md.
+
+Model weights are not distributed in this repository. Base-model and runtime
+components retain their respective upstream licenses and notices. See
+THIRD_PARTY_MODELS.md for the license bundled with versioned model releases.

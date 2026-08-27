@@ -12,6 +12,7 @@ DEFAULT_NER_MODEL_DIR = (
     Path(__file__).resolve().parent / "models" / "ner_v4_best"
 )
 MAX_LENGTH = 256
+NER_WINDOW_OVERLAP_WORDS = 32
 TOKEN_PATTERN = re.compile(r"\w+(?:[.,/]\w+)*|[^\w\s]", flags=re.UNICODE)
 AMOUNT_PATTERN = re.compile(r"^\d[\d.,]*$")
 CURRENCY_TOKENS = {
@@ -103,50 +104,127 @@ def predict_entities(
     bundle: NerBundle,
     threshold: float = 0.40,
 ) -> list[dict[str, object]]:
+    entities, _ = predict_entities_with_metadata(
+        text=text,
+        bundle=bundle,
+        threshold=threshold,
+    )
+    return entities
+
+
+def predict_entities_with_metadata(
+    text: str,
+    bundle: NerBundle,
+    threshold: float = 0.40,
+) -> tuple[list[dict[str, object]], dict[str, int | bool]]:
     token_offsets = tokenize_with_offsets(text)
     if not token_offsets:
-        return []
+        return [], {
+            "input_word_count": 0,
+            "model_chunk_count": 0,
+            "truncated": False,
+        }
 
-    tokens = [token for token, _, _ in token_offsets]
-    encoded = bundle.tokenizer(
-        tokens,
-        is_split_into_words=True,
-        return_tensors="pt",
-        truncation=True,
-        max_length=MAX_LENGTH,
-    )
-    word_ids = encoded.word_ids(batch_index=0)
-    encoded = {
-        name: value.to(bundle.device)
-        for name, value in encoded.items()
-    }
-
-    with torch.inference_mode():
-        logits = bundle.model(**encoded).logits[0]
-        probabilities = torch.softmax(logits, dim=-1)
-        scores, label_ids = probabilities.max(dim=-1)
-
+    # A tokenizer word can expand to multiple wordpieces, so a fixed number of
+    # source words is not guaranteed to fit MAX_LENGTH. Adjacent windows retain
+    # overlap; predictions nearest a window's center win for repeated words.
+    # This prevents entities at a tokenizer boundary from losing their context.
     id2label = bundle.model.config.id2label
-    words: list[dict[str, object]] = []
-    current_word_id = None
+    predictions_by_word: dict[int, dict[str, object]] = {}
+    next_word = 0
+    model_chunk_count = 0
 
-    for token_index, word_id in enumerate(word_ids):
-        if word_id is None or word_id == current_word_id:
-            continue
+    while next_word < len(token_offsets):
+        candidate_offsets = token_offsets[
+            next_word: next_word + MAX_LENGTH
+        ]
+        encoded_batch = bundle.tokenizer(
+            [token for token, _, _ in candidate_offsets],
+            is_split_into_words=True,
+            return_tensors="pt",
+            truncation=True,
+            max_length=MAX_LENGTH,
+        )
+        word_ids = encoded_batch.word_ids(batch_index=0)
+        encoded = {
+            name: value.to(bundle.device)
+            for name, value in encoded_batch.items()
+        }
 
-        token_text, start, end = token_offsets[word_id]
-        label_id = int(label_ids[token_index].item())
-        words.append(
-            {
-                "word_id": word_id,
+        encoded_word_ids = [
+            int(word_id) for word_id in word_ids if word_id is not None
+        ]
+        if not encoded_word_ids:
+            raise RuntimeError("NER tokenizer did not encode any source words.")
+        covered_word_count = max(encoded_word_ids) + 1
+        if covered_word_count > len(candidate_offsets):
+            raise RuntimeError("NER tokenizer returned an invalid source word id.")
+
+        with torch.inference_mode():
+            logits = bundle.model(**encoded).logits[0]
+            probabilities = torch.softmax(logits, dim=-1)
+            scores, label_ids = probabilities.max(dim=-1)
+
+        current_word_id = None
+        for token_index, word_id in enumerate(word_ids):
+            if word_id is None or word_id == current_word_id:
+                continue
+
+            global_word_id = next_word + int(word_id)
+            token_text, start, end = token_offsets[global_word_id]
+            label_id = int(label_ids[token_index].item())
+            score = float(scores[token_index].item())
+            local_word_id = int(word_id)
+            center_distance = min(
+                local_word_id,
+                covered_word_count - local_word_id - 1,
+            )
+            prediction = {
+                "word_id": global_word_id,
                 "start": start,
                 "end": end,
                 "text": token_text,
                 "label": id2label[label_id],
-                "score": float(scores[token_index].item()),
+                "score": score,
+                "_center_distance": center_distance,
             }
+            previous = predictions_by_word.get(global_word_id)
+            if previous is None or (
+                center_distance,
+                score,
+            ) > (
+                int(previous["_center_distance"]),
+                float(previous["score"]),
+            ):
+                predictions_by_word[global_word_id] = prediction
+            current_word_id = word_id
+
+        model_chunk_count += 1
+        window_end = next_word + covered_word_count
+        if window_end >= len(token_offsets):
+            break
+        overlap = min(
+            NER_WINDOW_OVERLAP_WORDS,
+            max(1, covered_word_count // 4),
+            max(0, covered_word_count - 1),
         )
-        current_word_id = word_id
+        following_word = window_end - overlap
+        if following_word <= next_word:
+            following_word = next_word + 1
+        next_word = following_word
+
+    missing_word_ids = [
+        word_id
+        for word_id in range(len(token_offsets))
+        if word_id not in predictions_by_word
+    ]
+    if missing_word_ids:
+        raise RuntimeError(
+            "NER tokenizer skipped source words while processing windows."
+        )
+    words = [predictions_by_word[word_id] for word_id in range(len(token_offsets))]
+    for word in words:
+        word.pop("_center_distance", None)
 
     normalize_currency_spans(words)
     entities: list[dict[str, object]] = []
@@ -195,4 +273,8 @@ def predict_entities(
             }
 
     close_active()
-    return entities
+    return entities, {
+        "input_word_count": len(token_offsets),
+        "model_chunk_count": model_chunk_count,
+        "truncated": False,
+    }

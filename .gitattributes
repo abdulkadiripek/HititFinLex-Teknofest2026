@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+# Dataset and delivery artifacts are versioned byte-for-byte.  Their manifests
+# and checksums must stay identical on Windows and Unix checkouts.
+dataset/** -text
+docs/teslim/**/*.png -text
+docs/teslim/**/*.pdf -text
+docs/teslim/**/*.pptx -text
+docs/teslim/**/*.mp4 -text
+*.zip -text
+*.dump -text
+*.safetensors -text
+*.bin -text
+*.rar -text

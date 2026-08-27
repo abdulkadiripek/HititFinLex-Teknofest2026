@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 import httpx
+from dotenv import load_dotenv
 
 
 DEFAULT_API_URL = "http://127.0.0.1:8000"
@@ -73,12 +75,18 @@ def load_records(path: Path) -> list[dict]:
 
 
 def main():
+    load_dotenv()
     args = parse_args()
     records = load_records(args.file)
     if not records:
         raise ValueError("Input file contains no records.")
 
     mode = "DATABASE_WRITE" if args.write else "DRY_RUN"
+    admin_api_key = os.getenv("HITITFINLEX_ADMIN_API_KEY", "").strip()
+    if args.write and not admin_api_key:
+        raise RuntimeError(
+            "HITITFINLEX_ADMIN_API_KEY is required with --write."
+        )
     print("Mode:", mode)
     print("Records:", len(records))
     summary: dict[str, int] = {}
@@ -97,7 +105,13 @@ def main():
             payload = dict(record)
             payload["write"] = args.write
             payload["allow_update"] = args.allow_update
-            response = client.post("/intake", json=payload)
+            response = client.post(
+                "/intake",
+                json=payload,
+                headers=(
+                    {"X-API-Key": admin_api_key} if args.write else None
+                ),
+            )
             if not response.is_success:
                 print(f"[{index}/{len(records)}] ERROR {response.status_code}")
                 print(response.text)

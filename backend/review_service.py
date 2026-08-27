@@ -204,7 +204,8 @@ def load_pending_document_review(review_id: int) -> dict[str, Any]:
                     raw_text,
                     content_hash,
                     classification,
-                    review_reason
+                    review_reason,
+                    updated_at
                 FROM document_intake_review_queue
                 WHERE id = %s AND review_status = 'pending'
                 """,
@@ -226,6 +227,7 @@ def load_pending_document_review(review_id: int) -> dict[str, Any]:
         "content_hash": row[7].strip(),
         "classification": row[8],
         "review_reason": row[9],
+        "updated_at": row[10],
     }
 
 

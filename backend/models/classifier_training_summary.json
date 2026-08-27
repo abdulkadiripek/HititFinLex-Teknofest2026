@@ -2,7 +2,7 @@
   "campaign": {
     "task": "campaign_v1",
     "model_name": "dbmdz/bert-base-turkish-cased",
-    "best_model_dir": "C:\\Users\\PC\\Documents\\katilim_finans_app\\models\\classifier_campaign_v1_best",
+    "best_model_dir": "models/classifier_campaign_v1_best",
     "labels": [
       "HAYIR",
       "EVET"
@@ -47,7 +47,7 @@
   "product": {
     "task": "product_v1",
     "model_name": "dbmdz/bert-base-turkish-cased",
-    "best_model_dir": "C:\\Users\\PC\\Documents\\katilim_finans_app\\models\\classifier_product_v1_best",
+    "best_model_dir": "models/classifier_product_v1_best",
     "labels": [
       "DIGER",
       "DIGER_FINANSMAN",

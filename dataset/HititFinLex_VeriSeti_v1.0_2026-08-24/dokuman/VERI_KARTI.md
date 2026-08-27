@@ -3,9 +3,10 @@
 **TEKNOFEST 2026 Yapay Zeka Dil Ajanları Yarışması / 2. Senaryo — Katılım Bankacılığı**
 
 Bu belge, projenin ham veri korpusunu tanıtır: nereden, hangi tarih aralığından,
-hangi yöntemle toplandığı ve içinde ne olduğu. Buradaki bütün sayılar
-`data/processed/katilim_bankalari_tum.jsonl` dosyası üzerinde ölçülmüştür;
-tahmin ya da yuvarlama yoktur.
+hangi yöntemle toplandığı ve içinde ne olduğu. Paket toplamlarının tek doğruluk
+kaynağı üst dizindeki `MANIFEST.json` dosyasıdır; korpus sayıları
+`korpus/korpus_tum.jsonl`, türetilmiş veri sayıları ise paketlenmiş JSONL
+dosyaları üzerinde ölçülmüştür. Tahmin ya da yuvarlama yoktur.
 
 Son güncelleme: **24 Ağustos 2026**
 
@@ -356,9 +357,15 @@ de varsa 3 oluyor.
 | Bilgi çıkarım (span) | 5.3 | `KAR_PAYI_ORANI`, `KAR_PAYLASIM_ORANI`, `FINANSMAN_TUTARI`, `VADE_SURESI`, `TAKSIT_SAYISI`, `TAHSIS_UCRETI`, `MASRAF_DURUMU`, `HARCAMA_ESIGI`, `ODUL_MIKTARI`, `INDIRIM_ORANI`, `ALISVERIS_PUANI`, `KAMPANYA_SURESI`, `HEDEF_KITLE` |
 | Kampanya türü (sınıflandırma) | 5.4 | Konut / Taşıt / İhtiyaç / Finansman / Alışveriş Puanı / Kart / Yeni Müşteri / Yatırım Ürünü / Diğer |
 
-> **Depodaki veri seti hâlâ ESKİ korpustan üretilmiştir:** 771 belge,
-> 2.102 pasaj, 2.964 span. Yeni 3.351 kayıtlık korpusla yeniden üretilmedi,
-> çünkü bu işlem commit edilmiş veri setinin üzerine yazar.
+Depodaki yayın paketi güncel birleşik korpusla eşleşir: **3.351 belge**,
+**7.238 pasaj** ve **10.501 span**. Bilgi çıkarımı bölümleri 5.015 eğitim,
+1.177 doğrulama ve 1.046 test pasajından; sınıflandırma bölümleri 2.346
+eğitim, 504 doğrulama ve 501 test belgesinden oluşur. Bu toplamlar
+`MANIFEST.json` ile birebir aynıdır.
+
+Etiket durumu **silver**'dır: kural tabanlı ön etiketleme ve otomatik kalite
+kontrolleri uygulanmıştır, ancak bütün span'ler bağımsız insan gold etiketi
+değildir. Yeni bir model sonucu raporlanırken bu sınırlama belirtilmelidir.
 
 Yeniden üretmek için:
 
@@ -386,7 +393,7 @@ python main.py --birlestir  # tek korpusta birleştir → 3.351 kayıt
 ```
 
 Ayrıntılı mimari, ayarlar ve saha notları için:
-[`VeriToplama/data_collection/README.md`](../VeriToplama/data_collection/README.md)
+[`veri_toplama_README.md`](veri_toplama_README.md)
 
 ### Çıktı dosyaları
 

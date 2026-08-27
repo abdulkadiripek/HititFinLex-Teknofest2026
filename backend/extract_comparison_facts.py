@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from psycopg.types.json import Jsonb
 
+from db.runtime_schema import require_migrated_tables
 from hybrid_search import get_connection
 
 
@@ -66,31 +67,6 @@ class ExtractedFactBatch(BaseModel):
 
     facts: list[ExtractedFact] = Field(default_factory=list, max_length=24)
 
-
-TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS comparison_facts (
-    id BIGSERIAL PRIMARY KEY,
-    document_id BIGINT NOT NULL
-        REFERENCES documents(id) ON DELETE CASCADE,
-    fact_type VARCHAR(64) NOT NULL,
-    fact_text TEXT NOT NULL,
-    normalized_value JSONB,
-    evidence_text TEXT NOT NULL,
-    extraction_method VARCHAR(64) NOT NULL,
-    confidence DOUBLE PRECISION NOT NULL
-        CHECK (confidence >= 0 AND confidence <= 1),
-    source_chunk INTEGER NOT NULL,
-    fact_key CHAR(64) NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (document_id, fact_key)
-)
-"""
-
-INDEX_SQL = """
-CREATE INDEX IF NOT EXISTS comparison_facts_document_type_idx
-ON comparison_facts (document_id, fact_type)
-"""
 
 UPSERT_SQL = """
 INSERT INTO comparison_facts (
@@ -579,8 +555,7 @@ def deduplicate_facts(facts):
 def save_facts(facts, selected_document_ids, refresh):
     with get_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute(TABLE_SQL)
-            cursor.execute(INDEX_SQL)
+            require_migrated_tables(cursor, ("comparison_facts",))
 
             if refresh and selected_document_ids:
                 cursor.execute(

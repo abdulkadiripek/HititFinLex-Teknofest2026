@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "package": "hititfinlex-database-release",
+  "version": "1.3.0",
+  "created_on": "2026-08-27",
+  "repository": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026",
+  "target_release_tag": "api-v1.3.0",
+  "target_release_url": "https://github.com/abdulkadiripek/HititFinLex-Teknofest2026/releases/tag/api-v1.3.0",
+  "required_repository_migration_version_after_restore": "0002",
+  "database": {
+    "engine": "PostgreSQL",
+    "source_server_version": "18.6",
+    "dump_tool_version": "18.6",
+    "dump_format": "custom",
+    "dump_format_version": "1.16-0",
+    "compression": "gzip",
+    "source_database_name": "katilim_finans",
+    "required_extensions": [
+      "vector"
+    ]
+  },
+  "assets": [
+    {
+      "name": "hititfinlex-database-current-prerestore-v1.3.0.dump",
+      "kind": "current_pre_restore_snapshot",
+      "description": "2026-08-27 tarihli güncel/pre-restore uygulama veritabanı anlık görüntüsü.",
+      "source_name": "katilim_finans_pre_restore_backup_2026-08-27.dump",
+      "archive_created_at": "2026-08-27T10:18:05+03:00",
+      "size_bytes": 9551658,
+      "sha256": "5f352b0931f30fb32aaedf4084e85e2be4e1819979f36d387fded738fc016bad",
+      "pg_restore_toc_entries": 108,
+      "pg_restore_list_verified": true,
+      "source_hash_matches": true,
+      "download_url": null
+    },
+    {
+      "name": "hititfinlex-database-historical-v1.3.0.dump",
+      "kind": "historical_snapshot",
+      "description": "2026-08-27 tarihli, tarihsel belge/fact/chunk tablolarını da içeren veritabanı anlık görüntüsü.",
+      "source_name": "HititFinLex_DB_2026-08-26",
+      "archive_created_at": "2026-08-27T02:16:01+03:00",
+      "size_bytes": 31111858,
+      "sha256": "677c3435ae386d84c1dd05f398cab8ddc24f9790c0cb8d072e3963726da91273",
+      "pg_restore_toc_entries": 138,
+      "pg_restore_list_verified": true,
+      "source_hash_matches": true,
+      "download_url": null
+    }
+  ],
+  "validation": {
+    "validated_on": "2026-08-27",
+    "validator": "pg_restore (PostgreSQL) 18.6",
+    "operation": "pg_restore --list --verbose",
+    "all_assets_passed": true,
+    "checksum_file": "DATABASE_SHA256SUMS.txt"
+  },
+  "documentation": "VERITABANI_PAKETI_README.md"
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "migrations": [
+    {
+      "version": "0001",
+      "file": "0001_base.sql",
+      "sha256": "ac75ddfe4199e5bf10ffe2dd86ae3124252710bdea71c8a40f7934d8ffec9229"
+    },
+    {
+      "version": "0002",
+      "file": "0002_review_document_baseline.sql",
+      "sha256": "bb388684d971513d51a0a57c94bf8d20bf2bdf5f0ab187d812b63a761f32ec0e"
+    }
+  ]
+}

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
 import httpx
+from dotenv import load_dotenv
 
 
 DEFAULT_API_URL = "http://127.0.0.1:8000"
@@ -127,13 +129,23 @@ def print_fact_reviews(payload):
 
 
 def main():
+    load_dotenv()
     args = parse_args()
+    admin_api_key = os.getenv("HITITFINLEX_ADMIN_API_KEY", "").strip()
+    if not admin_api_key:
+        raise RuntimeError(
+            "HITITFINLEX_ADMIN_API_KEY is required for review administration."
+        )
     timeout = httpx.Timeout(300.0, connect=10.0)
-    with httpx.Client(base_url=args.api_url, timeout=timeout) as client:
+    with httpx.Client(
+        base_url=args.api_url,
+        timeout=timeout,
+        headers={"X-API-Key": admin_api_key},
+    ) as client:
         health = request_json(client, "GET", "/health")
         if health.get("review_workflow") != "human_review_v1":
             raise RuntimeError(
-                "API 0.9.0 human review workflow is not active."
+                "human_review_v1 workflow is not active on this API."
             )
 
         if args.command == "summary":

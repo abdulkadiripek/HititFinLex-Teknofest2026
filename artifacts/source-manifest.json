@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "release": "source-v1.3.0",
+  "generated_at": "2026-08-27T14:14:53.589Z",
+  "hash_algorithm": "sha256",
+  "artifacts": [
+    {
+      "id": "backend-ci-requirements",
+      "version": "requirements-ci-2026-08-27",
+      "path": "../backend/requirements-ci.txt",
+      "bytes": 358,
+      "sha256": "8eec178b992717dee451d327a5d36104d677a2cd68fec3ce712fa23be7b7b799",
+      "files": [
+        {
+          "path": ".",
+          "bytes": 358,
+          "sha256": "fa4388a951d5cc0ad4f54c4106bea75322709c08126e483658a2103aebc20ee0"
+        }
+      ]
+    },
+    {
+      "id": "backend-requirements",
+      "version": "requirements-2026-08-27",
+      "path": "../backend/requirements.txt",
+      "bytes": 1414,
+      "sha256": "a48f77ba4abd5aff5d4a9ac05b2daa4106169c245233026ca5e3bd27456386be",
+      "files": [
+        {
+          "path": ".",
+          "bytes": 1414,
+          "sha256": "ce0c0f6a7d79fd8e67130dbefc85bd2f3f55ee22c62c91ed28cb1ccfb2c739cd"
+        }
+      ]
+    },
+    {
+      "id": "dataset-manifest",
+      "version": "dataset-v1.0",
+      "path": "../dataset/HititFinLex_VeriSeti_v1.0_2026-08-24/MANIFEST.json",
+      "bytes": 4146,
+      "sha256": "db1572ef1db33cd65c1a3085b679b6550a33f5e293c7a5d0f474a54aad20274a",
+      "files": [
+        {
+          "path": ".",
+          "bytes": 4146,
+          "sha256": "4cc7d00d578f8412282caad897db8b9512eee643c1efa9afb68bb295e60aa1a2"
+        }
+      ]
+    },
+    {
+      "id": "db-migrations",
+      "version": "schema-0002",
+      "path": "../backend/db/migrations",
+      "bytes": 13180,
+      "sha256": "08fc9ffab12cfde238e4212817cc4586d039a507115649c3dd1d8f3b877215eb",
+      "files": [
+        {
+          "path": "0001_base.sql",
+          "bytes": 12064,
+          "sha256": "ac75ddfe4199e5bf10ffe2dd86ae3124252710bdea71c8a40f7934d8ffec9229"
+        },
+        {
+          "path": "0002_review_document_baseline.sql",
+          "bytes": 744,
+          "sha256": "bb388684d971513d51a0a57c94bf8d20bf2bdf5f0ab187d812b63a761f32ec0e"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 372,
+          "sha256": "dc146f9d7754dd8567e2b61ac79c02b0992dbd0f3896a8648701b1d2b7c5c865"
+        }
+      ]
+    },
+    {
+      "id": "frontend-lock",
+      "version": "npm-lock-v3",
+      "path": "../package-lock.json",
+      "bytes": 349019,
+      "sha256": "087de0043fd81f60eae7b836b2d415c24439de2b6f1cfa21b2727bd0aaf05b6a",
+      "files": [
+        {
+          "path": ".",
+          "bytes": 349019,
+          "sha256": "18fbc6a79ffb23a8a0e7769731e25a3aaf40af0c203942b84e07655514ab7a0a"
+        }
+      ]
+    }
+  ]
+}

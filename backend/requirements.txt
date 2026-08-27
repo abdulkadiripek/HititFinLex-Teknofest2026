@@ -63,7 +63,7 @@ starlette==1.6.0
 sympy==1.14.0
 threadpoolctl==3.6.0
 tokenizers==0.23.1
-# torch==2.13.0+cu130  -- install separately, see README (CUDA build, not on plain PyPI)
+# torch==2.13.0+cu130 -- install separately; see README (CUDA build, not on plain PyPI)
 tqdm==4.70.0
 transformers==5.16.1
 typer==0.27.1

@@ -1,79 +1,121 @@
-HITITFINLEX - WINDOWS KURULUMU
-================================
+HITITFINLEX v1.3.0 - WINDOWS MONOREPO KURULUMU
+================================================
 
-Bu paket yalnizca frontend kaynak kodudur. Mevcut backend ve veritabaninizi degistirmez.
+Bu depo frontend ve backend'i birlikte içerir. Backend yolu HititFinLex\backend,
+frontend yolu ise HititFinLex repo köküdür. Eski katilim_finans_app klasörünü
+veya yalnız-frontend paket düzenini kullanmayın.
 
 GEREKENLER
 ----------
-1. Node.js 22 veya daha yeni bir surum
-2. Calisan HititFinLex FastAPI backend'i
-3. PostgreSQL, Ollama ve model servislerinin daha once kurdugunuz sekilde hazir olmasi
+1. Node.js 22.13 veya üzeri
+2. Python 3.11
+3. PostgreSQL 18 + pgvector 0.8.6 (veya Docker Desktop)
+4. Ollama ve qwen3.5:9b
+5. Model release ZIP'i: hititfinlex-models-api-v1.3.0.zip
 
-1) PAKETI ACIN
----------------
-ZIP dosyasini su klasore acin:
-
-C:\Users\PC\Documents\HititFinLex
-
-2) BACKEND'I BASLATIN
----------------------
-Yeni bir CMD penceresi acin ve sirayla calistirin:
-
-cd /d C:\Users\PC\Documents\katilim_finans_app
-.venv\Scripts\activate
-set PYTHONUTF8=1
-uvicorn api:app --reload --host 127.0.0.1 --port 8000
-
-Bu pencere acik kalmali.
-
-3) FRONTEND AYARINI OLUSTURUN
------------------------------
-Yeni bir CMD penceresi acin:
-
+1) REPOYA GİRİN VE ORTAM DOSYALARINI AYIRIN
+------------------------------------------------
 cd /d C:\Users\PC\Documents\HititFinLex
-copy .env.example .env.local
+copy .env.example .env
+copy .env.local.example .env.local
+copy backend\.env.example backend\.env
 
-.env.local icinde su satir bulunmali:
+.env dosyasında POSTGRES_ADMIN_PASSWORD, DB_MIGRATOR_PASSWORD ve DB_PASSWORD
+için üç farklı güçlü yerel parola belirleyin. Aynı DB_PASSWORD değerini
+backend\.env içindeki runtime hititfinlex_app hesabına yazın.
+
+.env.local yalnız şu browser-visible anahtarı içermelidir; DB parolası veya
+admin API anahtarı bu dosyaya konmaz:
 
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
 
-4) PAKETLERI KURUN
-------------------
-Ayni CMD penceresinde:
+backend\.env içindeki HITITFINLEX_ADMIN_API_KEY değerini en az 32 karakterlik
+benzersiz bir anahtarla değiştirin. Örnek placeholder güvenli biçimde reddedilir.
 
-npm ci
+2) BACKEND PYTHON ORTAMINI KURUN
+--------------------------------
+python -m venv backend\.venv
+backend\.venv\Scripts\activate
+python -m pip install --upgrade pip
 
-5) FRONTEND'I BASLATIN
+CUDA 13.0 destekli PyTorch için sürücünüze uygun resmi index'i kullanın:
+python -m pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cu130
+python -m pip install -r backend\requirements.txt
+
+3) MODEL PAKETİNİ DOĞRULAYIP AÇIN
+----------------------------------
+Yayımlanan model-release-manifest.json içindeki SHA-256 değerini doğrulayın.
+Birleşik ZIP'in beklenen özeti:
+
+146e18bd90aaa1b889034aa3e0a151a20510ec0f609e72d6a13255e79a7d25f7
+
+powershell -NoProfile -Command "Expand-Archive -LiteralPath 'C:\KatilimFinansTransfer\hititfinlex-models-api-v1.3.0.zip' -DestinationPath 'C:\Users\PC\Documents\HititFinLex\backend'"
+
+Sonuç dizinleri:
+- HititFinLex\backend\models\ner_v4_best
+- HititFinLex\backend\models\classifier_campaign_v1_best
+- HititFinLex\backend\models\classifier_product_v2_best
+
+4) VERİTABANI ROLLERİNİ VE MIGRATION'I KURUN
+---------------------------------------------
+Docker kullanıyorsanız repo kökünde:
+
+docker compose up -d database
+docker compose run --rm database-setup all
+
+Bu adım postgres bootstrap superuser'ından ayrı hititfinlex_migrator ve
+CRUD-only hititfinlex_app rollerini oluşturur; migration/checksum/grant
+işlemlerini uygular ve app rolünün schema DDL yetkisi olmadığını sınar.
+
+5) OLLAMA'YI HAZIRLAYIN
+------------------------
+ollama pull qwen3.5:9b
+
+6) BACKEND'İ BAŞLATIN
 ----------------------
+Yeni CMD penceresi:
 
+cd /d C:\Users\PC\Documents\HititFinLex\backend
+.venv\Scripts\activate
+set PYTHONUTF8=1
+uvicorn api:app --host 127.0.0.1 --port 8000
+
+Kontrol adresleri:
+- http://127.0.0.1:8000/health
+- http://127.0.0.1:8000/docs
+
+Health yanıtında API 1.3.0 ve model hazırlık durumları görülmelidir. Sürümlü
+teslim veritabanı yüklüyse dashboard 771 güncel + 2.580 tarihsel belge
+referans envanteriyle uyumlu olmalıdır; fact/chunk sayaçları yüklenen paket
+manifestine göre doğrulanır.
+
+7) FRONTEND'İ KURUP BAŞLATIN
+-----------------------------
+Başka bir CMD penceresi, repo kökünde:
+
+cd /d C:\Users\PC\Documents\HititFinLex
+npm ci
 npm run dev
 
-Terminalde hazir mesaji gorundugunde tarayicida su adresi acin:
+Tarayıcı: http://localhost:3000
 
-http://localhost:3000
+Production container kullanılıyorsa NEXT_PUBLIC_API_BASE_URL build sırasında
+bundle'a işlenir. URL değişince image'ı yeniden build edin:
 
-6) TARIHSEL VERIYI KONTROL EDIN
--------------------------------
-- Genel bakista Birlesik / Guncel / Arsiv secenekleri gorunmeli.
-- Toplam veri envanteri 3.351 kayit gostermeli.
-- Urun katalogunda Tarihsel secip en az iki karakterli bir sorgu yazin.
-- Karsilastirmada Tarihsel secip Son 1 ay veya Son 3 ay secin.
-- Akilli asistanda Tarihsel secip bir donem belirleyin.
+docker compose --profile frontend up --build
 
-7) TUM BANKALAR PANOSUNU KONTROL EDIN
--------------------------------------
-- Karsilastirma ekraninda banka secimini bos birakin veya "Tum bankalar" secenegine basin.
-- Bir urun turu secip "Tum bankalari karsilastir" dugmesine basin.
-- Kartlar / Matris dugmeleriyle iki farkli gorunum arasinda gecin.
-- Akilli asistana "Konut finansmaninda en uzun vadeleri karsilastir" diye sorun.
-- Yanittan sonra "Tum bankalar panosu" gorunmeli; verisi olan her banka ayri kartta listelenmelidir.
-- Asistan urun turunu algilamazsa ustteki "Urun panosu" menusunden urunu elle secin.
-
-SORUN GIDERME
+8) DOĞRULAMA
 -------------
-API cevrimdisi gorunuyorsa:
-- Backend CMD penceresinin acik oldugunu kontrol edin.
-- http://127.0.0.1:8000/health adresini tarayicida acin.
-- Frontend'i kapatip yeniden baslatin: Ctrl+C, sonra npm run dev
+- Genel bakışta Birleşik / Güncel / Arşiv seçenekleri görünmeli.
+- Birleşik veri envanteri 3.351 belge göstermeli.
+- Karşılaştırmada KONUT_FINANSMANI seçilip kaynak/kanıt alanları açılmalı.
+- Asistana "Konut finansmanında vade seçenekleri nelerdir?" sorulmalı ve
+  [1], [2] atıfları aynı mesajın kaynak kartlarına bağlanmalı.
+- Backend testleri: cd backend ve python -m unittest -v test_backend_hardening.py
+- Frontend testleri: repo kökünde npm test
 
-Port 3000 doluysa Next.js otomatik olarak 3001'i kullanabilir. Terminalde yazan adresi acin.
+SORUN GİDERME
+-------------
+API çevrimdışıysa önce /health adresini, backend CMD penceresini ve backend\.env
+runtime DB parolasını kontrol edin. Model dizini yoksa API model_ready=false
+döner. Port 3000 doluysa terminalin gösterdiği gerçek frontend adresini açın.

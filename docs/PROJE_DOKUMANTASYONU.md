@@ -82,7 +82,11 @@ Bkz. [`backend/README.md#veri-seti`](../backend/README.md#veri-seti). Ham
 metinler BDDK'nın katılım bankacılığı kuruluşları listesindeki
 ([bddk.org.tr/Kurulus/Liste/77](https://www.bddk.org.tr/Kurulus/Liste/77))
 bankaların resmî web sitelerinden toplanmıştır; etiketli eğitim/doğrulama
-setleri `backend/data/` altında bu repoyla birlikte paylaşılmıştır.
+setleri `backend/data/` altında bu repoyla birlikte paylaşılmıştır. Yayın
+paketinin tek doğruluk kaynağı olan `dataset/.../MANIFEST.json`, **3.351
+belge**, **7.238 pasaj** ve **10.501 span** bildirir. Etiketler silver
+niteliktedir: kural tabanlı ön etiketleme ve kalite kontrollerinden geçmiştir,
+ancak tamamı bağımsız insan gold etiketi değildir.
 
 ## Veri ön işleme adımları
 
@@ -132,6 +136,99 @@ eklenmez**. Frontend'in `/comparison` uç noktası, seçilen ürün türü için
 bu fact'leri bankalara göre pivotlayıp kanıt metnine kadar izlenebilir bir
 tablo döndürür (bkz. kök `README.md#api-sözleşmesi`).
 
+### Gerçek API JSON örnekleri
+
+Aşağıdaki gövdeler 27 Ağustos 2026'da çalışan yerel API v1.3.0'a salt okunur
+isteklerle doğrulandı. Uzun `summary_text`, `content` ve ikinci sonuç burada
+okunabilirlik için gösterilmedi; istek/alan adları ve verilen örnek değerler
+gerçek yanıttandır.
+
+`POST /comparison` isteği:
+
+```json
+{
+  "campaign_type_code": "KONUT_FINANSMANI",
+  "bank_names": [],
+  "limit": 2
+}
+```
+
+Yanıt zarfı ve ilk gerçek kayıt:
+
+```json
+{
+  "campaign_type_code": "KONUT_FINANSMANI",
+  "campaign_type": "Konut Finansmanı Kampanyası",
+  "count": 2,
+  "items": [
+    {
+      "document_id": 164,
+      "bank_name": "Dünya Katılım Bankası A.Ş.",
+      "page_title": "Konut Finansmanı Rehberi: İlk Konut İçin Ne Kadar Finansman Kullanabilirim?",
+      "source_url": "https://dunyakatilim.com.tr/blog/konut-finansmani-rehberi-ilk-konut-icin-ne-kadar-finansman-kullanabilirim",
+      "campaign_type_code": "KONUT_FINANSMANI",
+      "confidence": 0.796,
+      "verified": false,
+      "attributes": {
+        "BASVURU_KANALI": [
+          {
+            "text": "Dijital başvuru imkanları",
+            "normalized_value": null,
+            "source": "ollama_schema_rules_v1",
+            "confidence": 0.95,
+            "evidence_text": "Dijital başvuru imkanları",
+            "verified": false
+          }
+        ]
+      }
+    }
+  ],
+  "warnings": [
+    "This result was generated automatically and has not been human verified.",
+    "This extracted fact has not been human verified."
+  ]
+}
+```
+
+`POST /chat` isteği:
+
+```json
+{
+  "query": "Konut finansmanında vade seçenekleri nelerdir?",
+  "top_k": 2
+}
+```
+
+Gerçek yanıtın kaynak izlenebilirliğini gösteren bölümü:
+
+```json
+{
+  "query": "Konut finansmanında vade seçenekleri nelerdir?",
+  "answer": "Türkiye Finans Katılım Bankası A.Ş. konut finansmanı sayfasında vade ve maliyet alanlarını birlikte yayımlamaktadır [1].",
+  "model": "qwen3.5:9b",
+  "sources": [
+    {
+      "source_id": 1,
+      "bank_name": "Türkiye Finans Katılım Bankası A.Ş.",
+      "page_title": "Konut Finansmanı (Konut Kredisi)*",
+      "source_url": "https://www.turkiyefinans.com.tr/tr-tr/bireysel/konut-finansmani/Sayfalar/konut-finansmani.aspx",
+      "content": "Vade Kâr Oranı Tahsis Ücreti Aylık Toplam Maliyet Yıllık Toplam Maliyet",
+      "semantic_score": 0.6825162987490729,
+      "lexical_score": 2.2,
+      "hybrid_score": 0.031009615384615385,
+      "verified": false
+    }
+  ],
+  "warnings": [
+    "This result was generated automatically and has not been human verified."
+  ]
+}
+```
+
+Köşeli parantezli `[1]` atfı aynı yanıttaki `sources[].source_id = 1`
+kaydına gider; istemci atıfları farklı mesajların kaynak listeleri arasında
+yeniden kullanmaz.
+
 ## Çalıştırma talimatları
 
 Bkz. kök [`README.md#kurulum`](../README.md#kurulum) (frontend) ve
@@ -141,12 +238,38 @@ ayrıntılıdır.
 
 ## Karşılaşılan problemler ve çözüm yaklaşımları
 
-> **Takımın doldurması gerekiyor.** Geliştirme sürecinde karşılaşılan
-> teknik zorluklar ve çözüm yaklaşımları (örn. Türkçe'ye özgü karakter
-> normalizasyonu ihtiyacı, PostgreSQL locale/pgvector kurulum sorunları,
-> yanlış pozitif NER çıkarımlarını azaltmak için bağlam kurallarının
-> eklenmesi vb.) buraya, ekibin kendi deneyiminden yazılmalıdır — bu
-> içerik kod tabanından çıkarılamaz.
+Bu bölümdeki maddeler depo içindeki kod, kurulum rehberi ve denetim çıktılarıyla
+kanıtlanabilen sorunlardır:
+
+1. **Türkçe yazım ve sayı biçimleri aynı kavramı farklı gösteriyordu.**
+   `ı/İ`, aksan, boşluk, yüzde ve para birimi farkları deterministik
+   normalizasyonla tek biçime indirildi (`fact_context_rules.fold_text` ve
+   normalleştirme yardımcıları). Böylece `Kâr Payı`, `kar payi`, `%2,05` ve
+   `% 2.05` gibi yüzey farkları eşleşme/tekilleştirmeyi bozmaz.
+2. **Yüksek model skoru tek başına yanlış pozitifleri engellemiyordu.**
+   Erken ödeme, toplam geri ödeme ve kampanyayla ilgisiz tutar bağlamları
+   `fact_context_rules.py` ile süzüldü; biçim kontrolleri
+   `fact_surface_rules.py` ile ayrıldı. Belirsiz sonuçlar silinmek yerine
+   `human_review_v1` kuyruğuna yönlendirildi. Son arşiv denetimi bu ayrımı
+   3.982 kabul, 437 inceleme ve 1.036 ret olarak kaydeder
+   (`backend/archive_audit_v31_final.json`).
+3. **Aynı URL veya metnin yeniden alınması mükerrer belge üretebiliyordu.**
+   Belge alımında `record_key` ve normalize içerik SHA-256 özeti birlikte
+   kontrol edildi (`intake_duplicate_gate: record_hash_first_v1`). Değişmeyen
+   kayıt atlanır; aynı anahtarda değişmiş içerik otomatik üzerine yazılmadan
+   incelemeye gönderilir.
+4. **PostgreSQL/pgvector Windows kurulumu ortama duyarlıydı.** Türkçe locale
+   ile cluster oluşturma ve imzasız `vector.dll` için Windows Code Integrity
+   sorunları görüldü. Kurulum rehberi İngilizce locale, doğru PostgreSQL ana
+   sürümüne karşı derleme ve güvenlik ayarını değiştirmeden önce olay günlüğü
+   doğrulaması adımlarını kayda geçirir. Depodaki migration smoke testi ayrıca
+   `vector(1024)` tipini ve temel tabloları doğrular.
+5. **Arşiv yüklemesinden sonra arama indeksi eksik kalabiliyordu.**
+   `archive_audit_v31_after_write.json` ilk aşamada 1.566 aranabilir belgenin
+   embedding'inin eksik olduğunu gösterirken, son denetim
+   `archive_audit_v31_final.json` içinde bu sayı sıfıra düşer ve 3.192/3.192
+   chunk'ın embed edildiği doğrulanır. Yazma ve embedding adımlarının ayrı
+   audit edilmesi bu eksikliği görünür kılmıştır.
 
 ## Model çıktı örnekleri
 
@@ -166,8 +289,10 @@ EKSPERTIZ_UCRETI (8.000 TL), IPOTEK_TESIS_UCRETI (3.000 TL)
 Swagger UI üzerinden (`http://127.0.0.1:8000/docs`) `POST /ner` veya
 `POST /analyze` uç noktalarıyla canlı olarak denenebilir.
 
-> **Takımın eklemesi önerilir:** gerçek veri setinden birkaç `/comparison`
-> ve `/chat` çıktı ekran görüntüsü/örneği (demo videosunda da gösterilecek).
+Gerçek veriyle yapılacak teslim demosunda `/comparison` için ürün türü ve
+banka filtreleri, `/chat` için de yanıt-kaynak eşleşmesi birlikte gösterilir.
+Ekran görüntüsü yerine tekrarlanabilir istek sırası teslim kontrol listesinde
+tutulur; böylece belgeye belirli bir koşunun geçici verisi gömülmez.
 
 ## Model performans değerlendirmesi
 
@@ -180,13 +305,16 @@ Swagger UI üzerinden (`http://127.0.0.1:8000/docs`) `POST /ner` veya
 | Kampanya sınıflandırıcı (`campaign_v1`) | 0.9912 | 0.9908 | 0.9912 |
 | Ürün sınıflandırıcı (`product_v2`) | 0.9123 | 0.8759 | 0.9109 |
 
-**NER (`ner_v4`)** — `train_ner.py`, `seqeval` kütüphanesiyle entity-level
-precision/recall/F1 (`classification_report`, satır 218-229) hesaplar ve
-en iyi checkpoint'i F1'e göre seçer (`metric_for_best_model: "f1"`).
-Nihai test seti metrikleri ayrı bir özet dosyası olarak
-kaydedilmediğinden, tam sayılar için `train_ner.py`'nin eğitim
-konsolu çıktısı/logu referans alınmalıdır.
+**NER (`ner_v4`)** — eğitim koşusunun `seqeval` entity-level test özeti:
 
-> **Takımın eklemesi gerekiyor:** `ner_v4` için nihai
-> precision/recall/F1 değerleri (varsa eğitim logundan alınıp buraya
-> eklenmelidir).
+| Precision | Recall | F1 | Token accuracy |
+| ---: | ---: | ---: | ---: |
+| 0.8296 | 0.9113 | 0.8685 | 0.9828 |
+
+`train_ner.py` en iyi checkpoint'i F1'e göre seçer
+(`metric_for_best_model: "f1"`). Bu ölçümler, kural tabanlı ön etiketlemeyle
+üretilmiş **silver** test bölümü üzerindedir; bağımsız uzman etiketli bir gold
+benchmark sonucu olarak yorumlanmamalıdır. Üretim hattında model span'leri
+ayrıca `fact_context_rules.py` ve `fact_surface_rules.py` bağlam/yüzey
+kontrollerinden geçer. Dolayısıyla yukarıdaki model metriği ile son kabul,
+inceleme ve ret sayıları farklı katmanları ölçer.

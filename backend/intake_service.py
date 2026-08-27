@@ -9,7 +9,8 @@ from typing import Any
 
 from psycopg.types.json import Jsonb
 
-from classifier_service import classify_text
+from classifier_service import canonicalize_product_label, classify_text
+from db.runtime_schema import require_migrated_columns, require_migrated_tables
 from fact_context_rules import (
     AUTO_THRESHOLDS,
     campaign_amount_roles,
@@ -19,7 +20,7 @@ from fact_context_rules import (
 )
 from fact_surface_rules import validate_entity_surface
 from hybrid_search import MODEL_NAME, get_connection
-from ner_service import predict_entities
+from ner_service import predict_entities_with_metadata
 
 
 PIPELINE_VERSION = "classifier_v2_ner_v4_intake_v3_1"
@@ -120,68 +121,15 @@ NUMERIC_LABELS = {
 }
 
 
-DOCUMENT_REVIEW_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS document_intake_review_queue (
-    id BIGSERIAL PRIMARY KEY,
-    record_key VARCHAR(255) NOT NULL,
-    bank_key VARCHAR(128) NOT NULL,
-    bank_name VARCHAR(255) NOT NULL,
-    source_url TEXT NOT NULL,
-    page_title TEXT,
-    raw_text TEXT NOT NULL,
-    content_hash CHAR(64) NOT NULL,
-    classification JSONB NOT NULL,
-    review_reason VARCHAR(128) NOT NULL,
-    review_status VARCHAR(16) NOT NULL DEFAULT 'pending'
-        CHECK (review_status IN ('pending', 'approved', 'rejected')),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (record_key, content_hash)
+INTAKE_MIGRATED_TABLES = (
+    "document_intake_review_queue",
+    "document_intake_state",
+    "comparison_fact_review_queue",
 )
-"""
-
-
-DOCUMENT_STATE_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS document_intake_state (
-    document_id BIGINT PRIMARY KEY
-        REFERENCES documents(id) ON DELETE CASCADE,
-    bank_id BIGINT NOT NULL
-        REFERENCES banks(id) ON DELETE CASCADE,
-    record_key VARCHAR(255) NOT NULL,
-    content_hash CHAR(64) NOT NULL,
-    pipeline_version VARCHAR(64) NOT NULL,
-    classification JSONB NOT NULL,
-    accepted_fact_count INTEGER NOT NULL DEFAULT 0,
-    review_fact_count INTEGER NOT NULL DEFAULT 0,
-    rejected_fact_count INTEGER NOT NULL DEFAULT 0,
-    processed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (bank_id, content_hash)
+DOCUMENT_REVIEW_BASELINE_COLUMNS = (
+    "base_document_exists",
+    "base_document_hash",
 )
-"""
-
-
-FACT_REVIEW_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS comparison_fact_review_queue (
-    id BIGSERIAL PRIMARY KEY,
-    document_id BIGINT NOT NULL
-        REFERENCES documents(id) ON DELETE CASCADE,
-    fact_type VARCHAR(64) NOT NULL,
-    fact_text TEXT NOT NULL,
-    normalized_value JSONB,
-    evidence_text TEXT NOT NULL,
-    extraction_method VARCHAR(64) NOT NULL,
-    confidence DOUBLE PRECISION NOT NULL
-        CHECK (confidence >= 0 AND confidence <= 1),
-    source_chunk INTEGER NOT NULL,
-    fact_key CHAR(64) NOT NULL,
-    review_reason VARCHAR(128) NOT NULL,
-    review_status VARCHAR(16) NOT NULL DEFAULT 'pending'
-        CHECK (review_status IN ('pending', 'approved', 'rejected')),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (document_id, fact_key)
-)
-"""
 
 
 @dataclass
@@ -204,6 +152,20 @@ class EmbeddingChunk:
     content_hash: str
 
 
+class IntakeReviewConflictError(RuntimeError):
+    """Raised when a pending review changes before its approved write."""
+
+
+class IntakeReviewAlreadyApprovedError(IntakeReviewConflictError):
+    """Signals that an identical review was approved in an earlier transaction."""
+
+    def __init__(self, review_id: int):
+        self.review_id = review_id
+        super().__init__(
+            f"Document review {review_id} for this content is already approved."
+        )
+
+
 def fold_text(value: str) -> str:
     translated = value.translate(str.maketrans({"ı": "i", "İ": "I"}))
     decomposed = unicodedata.normalize("NFKD", translated)
@@ -223,6 +185,47 @@ def content_digest(value: str) -> str:
     return hashlib.sha256(
         normalized_content(value).encode("utf-8")
     ).hexdigest()
+
+
+def validate_review_document_baseline(
+    *,
+    review_id: int,
+    candidate_digest: str,
+    base_document_exists: bool | None,
+    base_document_hash: str | None,
+    current_document_digest: str | None,
+) -> None:
+    """Reject approval when the accepted document changed after queueing."""
+    if base_document_exists is None:
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} has no trusted document "
+            "baseline; re-analyze the candidate after applying the review "
+            "baseline migration."
+        )
+
+    normalized_base_hash = (
+        str(base_document_hash).strip() if base_document_hash is not None else None
+    )
+    if base_document_exists != (normalized_base_hash is not None):
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} has an invalid document baseline."
+        )
+
+    if current_document_digest == candidate_digest:
+        return
+
+    current_document_exists = current_document_digest is not None
+    baseline_matches = current_document_exists == base_document_exists
+    if current_document_exists:
+        baseline_matches = (
+            baseline_matches
+            and current_document_digest == normalized_base_hash
+        )
+    if not baseline_matches:
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} was superseded by a newer "
+            "accepted document revision."
+        )
 
 
 def default_record_key(bank_key: str, source_url: str) -> str:
@@ -632,6 +635,7 @@ def analyze_reviewed_intake(
     review_threshold: float,
 ) -> dict[str, Any]:
     classification = json.loads(json.dumps(original_classification))
+    product_type = canonicalize_product_label(product_type)
     original_top3 = classification.get("product_top3", [])
     classification["product_type"] = {
         "label": product_type,
@@ -668,7 +672,10 @@ def analyze_classified_intake(
     review_threshold: float,
 ) -> dict[str, Any]:
 
-    product_type = str(classification["product_type"]["label"])
+    product_type = canonicalize_product_label(
+        str(classification["product_type"]["label"])
+    )
+    classification["product_type"]["label"] = product_type
     allowed_labels = ALLOWED_ENTITY_LABELS_BY_PRODUCT.get(product_type)
     if classification["decision"] == "REVIEW":
         return {
@@ -680,6 +687,9 @@ def analyze_classified_intake(
                 "model": ner_bundle.model_dir.name,
                 "raw_count": 0,
                 "filtered_out_count": 0,
+                "input_word_count": 0,
+                "model_chunk_count": 0,
+                "truncated": False,
                 "allowed_labels": sorted(allowed_labels or []),
                 "accepted_count": 0,
                 "review_count": 0,
@@ -698,6 +708,9 @@ def analyze_classified_intake(
                 "model": ner_bundle.model_dir.name,
                 "raw_count": 0,
                 "filtered_out_count": 0,
+                "input_word_count": 0,
+                "model_chunk_count": 0,
+                "truncated": False,
                 "allowed_labels": [],
                 "accepted_count": 0,
                 "review_count": 0,
@@ -714,14 +727,18 @@ def analyze_classified_intake(
     candidates: list[FactCandidate] = []
     raw_count = 0
     filtered_out_count = 0
+    input_word_count = 0
+    model_chunk_count = 0
     with ner_lock:
         for chunk_index, chunk in enumerate(chunks):
-            raw_entities = predict_entities(
+            raw_entities, ner_metadata = predict_entities_with_metadata(
                 text=chunk,
                 bundle=ner_bundle,
                 threshold=ner_threshold,
             )
             raw_count += len(raw_entities)
+            input_word_count += int(ner_metadata["input_word_count"])
+            model_chunk_count += int(ner_metadata["model_chunk_count"])
             for entity in raw_entities:
                 label = str(entity["label"])
                 if label not in allowed_labels:
@@ -757,6 +774,9 @@ def analyze_classified_intake(
             "model": ner_bundle.model_dir.name,
             "raw_count": raw_count,
             "filtered_out_count": filtered_out_count,
+            "input_word_count": input_word_count,
+            "model_chunk_count": model_chunk_count,
+            "truncated": False,
             "allowed_labels": sorted(allowed_labels),
             "accepted_count": counts["accepted"],
             "review_count": counts["review"],
@@ -861,7 +881,32 @@ def queue_document_review(
     classification: dict[str, Any],
     reason: str,
 ) -> int:
-    cursor.execute(DOCUMENT_REVIEW_TABLE_SQL)
+    require_migrated_tables(cursor, ("document_intake_review_queue",))
+    require_migrated_columns(
+        cursor,
+        "document_intake_review_queue",
+        DOCUMENT_REVIEW_BASELINE_COLUMNS,
+    )
+    cursor.execute(
+        "SELECT pg_advisory_xact_lock(hashtextextended(%s, 0))",
+        (record_key,),
+    )
+    cursor.execute(
+        """
+        SELECT raw_text
+        FROM documents
+        WHERE record_key = %s
+        FOR SHARE
+        """,
+        (record_key,),
+    )
+    base_document = cursor.fetchone()
+    base_document_exists = base_document is not None
+    base_document_hash = (
+        content_digest(str(base_document[0]))
+        if base_document_exists
+        else None
+    )
     cursor.execute(
         """
         INSERT INTO document_intake_review_queue (
@@ -873,9 +918,11 @@ def queue_document_review(
             raw_text,
             content_hash,
             classification,
-            review_reason
+            review_reason,
+            base_document_exists,
+            base_document_hash
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         ON CONFLICT (record_key, content_hash) DO UPDATE SET
             bank_key = EXCLUDED.bank_key,
             bank_name = EXCLUDED.bank_name,
@@ -884,6 +931,16 @@ def queue_document_review(
             raw_text = EXCLUDED.raw_text,
             classification = EXCLUDED.classification,
             review_reason = EXCLUDED.review_reason,
+            base_document_exists = CASE
+                WHEN document_intake_review_queue.base_document_exists IS NULL
+                THEN EXCLUDED.base_document_exists
+                ELSE document_intake_review_queue.base_document_exists
+            END,
+            base_document_hash = CASE
+                WHEN document_intake_review_queue.base_document_exists IS NULL
+                THEN EXCLUDED.base_document_hash
+                ELSE document_intake_review_queue.base_document_hash
+            END,
             updated_at = NOW()
         WHERE document_intake_review_queue.review_status = 'pending'
         RETURNING id
@@ -898,6 +955,8 @@ def queue_document_review(
             digest,
             Jsonb(classification),
             reason,
+            base_document_exists,
+            base_document_hash,
         ),
     )
     row = cursor.fetchone()
@@ -905,13 +964,30 @@ def queue_document_review(
         return int(row[0])
     cursor.execute(
         """
-        SELECT id
+        SELECT id, review_status
         FROM document_intake_review_queue
         WHERE record_key = %s AND content_hash = %s
+        FOR UPDATE
         """,
         (record_key, digest),
     )
-    return int(cursor.fetchone()[0])
+    resolved = cursor.fetchone()
+    if resolved is None:
+        raise RuntimeError(
+            "The document review upsert did not return or retain a queue row."
+        )
+    review_id = int(resolved[0])
+    review_status = str(resolved[1])
+    if review_status == "approved":
+        raise IntakeReviewAlreadyApprovedError(review_id)
+    if review_status == "rejected":
+        raise IntakeReviewConflictError(
+            f"Document review {review_id} for this content was rejected; "
+            "the resolved content was not requeued."
+        )
+    raise RuntimeError(
+        f"Unexpected document review status for {review_id}: {review_status}."
+    )
 
 
 def inspect_existing_document(cursor, record_key: str, bank_key: str, digest: str):
@@ -992,6 +1068,133 @@ def preflight_existing_action(
     return None
 
 
+def lock_pending_document_review(
+    cursor,
+    *,
+    review_id: int,
+    record_key: str,
+    digest: str,
+    review_updated_at: Any,
+) -> dict[str, Any]:
+    cursor.execute(
+        """
+        SELECT
+            id,
+            record_key,
+            content_hash,
+            updated_at,
+            base_document_exists,
+            base_document_hash
+        FROM document_intake_review_queue
+        WHERE id = %s
+          AND record_key = %s
+          AND content_hash = %s
+          AND review_status = 'pending'
+          AND updated_at = %s
+        FOR UPDATE
+        """,
+        (review_id, record_key, digest, review_updated_at),
+    )
+    row = cursor.fetchone()
+    if row is None:
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} changed before approval."
+        )
+    cursor.execute(
+        """
+        SELECT id, content_hash, review_status
+        FROM document_intake_review_queue
+        WHERE record_key = %s
+          AND id > %s
+          AND review_status IN ('pending', 'approved')
+        ORDER BY id DESC
+        LIMIT 1
+        FOR UPDATE
+        """,
+        (record_key, review_id),
+    )
+    newer_review = cursor.fetchone()
+    if newer_review is not None:
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} was superseded by newer "
+            f"review {int(newer_review[0])}."
+        )
+    return {
+        "id": int(row[0]),
+        "record_key": str(row[1]),
+        "content_hash": str(row[2]).strip(),
+        "updated_at": row[3],
+        "base_document_exists": row[4],
+        "base_document_hash": (
+            str(row[5]).strip() if row[5] is not None else None
+        ),
+    }
+
+
+def approve_locked_document_review(
+    cursor,
+    *,
+    review_id: int,
+    record_key: str,
+    digest: str,
+) -> dict[str, Any]:
+    cursor.execute(
+        """
+        UPDATE document_intake_review_queue
+        SET review_status = 'approved', updated_at = NOW()
+        WHERE id = %s
+          AND record_key = %s
+          AND content_hash = %s
+          AND review_status = 'pending'
+        RETURNING id, record_key, review_status
+        """,
+        (review_id, record_key, digest),
+    )
+    row = cursor.fetchone()
+    if row is None:
+        raise IntakeReviewConflictError(
+            f"Pending document review {review_id} changed before approval."
+        )
+    return {
+        "id": int(row[0]),
+        "record_key": str(row[1]),
+        "review_status": str(row[2]),
+    }
+
+
+def clear_stale_document_data(cursor, document_id: int) -> None:
+    """Remove derivatives whose offsets/content belong to the old document."""
+    cursor.execute(
+        """
+        DELETE FROM entities
+        WHERE passage_id IN (
+            SELECT id FROM passages WHERE document_id = %s
+        )
+        """,
+        (document_id,),
+    )
+    cursor.execute(
+        "DELETE FROM passages WHERE document_id = %s",
+        (document_id,),
+    )
+    cursor.execute(
+        "DELETE FROM comparison_fact_review_queue WHERE document_id = %s",
+        (document_id,),
+    )
+    cursor.execute(
+        "DELETE FROM comparison_facts WHERE document_id = %s",
+        (document_id,),
+    )
+    cursor.execute(
+        "SELECT to_regclass('public.ner_document_state') IS NOT NULL"
+    )
+    if cursor.fetchone()[0]:
+        cursor.execute(
+            "DELETE FROM ner_document_state WHERE document_id = %s",
+            (document_id,),
+        )
+
+
 def insert_chunks(
     cursor,
     document_id: int,
@@ -1061,7 +1264,7 @@ def insert_chunks(
 
 
 def insert_fact_candidates(cursor, document_id: int, candidates: list[dict[str, Any]]):
-    cursor.execute(FACT_REVIEW_TABLE_SQL)
+    require_migrated_tables(cursor, ("comparison_fact_review_queue",))
     cursor.execute(
         """
         DELETE FROM comparison_facts
@@ -1178,25 +1381,51 @@ def persist_intake(
     embedding_lock,
     allow_update: bool,
     human_verified: bool = False,
+    review_id: int | None = None,
+    review_updated_at: Any | None = None,
 ) -> dict[str, Any]:
     classification = analysis["classification"]
+    if review_id is not None and review_updated_at is None:
+        raise IntakeReviewConflictError(
+            "A review approval requires the loaded review revision."
+        )
+    if review_id is not None and analysis["status"] == "REVIEW":
+        raise IntakeReviewConflictError(
+            "A review approval cannot persist another REVIEW decision."
+        )
     if analysis["status"] == "REVIEW":
         reason = ",".join(classification["review_reasons"]) or "classification_review"
-        with get_connection() as connection:
-            with connection.transaction():
-                with connection.cursor() as cursor:
-                    review_id = queue_document_review(
-                        cursor,
-                        record_key=record_key,
-                        bank_key=bank_key,
-                        bank_name=bank_name,
-                        source_url=source_url,
-                        page_title=page_title,
-                        raw_text=raw_text,
-                        digest=digest,
-                        classification=classification,
-                        reason=reason,
-                    )
+        try:
+            with get_connection() as connection:
+                with connection.transaction():
+                    with connection.cursor() as cursor:
+                        review_id = queue_document_review(
+                            cursor,
+                            record_key=record_key,
+                            bank_key=bank_key,
+                            bank_name=bank_name,
+                            source_url=source_url,
+                            page_title=page_title,
+                            raw_text=raw_text,
+                            digest=digest,
+                            classification=classification,
+                            reason=reason,
+                        )
+        except IntakeReviewAlreadyApprovedError as error:
+            existing_result = preflight_existing_action(
+                record_key,
+                bank_key,
+                digest,
+            )
+            if (
+                existing_result is not None
+                and existing_result["action"] == "unchanged_skipped"
+            ):
+                return existing_result
+            raise IntakeReviewConflictError(
+                f"Approved document review {error.review_id} is no longer the "
+                "current content and was not requeued."
+            ) from error
         return {
             "mode": "DATABASE_WRITE",
             "action": "review_queued",
@@ -1217,6 +1446,10 @@ def persist_intake(
             )
     if existing is not None:
         if existing["kind"] == "duplicate_content":
+            if review_id is not None:
+                raise IntakeReviewConflictError(
+                    "The reviewed content already belongs to another document."
+                )
             return {
                 "mode": "DATABASE_WRITE",
                 "action": "duplicate_content_skipped",
@@ -1226,7 +1459,7 @@ def persist_intake(
                 "facts_written": 0,
                 "fact_reviews_queued": 0,
             }
-        if existing["same_content"]:
+        if existing["same_content"] and review_id is None:
             return {
                 "mode": "DATABASE_WRITE",
                 "action": "unchanged_skipped",
@@ -1273,7 +1506,9 @@ def persist_intake(
         embedding_lock,
         chunks,
     )
-    product_type = str(classification["product_type"]["label"])
+    product_type = canonicalize_product_label(
+        str(classification["product_type"]["label"])
+    )
     candidates = analysis["ner"]["candidates"]
     rationale = json.dumps(
         {
@@ -1286,12 +1521,88 @@ def persist_intake(
         sort_keys=True,
     )
 
+    review_resolution = None
     with get_connection() as connection:
         with connection.transaction():
             with connection.cursor() as cursor:
-                cursor.execute(DOCUMENT_REVIEW_TABLE_SQL)
-                cursor.execute(DOCUMENT_STATE_TABLE_SQL)
-                cursor.execute(FACT_REVIEW_TABLE_SQL)
+                require_migrated_tables(cursor, INTAKE_MIGRATED_TABLES)
+                if review_id is not None:
+                    require_migrated_columns(
+                        cursor,
+                        "document_intake_review_queue",
+                        DOCUMENT_REVIEW_BASELINE_COLUMNS,
+                    )
+                cursor.execute(
+                    "SELECT pg_advisory_xact_lock(hashtextextended(%s, 0))",
+                    (record_key,),
+                )
+                locked_review = None
+                if review_id is not None:
+                    locked_review = lock_pending_document_review(
+                        cursor,
+                        review_id=review_id,
+                        record_key=record_key,
+                        digest=digest,
+                        review_updated_at=review_updated_at,
+                    )
+
+                cursor.execute(
+                    """
+                    SELECT id, raw_text
+                    FROM documents
+                    WHERE record_key = %s
+                    FOR UPDATE
+                    """,
+                    (record_key,),
+                )
+                current_document = cursor.fetchone()
+                current_document_digest = (
+                    content_digest(str(current_document[1]))
+                    if current_document is not None
+                    else None
+                )
+                if locked_review is not None:
+                    validate_review_document_baseline(
+                        review_id=review_id,
+                        candidate_digest=digest,
+                        base_document_exists=locked_review[
+                            "base_document_exists"
+                        ],
+                        base_document_hash=locked_review[
+                            "base_document_hash"
+                        ],
+                        current_document_digest=current_document_digest,
+                    )
+                content_is_changing = bool(
+                    current_document is not None
+                    and current_document_digest != digest
+                )
+                if (
+                    content_is_changing
+                    and not allow_update
+                    and review_id is None
+                ):
+                    queued_review_id = queue_document_review(
+                        cursor,
+                        record_key=record_key,
+                        bank_key=bank_key,
+                        bank_name=bank_name,
+                        source_url=source_url,
+                        page_title=page_title,
+                        raw_text=raw_text,
+                        digest=digest,
+                        classification=classification,
+                        reason="existing_document_changed",
+                    )
+                    return {
+                        "mode": "DATABASE_WRITE",
+                        "action": "changed_document_review_queued",
+                        "document_id": int(current_document[0]),
+                        "document_review_id": queued_review_id,
+                        "chunks_written": 0,
+                        "facts_written": 0,
+                        "fact_reviews_queued": 0,
+                    }
                 cursor.execute(
                     "SELECT to_regclass('public.comparison_facts') IS NOT NULL"
                 )
@@ -1337,6 +1648,7 @@ def persist_intake(
                         source_url = EXCLUDED.source_url,
                         page_title = EXCLUDED.page_title,
                         raw_text = EXCLUDED.raw_text,
+                        summary_text = EXCLUDED.summary_text,
                         campaign_type_code = EXCLUDED.campaign_type_code,
                         campaign_type = EXCLUDED.campaign_type,
                         confidence = EXCLUDED.confidence,
@@ -1363,6 +1675,8 @@ def persist_intake(
                     ),
                 )
                 document_id = int(cursor.fetchone()[0])
+                if content_is_changing:
+                    clear_stale_document_data(cursor, document_id)
                 insert_chunks(
                     cursor,
                     document_id,
@@ -1412,22 +1726,23 @@ def persist_intake(
                         analysis["ner"]["rejected_count"],
                     ),
                 )
-                cursor.execute(
-                    """
-                    UPDATE document_intake_review_queue
-                    SET review_status = 'approved', updated_at = NOW()
-                    WHERE record_key = %s
-                      AND review_status = 'pending'
-                    """,
-                    (record_key,),
-                )
+                if review_id is not None:
+                    review_resolution = approve_locked_document_review(
+                        cursor,
+                        review_id=review_id,
+                        record_key=record_key,
+                        digest=digest,
+                    )
 
-    return {
+    result = {
         "mode": "DATABASE_WRITE",
-        "action": "updated" if existing is not None else "inserted",
+        "action": "updated" if current_document is not None else "inserted",
         "document_id": document_id,
         "document_review_id": None,
         "chunks_written": len(chunks),
         "facts_written": facts_written,
         "fact_reviews_queued": reviews_queued,
     }
+    if review_resolution is not None:
+        result["review_resolution"] = review_resolution
+    return result

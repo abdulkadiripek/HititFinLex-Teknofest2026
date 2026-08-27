@@ -25,6 +25,11 @@ URL_ADVISORY_RULE_REASONS = frozenset(
         "generic_finance_path",
     }
 )
+PRODUCT_LABEL_ALIASES = {
+    # Legacy datasets used KART for card campaigns. Card products already have
+    # the unambiguous KART_URUNU label, so expose one canonical campaign code.
+    "KART": "KART_KAMPANYASI",
+}
 
 
 @dataclass
@@ -54,6 +59,38 @@ def normalize(text: str) -> str:
 
 def contains_any(text: str, terms: tuple[str, ...]) -> bool:
     return any(term in text for term in terms)
+
+
+def canonicalize_product_label(label: str) -> str:
+    cleaned = str(label).strip().upper()
+    return PRODUCT_LABEL_ALIASES.get(cleaned, cleaned)
+
+
+def product_label_variants(label: str) -> tuple[str, ...]:
+    canonical = canonicalize_product_label(label)
+    aliases = [
+        alias
+        for alias, target in PRODUCT_LABEL_ALIASES.items()
+        if target == canonical
+    ]
+    return tuple(dict.fromkeys((canonical, *aliases)))
+
+
+def canonicalize_ranked_scores(
+    ranked: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    combined: dict[str, float] = {}
+    for item in ranked:
+        label = canonicalize_product_label(str(item["label"]))
+        combined[label] = combined.get(label, 0.0) + float(item["score"])
+    return [
+        {"label": label, "score": round(score, 4)}
+        for label, score in sorted(
+            combined.items(),
+            key=lambda item: item[1],
+            reverse=True,
+        )
+    ]
 
 
 def strong_product_rule(
@@ -351,13 +388,14 @@ def predict_ranked(
         probabilities = torch.softmax(logits, dim=-1)
 
     ranked = torch.argsort(probabilities, descending=True)
-    return [
+    ranked_scores = [
         {
             "label": str(classifier.model.config.id2label[index]),
-            "score": round(float(probabilities[index]), 4),
+            "score": float(probabilities[index]),
         }
         for index in ranked.tolist()
     ]
+    return canonicalize_ranked_scores(ranked_scores)
 
 
 def resolve_classification(
@@ -378,6 +416,9 @@ def resolve_classification(
     Mid-confidence conflicts remain in human review.
     """
 
+    product_ranked = canonicalize_ranked_scores(product_ranked)
+    product = dict(product)
+    product["label"] = canonicalize_product_label(str(product["label"]))
     campaign_label = str(campaign["label"])
     product_label = str(product["label"])
     product_score = float(product["score"])

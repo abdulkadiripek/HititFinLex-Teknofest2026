@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import os
+
 import httpx
+from dotenv import load_dotenv
 
 
 API_URL = "http://127.0.0.1:8000"
@@ -13,7 +16,17 @@ def get_json(client: httpx.Client, path: str, **kwargs):
 
 
 def main():
-    with httpx.Client(base_url=API_URL, timeout=60.0) as client:
+    load_dotenv()
+    admin_api_key = os.getenv("HITITFINLEX_ADMIN_API_KEY", "").strip()
+    if not admin_api_key:
+        raise RuntimeError(
+            "HITITFINLEX_ADMIN_API_KEY is required for this smoke test."
+        )
+    with httpx.Client(
+        base_url=API_URL,
+        timeout=60.0,
+        headers={"X-API-Key": admin_api_key},
+    ) as client:
         health = get_json(client, "/health")
         assert health["review_workflow"] == "human_review_v1", health
         summary = get_json(client, "/reviews/summary")

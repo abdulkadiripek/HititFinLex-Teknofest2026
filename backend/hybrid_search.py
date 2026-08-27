@@ -214,6 +214,7 @@ def search_database(
                 fused.semantic_similarity,
                 fused.lexical_score,
                 fused.hybrid_score,
+                documents.verified,
                 ROW_NUMBER() OVER (
                     PARTITION BY documents.id
                     ORDER BY fused.hybrid_score DESC
@@ -234,7 +235,8 @@ def search_database(
             content,
             semantic_similarity,
             lexical_score,
-            hybrid_score
+            hybrid_score,
+            verified
         FROM ranked_documents
         WHERE document_rank = 1
         ORDER BY hybrid_score DESC
@@ -278,6 +280,7 @@ def print_results(query, rows):
             semantic_similarity,
             lexical_score,
             hybrid_score,
+            verified,
         ) = row
 
         preview = " ".join(content.split())
@@ -304,6 +307,7 @@ def print_results(query, rows):
         print("Banka:", bank_name or "-")
         print("Baslik:", page_title or "-")
         print("Kaynak:", source_url or "-")
+        print("Dogrulandi:", "evet" if verified else "hayir")
         print("Metin:", preview)
 
 

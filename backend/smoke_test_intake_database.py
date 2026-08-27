@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 import httpx
 from dotenv import load_dotenv
 
@@ -91,10 +93,19 @@ def post_intake(client: httpx.Client, payload: dict) -> dict:
 
 def main():
     load_dotenv()
+    admin_api_key = os.getenv("HITITFINLEX_ADMIN_API_KEY", "").strip()
+    if not admin_api_key:
+        raise RuntimeError(
+            "HITITFINLEX_ADMIN_API_KEY is required for the write check."
+        )
     payload = load_existing_housing_document()
     before = database_snapshot()
 
-    with httpx.Client(base_url=API_URL, timeout=300.0) as client:
+    with httpx.Client(
+        base_url=API_URL,
+        timeout=300.0,
+        headers={"X-API-Key": admin_api_key},
+    ) as client:
         health_response = client.get("/health")
         health_response.raise_for_status()
         health = health_response.json()

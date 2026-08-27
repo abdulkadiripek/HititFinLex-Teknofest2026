@@ -8,6 +8,7 @@ from typing import Any
 from dotenv import load_dotenv
 
 from archive_common_v28 import canonicalize_url, open_connection
+from classifier_service import canonicalize_product_label, product_label_variants
 from hybrid_search import (
     RRF_CONSTANT,
     build_lexical_query,
@@ -37,6 +38,8 @@ def search_historical_database(
     *,
     bank_names: list[str] | None = None,
     product_types: list[str] | None = None,
+    has_facts: bool | None = None,
+    min_confidence: float = 0.0,
     date_from: date | None = None,
     date_to: date | None = None,
 ) -> list[tuple]:
@@ -50,7 +53,27 @@ def search_historical_database(
         filter_parameters.append(bank_names)
     if product_types:
         filters.append("d.product_type_code = ANY(%s)")
-        filter_parameters.append(product_types)
+        filter_parameters.append(
+            list(
+                dict.fromkeys(
+                    variant
+                    for code in product_types
+                    for variant in product_label_variants(code)
+                )
+            )
+        )
+    if has_facts is not None:
+        predicate = "EXISTS" if has_facts else "NOT EXISTS"
+        filters.append(
+            f"{predicate} ("
+            "SELECT 1 FROM historical_facts hf "
+            "WHERE hf.historical_document_id = d.id "
+            "AND hf.decision = 'accepted'"
+            ")"
+        )
+    if min_confidence > 0:
+        filters.append("COALESCE(d.classification_confidence, 0) >= %s")
+        filter_parameters.append(min_confidence)
     if date_from:
         filters.append("d.snapshot_date >= %s")
         filter_parameters.append(date_from)
@@ -79,6 +102,7 @@ def search_historical_database(
                 d.archive_url,
                 d.snapshot_date,
                 d.product_type_code,
+                d.verified,
                 b.bank_name
             FROM historical_document_chunks c
             JOIN historical_documents d
@@ -140,6 +164,7 @@ def search_historical_database(
                 e.archive_url,
                 e.snapshot_date,
                 e.product_type_code,
+                e.verified,
                 e.content,
                 fused.semantic_similarity,
                 fused.lexical_score,
@@ -164,7 +189,8 @@ def search_historical_database(
             content,
             semantic_similarity,
             lexical_score,
-            hybrid_score
+            hybrid_score,
+            verified
         FROM ranked_documents
         WHERE document_rank = 1
         ORDER BY hybrid_score DESC
@@ -308,7 +334,9 @@ def fetch_url_versions(source_url: str) -> list[dict[str, Any]]:
             "source_url": row[4],
             "archive_url": row[5],
             "snapshot_date": row[6],
-            "product_type_code": row[7],
+            "product_type_code": (
+                canonicalize_product_label(row[7]) if row[7] else None
+            ),
             "classification_confidence": (
                 float(row[8]) if row[8] is not None else None
             ),
@@ -327,11 +355,11 @@ def fetch_historical_comparison(
     limit: int = 20,
 ) -> list[dict[str, Any]]:
     filters = [
-        "d.product_type_code = %s",
+        "d.product_type_code = ANY(%s)",
         "d.quality_status = 'accepted'",
         "d.searchable IS TRUE",
     ]
-    parameters: list[Any] = [product_type_code]
+    parameters: list[Any] = [list(product_label_variants(product_type_code))]
     if bank_names:
         filters.append("b.bank_name = ANY(%s)")
         parameters.append(bank_names)
@@ -357,6 +385,7 @@ def fetch_historical_comparison(
                         d.snapshot_date,
                         d.product_type_code,
                         d.classification_confidence,
+                        d.verified,
                         ROW_NUMBER() OVER (
                             PARTITION BY b.bank_name
                             ORDER BY d.snapshot_date DESC NULLS LAST, d.id DESC
@@ -382,12 +411,14 @@ def fetch_historical_comparison(
                     s.snapshot_date,
                     s.product_type_code,
                     s.classification_confidence,
+                    s.verified,
                     f.fact_type,
                     f.fact_text,
                     f.normalized_value,
                     f.evidence_text,
                     f.extraction_method,
-                    f.confidence
+                    f.confidence,
+                    f.review_status
                 FROM selected s
                 LEFT JOIN historical_facts f
                     ON f.historical_document_id = s.id
@@ -411,22 +442,44 @@ def fetch_historical_comparison(
                 "source_url": row[4],
                 "archive_url": row[5],
                 "snapshot_date": row[6],
-                "product_type_code": row[7],
+                "product_type_code": (
+                    canonicalize_product_label(row[7]) if row[7] else None
+                ),
                 "classification_confidence": (
                     float(row[8]) if row[8] is not None else None
+                ),
+                "verified": bool(row[9]),
+                "verification_warning": (
+                    None if row[9] else (
+                        "This result was generated automatically and has "
+                        "not been human verified."
+                    )
                 ),
                 "attributes": {},
             },
         )
-        if row[9] is None:
+        if row[10] is None:
             continue
-        item["attributes"].setdefault(str(row[9]), []).append(
+        fact_verified = bool(
+            row[16] == "approved"
+            or any(
+                marker in str(row[14]).casefold()
+                for marker in ("human", "manual", "review_approved")
+            )
+        )
+        item["attributes"].setdefault(str(row[10]), []).append(
             {
-                "text": str(row[10]),
-                "normalized_value": row[11],
-                "evidence_text": row[12],
-                "source": str(row[13]),
-                "confidence": float(row[14]),
+                "text": str(row[11]),
+                "normalized_value": row[12],
+                "evidence_text": row[13],
+                "source": str(row[14]),
+                "confidence": float(row[15]),
+                "verified": fact_verified,
+                "verification_warning": (
+                    None if fact_verified else (
+                        "This extracted fact has not been human verified."
+                    )
+                ),
             }
         )
     return list(items.values())

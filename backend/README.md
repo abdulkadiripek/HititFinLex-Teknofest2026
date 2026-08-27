@@ -27,6 +27,8 @@ cevap üreten bir sistemdir.
 - [Veri seti](#veri-seti)
 - [Modeller](#modeller)
 - [Kurulum](#kurulum)
+- [Veritabanı migration ve geri yükleme](#veritabanı-migration-ve-geri-yükleme)
+- [Sürümlü model ve yedek paketleri](#sürümlü-model-ve-yedek-paketleri)
 - [Çalıştırma](#çalıştırma)
 - [Doğrulama testleri](#doğrulama-testleri)
 - [Lisans](#lisans)
@@ -76,7 +78,7 @@ NER ve sınıflandırma çıkarımı yerel GPU üzerinde, LLM cevapları yerel O
 ## Proje yapısı
 
 ```text
-katilim_finans_app/
+HititFinLex/backend/
 ├── api.py                       # FastAPI giriş noktası (tüm REST uçları, /history/* dahil)
 ├── ner_service.py                # Türkçe NER servisi (ner_v4_best)
 ├── classifier_service.py         # Kampanya + ürün sınıflandırıcıları
@@ -93,6 +95,7 @@ katilim_finans_app/
 ├── train_ner.py / train_classifier.py / train_product_v2.py
 ├── generate_embeddings.py         # BGE-M3 embedding üretimi
 ├── import_dataset.py              # Ham veri setinin veritabanına aktarımı
+├── db/                             # Baseline SQL, checksum manifesti ve runner
 ├── smoke_test_*.py                # Güvenli, mutasyonsuz doğrulama testleri
 ├── data/                          # Etiketli eğitim/doğrulama veri setleri (çalışma kopyası)
 ├── models/                        # Eğitilmiş model klasörleri (git'e dahil değil, bkz. Modeller)
@@ -164,38 +167,115 @@ python -m venv .venv
 python -m pip install --upgrade pip
 
 :: CUDA destekli PyTorch (sürücünüze uygun index-url'i pytorch.org/get-started/locally'den seçin)
-python -m pip install torch --index-url https://download.pytorch.org/whl/cu130
+python -m pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cu130
 
 python -m pip install -r requirements.txt
 ```
 
-`.env` dosyası oluşturun (örnek `env.example` yoktur, aşağıdaki alanları
-kendi ortamınıza göre doldurun — gerçek parolayı asla commit etmeyin):
+[`backend/.env.example`](.env.example) dosyasını `.env` olarak kopyalayıp
+alanları kendi ortamınıza göre doldurun; gerçek parola veya API anahtarını
+asla commit etmeyin:
 
 ```env
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_NAME=katilim_finans
-DB_USER=postgres
-DB_PASSWORD=<kendi-sifreniz>
-DATA_DIR=<proje-kökü>/data
+DB_USER=hititfinlex_app
+DB_PASSWORD=<uygulama-rolu-parolasi>
+DATA_DIR=./data
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=qwen3.5:9b
 OLLAMA_MAX_OUTPUT_TOKENS=768
+HITITFINLEX_ADMIN_API_KEY=<uzun-rastgele-bir-deger>
+HITITFINLEX_CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+HITITFINLEX_CORS_ALLOW_CREDENTIALS=false
+HITITFINLEX_MAX_BODY_BYTES=1048576
+HITITFINLEX_RATE_LIMIT_PER_MINUTE=120
+HITITFINLEX_ADMIN_RATE_LIMIT_PER_MINUTE=30
+HITITFINLEX_TRUST_PROXY_HEADERS=false
 ```
 
-PostgreSQL tarafında veritabanını ve pgvector uzantısını oluşturun:
+`HITITFINLEX_ADMIN_API_KEY` en az 32 karakterlik benzersiz bir değer olmalıdır.
+Örnek dosyadaki `CHANGE_ME_TO_A_LONG_RANDOM_VALUE`, yaygın zayıf değerler ve
+tekdüze anahtarlar geçerli yapılandırma sayılmaz. `/reviews/*` uçlarının tamamı
+ile `/intake` üzerindeki `write=true`
+istekleri `X-API-Key` başlığını zorunlu tutar. Anahtar ayarlanmamışsa yönetim
+uçları güvenli biçimde kapalıdır (`503`); `/intake` dry-run kullanımı public
+kalmaya devam eder. CORS origin listesi ortam değişkeninden alınır ve varsayılan
+olarak yalnızca yerel arayüz originlerine izin verilir. Rate limit uygulama
+süreci başınadır; çoklu instance dağıtımında ayrıca ortak bir edge limiter
+kullanılmalıdır.
+
+PostgreSQL tarafında üç ayrı rol kullanılır. `postgres` yalnız bootstrap
+superuser'ıdır; API bu rolle hiçbir zaman çalışmaz:
+
+| Rol | Yetki |
+| --- | --- |
+| `postgres` | Yalnız rol/veritabanı bootstrap ve pgvector extension kurulumu |
+| `hititfinlex_migrator` | Veritabanı/schema sahibi; sürümlü DDL migration ve restore |
+| `hititfinlex_app` | Gerekli tablolarda `SELECT/INSERT/UPDATE/DELETE`, sequence kullanımı; schema DDL yok |
+
+Repo kökündeki `.env.example` dosyasını `.env` olarak kopyalayıp admin,
+migrator ve app için **üç farklı** parola verin. İdempotent provision komutu
+rolleri oluşturur/günceller, migration'ı uygular, mevcut/default grant'leri
+kurar ve app rolünün `CREATE TABLE` yapamadığını sınar:
 
 ```cmd
-createdb -U postgres katilim_finans
-psql -U postgres -d katilim_finans -c "CREATE EXTENSION IF NOT EXISTS vector;"
+cd ..
+docker compose up -d database
+docker compose run --rm database-setup all
 ```
+
+Docker kullanmadan aynı işlem için root `.env` değişkenleri yüklüyken
+`python backend\db\provision.py all` çalıştırılabilir. `migrate.py`, çağrıldığı
+dizinden bağımsız olarak `backend/.env` dosyasını otomatik yükler; ancak
+`up/status/smoke` için runtime app hesabı değil migrator `DATABASE_URL` değeri
+kullanılmalıdır. `check` bağlantı kurmadan checksum doğrular.
 
 Ollama modelini indirin:
 
 ```cmd
 ollama pull qwen3.5:9b
 ```
+
+## Veritabanı migration ve geri yükleme
+
+`db/migrations/manifest.json` içindeki SHA-256 değeri SQL dosyasıyla eşleşmek
+zorundadır. `migrate.py up`, uygulanmış sürümü ve checksum'ı
+`hititfinlex_schema_migrations` tablosuna kaydeder; aynı sürüm farklı içerikle
+gelirse işlemi durdurur.
+
+```cmd
+python db\migrate.py status
+python db\migrate.py up
+python db\migrate.py smoke
+```
+
+Custom-format yedek için güvenli sıra:
+
+```cmd
+pg_restore --list C:\KatilimFinansTransfer\katilim_finans.backup
+pg_restore --no-owner --no-privileges --exit-on-error -U hititfinlex_migrator -d katilim_finans C:\KatilimFinansTransfer\katilim_finans.backup
+python db\provision.py grants
+python db\provision.py verify
+```
+
+Hedef veritabanı doluysa otomatik `--clean` kullanmayın. Önce ayrı adla geri
+yükleyip belge/chunk/embedding/fact sayılarını karşılaştırın.
+
+## Sürümlü model ve yedek paketleri
+
+API v1.3.0 aktarım setinde beklenen kimlikler `ner-v4`,
+`classifier-campaign-v1`, `classifier-product-v2` ve
+`postgresql-18_pgvector-0.8.6_schema-0002`'dir. Repo kökündeki
+[`artifacts/README.md`](../artifacts/README.md) ile model klasörleri ve DB
+yedeği için dosya bazlı SHA-256 manifesti oluşturulur. Hedef makinede manifest
+doğrulanmadan modeller açılmaz veya yedek geri yüklenmez.
+Gerçek yerel paketlerin boyut/checksum kayıtları
+[`model-release-manifest.json`](../artifacts/model-release-manifest.json) ve
+[`database-release-manifest.json`](../artifacts/database-release-manifest.json)
+içindedir; `download_url: null` yayımlama yapılmadığını, URL'nin tahmin
+edilmemesi gerektiğini belirtir.
 
 ## Çalıştırma
 
@@ -215,8 +295,13 @@ Veritabanına yazma yapmayan, güvenli smoke testleri:
 python smoke_test_intake.py
 python smoke_test_intake_database.py
 python smoke_test_review_workflow.py
+python -m unittest -v test_backend_hardening.py
+python db\migrate.py check
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
 ## Lisans
 
-Bu proje [Apache License 2.0](../LICENSE) ile lisanslanmıştır.
+Bu proje [Apache License 2.0](../LICENSE) ile lisanslanmıştır. Üçüncü taraf
+veri/model bildirimleri için [`../THIRD_PARTY_DATA.md`](../THIRD_PARTY_DATA.md)
+ve [`../THIRD_PARTY_MODELS.md`](../THIRD_PARTY_MODELS.md) dosyalarına bakın.

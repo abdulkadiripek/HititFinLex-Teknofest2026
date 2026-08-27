@@ -21,6 +21,7 @@ from fact_context_rules import (
     excluded_context_reason,
 )
 from fact_surface_rules import validate_entity_surface
+from db.runtime_schema import require_migrated_tables
 from hybrid_search import get_connection
 from intake_service import ALLOWED_ENTITY_LABELS_BY_PRODUCT, PRODUCT_TITLES
 
@@ -54,51 +55,6 @@ NUMERIC_LABELS = {
     "TAKSIT_SAYISI",
     "VADE_SURESI",
 }
-
-
-STATE_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS ner_document_state (
-    document_id BIGINT PRIMARY KEY
-        REFERENCES documents(id) ON DELETE CASCADE,
-    content_hash CHAR(64) NOT NULL,
-    model_name VARCHAR(128) NOT NULL,
-    pipeline_version VARCHAR(64) NOT NULL,
-    accepted_count INTEGER NOT NULL DEFAULT 0,
-    review_count INTEGER NOT NULL DEFAULT 0,
-    rejected_count INTEGER NOT NULL DEFAULT 0,
-    processed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-)
-"""
-
-
-REVIEW_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS comparison_fact_review_queue (
-    id BIGSERIAL PRIMARY KEY,
-    document_id BIGINT NOT NULL
-        REFERENCES documents(id) ON DELETE CASCADE,
-    fact_type VARCHAR(64) NOT NULL,
-    fact_text TEXT NOT NULL,
-    normalized_value JSONB,
-    evidence_text TEXT NOT NULL,
-    extraction_method VARCHAR(64) NOT NULL,
-    confidence DOUBLE PRECISION NOT NULL
-        CHECK (confidence >= 0 AND confidence <= 1),
-    source_chunk INTEGER NOT NULL,
-    fact_key CHAR(64) NOT NULL,
-    review_reason VARCHAR(128) NOT NULL,
-    review_status VARCHAR(16) NOT NULL DEFAULT 'pending'
-        CHECK (review_status IN ('pending', 'approved', 'rejected')),
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    UNIQUE (document_id, fact_key)
-)
-"""
-
-
-REVIEW_INDEX_SQL = """
-CREATE INDEX IF NOT EXISTS comparison_fact_review_status_idx
-ON comparison_fact_review_queue (review_status, confidence DESC)
-"""
 
 
 FACT_UPSERT_SQL = """
@@ -794,9 +750,14 @@ def save_document(
 
     with get_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute(STATE_TABLE_SQL)
-            cursor.execute(REVIEW_TABLE_SQL)
-            cursor.execute(REVIEW_INDEX_SQL)
+            require_migrated_tables(
+                cursor,
+                (
+                    "comparison_facts",
+                    "comparison_fact_review_queue",
+                    "ner_document_state",
+                ),
+            )
             if not document.verified:
                 product_type = str(classification["product_type"]["label"])
                 cursor.execute(

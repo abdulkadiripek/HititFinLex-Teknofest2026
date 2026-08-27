@@ -238,7 +238,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .global-search input::placeholder { color: #9baaa4; }
 .global-search kbd { background: #f2f5f3; border: 1px solid #e0e7e3; border-radius: 5px; color: #91a099; font-family: inherit; font-size: 6px; font-weight: 850; letter-spacing: .07em; padding: 4px 5px; }
 .topbar-actions { align-items: center; display: flex; gap: 8px; }
-.demo-chip { background: var(--gold-soft); border: 1px solid #efdbae; border-radius: 999px; color: #8d6620; font-size: 7px; font-weight: 850; letter-spacing: .08em; padding: 7px 9px; }
+.partial-chip { background: var(--gold-soft); border: 1px solid #efdbae; border-radius: 999px; color: #8d6620; font-size: 7px; font-weight: 850; letter-spacing: .08em; padding: 7px 9px; }
 .connection-chip { align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); display: flex; font-size: 8px; font-weight: 750; gap: 6px; padding: 7px 9px; }
 .connection-chip i { background: #9eaaa5; border-radius: 50%; height: 6px; width: 6px; }
 .connection-chip.online { background: var(--green-50); border-color: #d4e9df; color: var(--green-700); }
@@ -500,10 +500,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .fact-coverage { display: flex; flex-direction: column; }
 .fact-coverage b { color: var(--green-700); font-family: Georgia, serif; font-size: 14px; font-weight: 500; }
 .fact-coverage span { color: var(--muted); font-size: 6px; line-height: 1.3; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.score-cell { display: grid; gap: 5px; width: 58px; }
+.score-cell { display: grid; gap: 5px; width: 78px; }
 .score-cell b { color: var(--green-700); font-size: 9px; }
 .score-cell i { background: #e7eeea; border-radius: 99px; height: 3px; overflow: hidden; }
 .score-cell i u { background: var(--green-500); border-radius: inherit; display: block; height: 100%; }
+.verification-badge { border-radius: 999px; display: inline-flex; font-size: 6px; font-weight: 750; line-height: 1.2; padding: 4px 6px; width: fit-content; }
+.verification-badge.verified { background: var(--green-100); color: var(--green-700); }
+.verification-badge.model { background: #fff4df; color: #8e6622; }
+.score-cell .verification-badge { white-space: nowrap; }
 .date-cell { color: var(--muted); font-size: 7px; }
 .catalog-row > span:last-child { color: #9baca5; }
 .empty-state { align-items: center; color: var(--muted); display: flex; flex-direction: column; min-height: 270px; justify-content: center; padding: 30px; text-align: center; }
@@ -554,6 +558,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .matrix-summary { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; padding: 11px 20px 12px; }
 .matrix-summary span { align-items: baseline; background: var(--green-50); border: 1px solid #dcece6; border-radius: 999px; color: var(--green-700); display: flex; font-size: 7px; gap: 4px; padding: 6px 9px; }
 .matrix-summary b { color: var(--green-950); font-size: 9px; }
+.matrix-summary .extraction-disclosure { background: #fff5e2; border-color: #eed9ae; color: #865f20; }
 .comparison-scroll { overflow-x: auto; padding: 0 20px 20px; }
 /*
  * Sutun alt sinirlari birkac banka icin bile alani asiyor, matris yatay kaydirmaya
@@ -575,8 +580,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .matrix-label strong { font-size: 8px; }
 .matrix-label small { color: var(--muted); font-size: 6px; margin-top: 4px; }
 .matrix-value { border-left: 1px solid var(--line); display: grid; gap: 6px; }
-.matrix-value > span { color: var(--ink-soft); font-size: 8px; font-weight: 650; line-height: 1.4; }
-.matrix-value > span small { color: var(--green-700); display: block; font-size: 6px; font-weight: 650; margin-top: 3px; }
+.matrix-value > span, .matrix-value > button { color: var(--ink-soft); font-size: 8px; font-weight: 650; line-height: 1.4; }
+.matrix-value > button { background: transparent; border: 0; cursor: pointer; padding: 0; text-align: left; }
+.matrix-value > button:hover > span { color: var(--green-700); text-decoration: underline; }
+.matrix-value > span small, .matrix-value > button small { color: var(--green-700); display: block; font-size: 6px; font-weight: 650; margin-top: 3px; }
 .matrix-value > em { background: #eef5f2; border-radius: 999px; color: var(--green-700); font-size: 6px; font-style: normal; justify-self: start; padding: 4px 7px; }
 .matrix-value.source-products { align-content: start; background: #fbfcfb; }
 .matrix-value.source-products > span { border-left: 2px solid #b8d7ca; font-size: 7px; font-weight: 600; padding-left: 7px; }
@@ -605,9 +612,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .finance-bank-source > strong { font-family: Georgia, serif; font-size: 13px; font-weight: 500; line-height: 1.3; margin-top: 5px; }
 .finance-bank-source > small { color: var(--muted); font-size: 7px; line-height: 1.45; margin-top: 5px; }
 .finance-bank-benefits { display: flex; flex-direction: column; gap: 8px; padding-top: 2px; }
-.finance-bank-benefits > p { align-items: flex-start; color: var(--ink-soft); display: flex; font-size: 8px; gap: 8px; line-height: 1.45; margin: 0; }
-.finance-bank-benefits > p > i { align-items: center; background: var(--green-50); border-radius: 50%; color: var(--green-700); display: flex; flex: 0 0 auto; height: 21px; justify-content: center; width: 21px; }
-.finance-bank-benefits p b { color: var(--ink); }
+.finance-bank-benefits .benefit-row { align-items: flex-start; color: var(--ink-soft); display: flex; font-size: 8px; gap: 8px; line-height: 1.45; margin: 0; }
+.finance-bank-benefits .benefit-row > i { align-items: center; background: var(--green-50); border-radius: 50%; color: var(--green-700); display: flex; flex: 0 0 auto; height: 21px; justify-content: center; width: 21px; }
+.finance-bank-benefits .benefit-row > span { display: grid; gap: 4px; min-width: 0; }
+.finance-bank-benefits .benefit-row b { color: var(--ink); }
+.finance-bank-benefits .benefit-row button { background: transparent; border: 0; color: var(--ink-soft); cursor: pointer; display: grid; font: inherit; gap: 2px; padding: 0; text-align: left; }
+.finance-bank-benefits .benefit-row button:hover > span { color: var(--green-700); text-decoration: underline; }
+.finance-bank-benefits .benefit-row button small { color: var(--muted); font-size: 6px; }
 .finance-bank-benefits > small { color: var(--muted); font-size: 6px; margin-top: auto; }
 .finance-bank-benefits .fact-missing { color: #8c682d; }
 .finance-bank-benefits .fact-missing > i { background: #fff4df; color: #a57424; }
@@ -616,8 +627,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .finance-bank-metrics span { color: var(--muted); font-size: 7px; }
 .finance-bank-metrics strong { color: var(--ink); font-family: Georgia, serif; font-size: 12px; font-weight: 500; text-align: right; }
 .finance-bank-metrics small { color: var(--green-700); font-size: 6px; grid-column: span 2; text-align: right; }
+.metric-source-button { align-items: end; background: transparent; border: 0; cursor: pointer; display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 0; }
+.metric-source-button:hover strong { color: var(--green-700); text-decoration: underline; }
+.metric-source-button small { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .finance-bank-actions { align-items: stretch; display: flex; flex-direction: column; gap: 8px; }
 .confidence-badge { align-items: center; align-self: flex-end; background: var(--green-50); border: 1px solid #d5e9df; border-radius: 999px; color: var(--green-700); display: flex; font-size: 7px; font-weight: 800; gap: 5px; padding: 6px 8px; }
+.model-status { align-items: flex-start; background: #fff7e9; border-radius: 8px; color: #856022; display: flex; font-size: 6px; gap: 5px; line-height: 1.4; padding: 7px; }
 .finance-bank-actions > button { align-items: center; background: var(--green-950); border: 0; border-radius: 9px; color: #fff; cursor: pointer; display: flex; font-size: 8px; font-weight: 850; gap: 7px; justify-content: center; min-height: 38px; margin-top: auto; }
 .finance-bank-actions > details { border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
 .finance-bank-actions > details summary { color: var(--ink-soft); cursor: pointer; font-size: 7px; font-weight: 750; list-style: none; padding: 10px; text-align: center; }
@@ -626,6 +641,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .finance-bank-actions > details p { display: grid; gap: 3px; margin: 0; }
 .finance-bank-actions > details p b { color: var(--green-700); font-size: 6px; }
 .finance-bank-actions > details p span { color: var(--ink-soft); font-size: 7px; line-height: 1.4; }
+.finance-bank-actions > details p button, .source-picker button { background: #f8faf9; border: 1px solid var(--line-soft); border-radius: 7px; color: var(--ink-soft); cursor: pointer; display: grid; gap: 2px; padding: 6px; text-align: left; }
+.finance-bank-actions > details p button:hover, .source-picker button:hover { border-color: #b8d7ca; }
+.finance-bank-actions > details p button small, .source-picker button small { color: var(--muted); font-size: 6px; }
+.source-picker { margin-top: auto; }
+.source-picker > div { display: grid; gap: 5px; }
 
 /*
  * Kartin dar duzeni pencere genisligine bagliydi, oysa belirleyici olan kartin
@@ -805,6 +825,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .drawer-meta > span { background: #f6f9f7; border: 1px solid var(--line-soft); border-radius: 9px; display: flex; flex-direction: column; min-height: 64px; padding: 10px; }
 .drawer-meta small { color: var(--muted); font-size: 6px; }
 .drawer-meta strong { font-size: 8px; line-height: 1.35; margin-top: 5px; }
+.verification-notice { align-items: center; border-radius: 9px; display: flex; font-size: 7px; gap: 7px; line-height: 1.45; margin-top: 9px; padding: 9px 10px; }
+.verification-notice.verified { background: var(--green-50); color: var(--green-700); }
+.verification-notice.model { background: #fff5e2; color: #886120; }
 .source-link { align-items: center; background: var(--green-50); border: 1px solid #d4e9df; border-radius: 9px; color: var(--green-700); display: flex; font-size: 8px; font-weight: 750; gap: 6px; justify-content: center; margin-top: 9px; min-height: 36px; text-decoration: none; }
 .drawer-scroll section { margin-top: 22px; }
 .drawer-section-title { align-items: center; display: flex; justify-content: space-between; margin-bottom: 9px; }
@@ -939,6 +962,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .history-result-bottom > span:not(.type-pill) { color: var(--muted); font-size: 6px; }
 .history-result-bottom > span b { color: var(--green-700); }
 .history-result-bottom a { align-items: center; color: var(--green-700); display: flex; font-size: 7px; font-weight: 750; gap: 4px; margin-left: auto; text-decoration: none; }
+.history-result-bottom .verification-badge { max-width: 190px; }
+
+.panorama-source-picker { width: 100%; }
+.panorama-source-picker summary { background: #0a4034; border-radius: 8px; color: #fff; cursor: pointer; font-size: 8px; font-weight: 800; list-style: none; padding: 8px; text-align: center; }
+.panorama-source-picker > div { display: grid; gap: 5px; margin-top: 5px; max-height: 150px; overflow-y: auto; }
+.panorama-source-picker > div button { font-size: 7px; min-height: 0; padding: 7px; text-align: left; width: 100%; }
+.panorama-value-source { background: transparent; border: 0; cursor: pointer; display: flex; flex-direction: column; padding: 0; text-align: left; }
+.panorama-value-source:hover strong, .panorama-value-source:hover span { color: var(--green-700); text-decoration: underline; }
 
 .trend-strip { align-items: center; background: linear-gradient(100deg, #f1f8f5, #fff9ee); border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: grid; gap: 12px; grid-template-columns: minmax(250px, 1fr) repeat(3, auto); padding: 11px 20px; }
 .trend-strip > div { align-items: center; display: flex; gap: 9px; }
@@ -1026,7 +1057,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .workspace-topbar { gap: 8px; height: 61px; padding: 0 13px; }
   .workspace-content.chat-mode { height: calc(100vh - 61px); padding: 12px 13px; }
   .global-search { flex: 1; width: auto; }
-  .global-search kbd, .demo-chip { display: none; }
+  .global-search kbd, .partial-chip { display: none; }
   .connection-chip { font-size: 0; padding: 8px; }
   .workspace-content { padding: 22px 13px 40px; }
   .api-banner { align-items: flex-start; }

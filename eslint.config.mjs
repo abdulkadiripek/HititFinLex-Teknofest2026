@@ -7,10 +7,19 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
+    // Generated output and non-frontend packages:
+    "node_modules/**",
     ".next/**",
     "out/**",
-    "build/**",
+    "dist/**",
+    ".sites-runtime/**",
+    ".wrangler/**",
+    "backend/**",
+    "dataset/**",
+    "db/**",
+    "drizzle/**",
+    "examples/**",
+    "worker/**",
     "next-env.d.ts",
   ]),
 ]);

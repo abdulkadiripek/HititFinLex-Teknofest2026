@@ -28,6 +28,8 @@ geliştirilmiştir.
 - [Veri seti](#veri-seti)
 - [Kurulum](#kurulum)
 - [Ortam değişkenleri](#ortam-değişkenleri)
+- [Tekrar üretilebilirlik ve geri yükleme](#tekrar-üretilebilirlik-ve-geri-yükleme)
+- [Docker Compose geliştirme ortamı](#docker-compose-geliştirme-ortamı)
 - [Test ve build](#test-ve-build)
 - [Takım](#takım)
 - [Proje dokümantasyonu](#proje-dokümantasyonu)
@@ -52,6 +54,11 @@ Bu depo **tek repo (monorepo)** olarak hem frontend'i hem backend'i içerir:
 - **[`backend/`](backend)** — belge alımı, Türkçe NER, sınıflandırma, embedding
   üretimi ve RAG orkestrasyonunu yapan FastAPI servisi; kurulum ve
   çalıştırma adımları için [`backend/README.md`](backend/README.md)'ye bakın.
+
+> **Kanonik kaynak:** Backend kodunun sürümlenen tek kaynağı bu deponun
+> `backend/` dizinidir. Eski `katilim_finans_app` veya nested `frontend`
+> çalışma kopyalarında doğrudan geliştirme yapmayın; dağıtım kopyaları bu
+> dizindeki doğrulanmış commit'ten üretilmelidir.
 
 ## Mimari
 
@@ -89,7 +96,7 @@ Backend'in referans yapılandırması (kurulum rehberinden alınmıştır):
 
 | Bileşen | Detay |
 | --- | --- |
-| API | FastAPI, `http://127.0.0.1:8000` |
+| API | FastAPI **v1.3.0**, `http://127.0.0.1:8000` |
 | Veritabanı | PostgreSQL 18 + pgvector 0.8.6 |
 | Embedding modeli | `BAAI/bge-m3` (1024 boyut) |
 | Türkçe NER | `models/ner_v4_best` |
@@ -172,15 +179,19 @@ HititFinLex/
 ├── public/               # Statik varlıklar (favicon, og görseli, banka logoları)
 ├── scripts/               # CI/build yardımcı script'leri
 ├── tests/                 # Render edilen HTML üzerinde smoke test
+├── .github/workflows/     # Windows/Linux CI ve DB migration smoke
 ├── backend/               # FastAPI NLP/RAG servisi (bkz. backend/README.md)
 │   ├── api.py               # REST giriş noktası
 │   ├── ner_service.py       # Türkçe NER servisi
 │   ├── classifier_service.py
 │   ├── hybrid_search.py
+│   ├── db/                  # PostgreSQL baseline migration + checksum runner
 │   ├── data/                 # Etiketli eğitim/doğrulama veri setleri (ham/çalışma verisi)
 │   └── requirements.txt
 ├── dataset/               # Yayınlanan resmî veri seti paketi (HititFinLex Veri Seti v1.0)
 ├── docs/                  # Şartname kapsamındaki proje dokümantasyonu
+├── artifacts/             # Model/DB transfer manifesti ve SHA-256 kullanımı
+├── compose.yaml           # Yerel pgvector + isteğe bağlı frontend şablonu
 ├── LICENSE                # Apache License 2.0 (tüm repo için)
 ├── HITITFINLEX_WINDOWS_KURULUM.txt  # Windows'a özel ayrıntılı frontend kurulum notu
 ├── next.config.ts
@@ -221,6 +232,34 @@ bölümüne bakın.
 
 ### Adımlar
 
+Önce Compose/backend ve frontend yapılandırmalarını ayrı dosyalara kopyalayın.
+DB parolaları içeren root `.env` dosyasını `.env.local` olarak kullanmayın;
+`NEXT_PUBLIC_*` değerleri browser bundle'ına gömülür:
+
+```cmd
+copy .env.example .env
+copy .env.local.example .env.local
+copy backend\.env.example backend\.env
+```
+
+Backend Python ortamını migration komutlarından önce kurun (CUDA PyTorch
+komutu için ayrıntı `backend/README.md` içindedir):
+
+```cmd
+python -m venv backend\.venv
+backend\.venv\Scripts\python -m pip install --upgrade pip
+backend\.venv\Scripts\python -m pip install -r backend\requirements.txt
+```
+
+Backend veritabanını ilk kez oluştururken ayrı bootstrap/migrator/runtime
+rollerini provision edin. Root `.env` içindeki üç placeholder parolayı farklı
+yerel değerlerle değiştirdikten sonra:
+
+```cmd
+docker compose up -d database
+docker compose run --rm database-setup all
+```
+
 Backend'i ayrı bir terminalde başlatın (bkz. [`backend/README.md`](backend/README.md)):
 
 ```cmd
@@ -233,8 +272,7 @@ uvicorn api:app --reload --host 127.0.0.1 --port 8000
 Ardından repo kökünde frontend'i başlatın:
 
 ```cmd
-copy .env.example .env.local
-npm install
+npm ci
 npm run dev
 ```
 
@@ -256,13 +294,72 @@ Farklı bir backend adresi gerekiyorsa `.env.local` dosyasına ekleyin:
 NEXT_PUBLIC_API_BASE_URL=https://api-adresiniz.example
 ```
 
+Frontend için yalnız browser-visible örnek değerler
+[`/.env.local.example`](.env.local.example), backend için secretsız örnekler
+[`backend/.env.example`](backend/.env.example) içinde tutulur. Gerçek `.env`
+ve `.env.local` dosyaları Git/Docker build context tarafından yok sayılır;
+yalnız example dosyaları özellikle allowlist'e alınmıştır.
+
+## Tekrar üretilebilirlik ve geri yükleme
+
+- Frontend bağımlılıkları `package-lock.json` bütünlük alanlarıyla, backend
+  bağımlılıkları sabitlenmiş `backend/requirements.txt` sürümleriyle kurulur.
+- `backend/db/migrations/manifest.json`, her SQL migration'ın SHA-256 özetini
+  doğrular. Uygulanan sürüm ve checksum veritabanındaki
+  `hititfinlex_schema_migrations` tablosuna kaydedilir.
+- DB yedeği ve üç yerel model klasörü aktarılmadan önce
+  [`artifacts/README.md`](artifacts/README.md) içindeki komutla sürüm+SHA-256
+  manifesti üretilir; hedef makinede `npm run artifacts -- verify ...`
+  başarılı olmadan geri yükleme yapılmaz.
+
+Önceden doğrulanmış bir custom-format yedeği geri yükleme özeti:
+
+```cmd
+pg_restore --list katilim_finans.backup
+pg_restore --no-owner --no-privileges --exit-on-error -U hititfinlex_migrator -d katilim_finans katilim_finans.backup
+python backend\db\provision.py grants
+python backend\db\provision.py verify
+```
+
+`pg_restore --clean` veya `--create` mevcut bir veritabanını değiştirebileceği
+için burada varsayılan değildir.
+
+## Docker Compose geliştirme ortamı
+
+Compose veritabanını yalnız `127.0.0.1:5432` üzerinde açar. Image bootstrap
+superuser'ı uygulama hesabı değildir; `database-setup` ayrı migrator ve CRUD-only
+app rollerini oluşturur, pgvector/migration/grant işlemlerini uygular ve app
+rolünün schema DDL yetkisi olmadığını doğrular:
+
+```cmd
+copy .env.example .env
+docker compose up -d database
+docker compose run --rm database-setup all
+```
+
+İsteğe bağlı frontend profili `docker compose --profile frontend up --build`
+ile açılır. GPU modellerini barındıran backend varsayılan Compose kapsamına
+alınmamıştır; CUDA/Ollama kurulumu host makinede kalır. Örnek parola yalnız
+yerel geliştirme içindir ve servis localhost dışına açılmadan değiştirilmelidir.
+`NEXT_PUBLIC_API_BASE_URL` bir build argümanı olarak frontend bundle'ına
+işlenir; değeri değiştirirseniz image'ı yeniden build etmeniz gerekir.
+
 ## Test ve build
 
 ```cmd
-npm run build   # bash scripts/build-verified.sh üzerinden doğrulanmış build
+npm run install:ci  # Linux ve Windows'ta aynı kilitli npm ci akışı
+npm run typecheck
+npm run build   # Node tabanlı, süre sınırlandırılmış doğrulanmış build
 npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
+python backend\db\migrate.py check
+python -m unittest discover -s backend\tests -p "test_*.py"
 ```
+
+GitHub Actions aynı frontend zincirini ve tam npm audit'ini Windows/Linux'ta;
+backend hardening + migration testlerini ayrılmış rollerle geçici PostgreSQL 18
++ pgvector üzerinde çalıştırır. Production container job'u yalnız production
+bağımlılıklarıyla oluşturulan runtime image'ını ayrıca sınar.
 
 ## Takım
 
@@ -284,7 +381,10 @@ dosyasına bakın.
 
 ## Lisans
 
-Bu proje [Apache License 2.0](LICENSE) ile lisanslanmıştır.
+Bu proje [Apache License 2.0](LICENSE) ile lisanslanmıştır. Atıf/bildirim için
+[`NOTICE`](NOTICE), banka web içeriği ile temel modellerin ayrı hak durumu için
+[`THIRD_PARTY_DATA.md`](THIRD_PARTY_DATA.md) ve
+[`THIRD_PARTY_MODELS.md`](THIRD_PARTY_MODELS.md) dosyalarına bakın.
 
 ## Yol haritası
 

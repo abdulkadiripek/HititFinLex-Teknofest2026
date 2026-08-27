@@ -1,0 +1,11 @@
+# Minimal imports exercised by hardening, migration, and provision tests.
+# This intentionally excludes training/data packages such as datasets,
+# pandas and pyarrow so the CI smoke job remains bounded.
+fastapi==0.141.1
+httpx==0.28.1
+pgvector==0.5.0
+psycopg[binary]==3.3.4
+python-dotenv==1.2.3
+sentence-transformers==6.0.0
+torch==2.13.0
+transformers==5.16.1

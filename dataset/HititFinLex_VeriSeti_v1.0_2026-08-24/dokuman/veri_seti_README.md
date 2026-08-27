@@ -217,30 +217,30 @@ değil, `config/kurallar.yaml` içindeki deseni düzeltip yeniden üretmektir.
 
 ---
 
-## 6. Mevcut Veri Seti (2026-08-14 koşusu)
+## 6. Mevcut Veri Seti (2026-08-24 v1.0 paketi)
 
-Kaynak korpus: **771 belge / 10 banka / 245.265 kelime**
+Kaynak korpus: **3.351 belge / 10 banka / 1.043.573 kelime**
+Canlı/arşiv ayrımı: **771 canlı + 2.580 arşiv belge**
 
 | | train | val | test | toplam |
 |---|---:|---:|---:|---:|
-| Bilgi çıkarım (pasaj) | 1.555 | 313 | 234 | 2.102 |
-| Bilgi çıkarım (span) | 2.169 | 437 | 358 | **2.964** |
-| Sınıflandırma (belge) | 540 | 116 | 115 | **771** |
+| Bilgi çıkarım (pasaj) | 5.015 | 1.177 | 1.046 | **7.238** |
+| Sınıflandırma (belge) | 2.346 | 504 | 501 | **3.351** |
 
-Span etiket dağılımı: `KAMPANYA_SURESI` 494, `TAKSIT_SAYISI` 453,
-`VADE_SURESI` 431, `HARCAMA_ESIGI` 268, `MASRAF_DURUMU` 250,
-`ALISVERIS_PUANI` 243, `INDIRIM_ORANI` 190, `HEDEF_KITLE` 184,
-`ODUL_MIKTARI` 178, `FINANSMAN_TUTARI` 150, `TAHSIS_UCRETI` 63,
-`KAR_PAYLASIM_ORANI` 37, `KAR_PAYI_ORANI` 23
+Toplam **10.501 span** vardır. Etiket dağılımı: `KAMPANYA_SURESI` 2.296,
+`TAKSIT_SAYISI` 1.936, `ODUL_MIKTARI` 1.036, `HARCAMA_ESIGI` 971,
+`MASRAF_DURUMU` 902, `VADE_SURESI` 877, `INDIRIM_ORANI` 773,
+`ALISVERIS_PUANI` 500, `FINANSMAN_TUTARI` 437, `HEDEF_KITLE` 369,
+`TAHSIS_UCRETI` 252, `KAR_PAYLASIM_ORANI` 90, `KAR_PAYI_ORANI` 62.
 
-Doğrulama durumu: 928 pasaj + 16 belge yüksek güvenli (otomatik kabul),
-kalanı doğrulama kuyruğunda. **Henüz insan onaylı (gold) kayıt yoktur.**
+`MANIFEST.json` bu sayıları paketin kanonik envanteri olarak sabitler. Etiketler
+**silver/kural tabanlı ön etiketlerdir**; henüz insan onaylı (gold) kayıt yoktur.
 
 ---
 
 ## 7. Bilinen Sınırlar
 
-- **`KAR_PAYI_ORANI` en zayıf etiket (23 span).** Bankalar güncel oranları
+- **`KAR_PAYI_ORANI` en az örnekli etiket (62 span).** Bankalar güncel oranları
   kampanya metninde değil ayrı sayfalarda veya PDF fiyat listelerinde
   yayınlıyor. Toplama modülü bu sayfaları hedefleyecek şekilde güncellendi
   (kâr payı/ücret sayfaları filtreden çıkarıldı ve önceliklendirildi);
@@ -251,18 +251,16 @@ kalanı doğrulama kuyruğunda. **Henüz insan onaylı (gold) kayıt yoktur.**
   - **Türkiye Finans'ın `Kar-Payi-Oranlari.aspx` sayfası toplandı ama
     içinde hiç yüzde değeri yok** — tablo istemci tarafında ayrı bir
     servisten yükleniyor olabilir.
-- **Sınıf dengesizliği ciddi.** Kart Kampanyası 253, Konut Finansmanı
-  Kampanyası 7. Eğitimde sınıf ağırlıklandırma veya örnekleme şart.
+- **Sınıf dengesizliği ciddi.** Kart Kampanyası 1.393, Konut Finansmanı
+  Kampanyası 55. Eğitimde sınıf ağırlıklandırma veya örnekleme şart.
 - **Ön etiketler istatistiksel olarak doğrulanmadı.** Güven skorları desen
   isabetine dair *tasarım varsayımıdır*, ölçülmüş kesinlik değildir. Gerçek
   kesinlik/duyarlılık ancak örneklem denetimi (`02_`, `04_` dosyaları)
   doldurulduktan sonra hesaplanabilir.
-- **Kampanya türü ön etiketleri otomatik kabul eşiğini pratikte geçmiyor**
-  (771 belgeden yalnızca 16'sı ≥ 0,90). Bu kasıtlı: anahtar kelimeye dayalı
-  tür tahmini insan doğrulaması olmadan altın standart sayılmamalı.
-  Raporda basılan güven dağılımı, eşiği bilinçli düşürmek isterseniz kaç
-  kaydın etkileneceğini gösterir.
-- **`Diğer / Kampanya Değil` sınıfı heterojen** (103 belge). Ürün tanıtım
+- **Kampanya türü ön etiketleri silver niteliktedir.** Anahtar kelimeye dayalı
+  tür tahmini insan doğrulaması olmadan altın standart sayılmamalı; güven
+  dağılımı yalnız inceleme önceliği belirlemek için kullanılmalıdır.
+- **`Diğer / Kampanya Değil` sınıfı heterojen** (310 belge). Ürün tanıtım
   sayfaları, bilgilendirme metinleri ve türü belirlenemeyen kampanyalar aynı
   etikette. Doğrulama sırasında ayrıştırılması önerilir; `gerekce` alanı
   hangisinin hangi sebeple bu etikete düştüğünü söyler.
