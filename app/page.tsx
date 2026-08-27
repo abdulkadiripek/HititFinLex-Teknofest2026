@@ -1614,16 +1614,20 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="workspace-content">
+        {/* Sohbet, Claude/Gemini gibi kaydirmasiz tam yukseklik kaplasin diye baslik ve dis
+            dolgu bu görünümde atlanir; asistanin kendi basligi sohbet paneli icinde yer alir. */}
+        <div className={view === "assistant" ? "workspace-content chat-mode" : "workspace-content"}>
           {demoMode && <div className="api-banner"><Icon name="warning" size={18} /><div><strong>Dashboard örnek veri görünümünde.</strong><span>Gerçek filtreleme ve belge ayrıntıları için HititFinLex API V2.5’i çalıştırın.</span></div><button onClick={() => window.location.reload()} type="button"><Icon name="refresh" size={15} /> Yeniden dene</button></div>}
 
-          <div className="page-heading">
-            <div><span>{viewMeta[view].eyebrow}</span><h1>{viewMeta[view].title}</h1><p>{viewMeta[view].description}</p></div>
-            <div className="page-heading-actions">
-              <button className="ghost-button" onClick={() => changeView("assistant")} type="button"><Icon name="spark" size={17} /> Asistana sor</button>
-              <button className="primary-button" onClick={() => changeView("catalog")} type="button"><Icon name="search" size={17} /> Kataloğu aç</button>
+          {view !== "assistant" && (
+            <div className="page-heading">
+              <div><span>{viewMeta[view].eyebrow}</span><h1>{viewMeta[view].title}</h1><p>{viewMeta[view].description}</p></div>
+              <div className="page-heading-actions">
+                <button className="ghost-button" onClick={() => changeView("assistant")} type="button"><Icon name="spark" size={17} /> Asistana sor</button>
+                <button className="primary-button" onClick={() => changeView("catalog")} type="button"><Icon name="search" size={17} /> Kataloğu aç</button>
+              </div>
             </div>
-          </div>
+          )}
 
           {view === "overview" && (
             <div className="view-stack">
@@ -1780,27 +1784,34 @@ export default function Home() {
           )}
 
           {view === "assistant" && (
-            <div className="view-stack">
-              <section className="assistant-mode-bar panel">
-                <div className="scope-copy"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={18} /></span><div><strong>{assistantScope === "history" ? "Tarihsel RAG" : "Güncel RAG"}</strong><small>{assistantScope === "history" ? `${formatDate(periodDates(assistantPeriod, historyOverview).dateFrom)} — ${formatDate(periodDates(assistantPeriod, historyOverview).dateTo)} arşiv kesitlerinde yanıt arar.` : `${formatNumber(liveDocumentCount)} güncel banka belgesinde yanıt arar.`}</small></div></div>
-                <div className="segmented-control compact"><button className={assistantScope === "live" ? "active" : ""} onClick={() => setAssistantScope("live")} type="button">Güncel</button><button className={assistantScope === "history" ? "active" : ""} onClick={() => setAssistantScope("history")} type="button">Tarihsel</button></div>
-                <label className="assistant-product-select"><span>Ürün panosu</span><select onChange={(event) => setAssistantProduct(event.target.value)} value={assistantProduct}><option value="auto">Sorudan otomatik algıla</option>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)}</option>)}</select></label>
-                <div className={assistantScope === "history" ? "period-chips featured" : "period-chips featured hidden"}>{historyPeriodOptions.map((period) => <button className={assistantPeriod === period.value ? "active" : ""} key={period.value} onClick={() => setAssistantPeriod(period.value)} type="button">{period.label}</button>)}</div>
-              </section>
-              <section className="assistant-workspace">
-              <div className="assistant-sidebar panel"><div className="assistant-info"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={23} /></span><strong>{assistantScope === "history" ? "Tarihsel finans asistanı" : "Kaynaklı RAG asistanı"}</strong><p>BGE-M3 semantik arama ile PostgreSQL tam metin aramasını birleştirir; Qwen yalnızca bulunan kaynaklardan yanıt üretir.</p></div><div className="assistant-tech"><div><span>Embedding</span><strong>BGE-M3</strong></div><div><span>Üretken model</span><strong>{health?.ollama_model ?? "Qwen 3.5"}</strong></div><div><span>Kaynak evreni</span><strong>{assistantScope === "history" ? assistantPeriodLabel : "Güncel"}</strong></div></div><div className="suggestion-list"><span>ÖRNEK SORULAR</span>{assistantQuestions.map((question) => <button key={question} onClick={() => submitChat(question)} type="button">{question}<Icon name="chevron" size={14} /></button>)}</div><button className="new-chat" onClick={() => { setConversation([]); setChatError(null); }} type="button"><Icon name="refresh" size={15} /> Yeni konuşma</button></div>
-
-              <div className="chat-panel panel">
-                <div className="chat-top"><div><span className="assistant-avatar">H</span><div><strong>HititFinLex Asistan</strong><small><i /> Kaynak denetimi etkin</small></div></div><span>Yanıtlar finansal tavsiye değildir.</span></div>
-                <div className="chat-scroll">
-                  {!conversation.length && !chatLoading && <div className="chat-empty"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={31} /></span><h2>{assistantScope === "history" ? "Geçmişe kaynaklarıyla sorun." : "Verinizle konuşmaya başlayın."}</h2><p>{assistantScope === "history" ? `${formatNumber(historyOverview.searchable_document_count)} güvenli tarihsel kaydı seçili dönem içinde tarayın.` : "Ürün, banka, vade, kampanya veya masraf sorun. Yanıtla birlikte kullanılan resmî kaynakları da görün."}</p><div>{assistantQuestions.slice(0, 2).map((question) => <button key={question} onClick={() => submitChat(question)} type="button">{question}<Icon name="arrow" size={15} /></button>)}</div></div>}
-                  {conversation.map((message) => <article className="conversation-item" key={message.id}><div className="question-bubble"><small>SİZ · {message.scope === "history" ? message.periodLabel : "GÜNCEL"}</small><p>{message.query}</p></div><div className="answer-card"><div className="answer-meta"><span className="assistant-avatar">H</span><div><strong>HititFinLex Asistan</strong><small>{message.model} · {message.sources.length} {message.scope === "history" ? "tarihsel kaynak" : "güncel kaynak"}</small></div></div><div className="answer-copy">{renderAnswer(message.answer, message.sources)}</div>{message.panorama ? <AssistantPanorama data={message.panorama} historical={message.scope === "history"} onOpen={(item) => { if (message.scope === "history") { if (item.source_url) window.open(item.source_url, "_blank", "noopener,noreferrer"); } else openDetail(item.document_id); }} query={message.query} /> : !message.panoramaProduct && <div className="panorama-hint"><Icon name="layers" size={16} /><span>Tüm banka panosu için soruda ürün türünü belirtin veya yukarıdaki “Ürün panosu” alanından seçim yapın.</span></div>}<div className="answer-sources"><span>LLM YANITINDA KULLANILAN KAYNAKLAR</span>{message.sources.map((source) => <article id={`source-${source.source_id}`} key={`${message.id}-${source.source_id}`}><b>{source.source_id}</b><div><strong>{source.page_title ?? "Banka belgesi"}</strong><small>{shortBank(source.bank_name)}{source.snapshot_date ? ` · ${formatDate(source.snapshot_date)}` : ""} · Hibrit skor {source.hybrid_score.toFixed(4)}</small><details><summary>Kanıt metnini göster</summary><p>{source.content}</p></details></div>{(source.archive_url ?? source.source_url) && <a aria-label="Kaynağı aç" href={source.archive_url ?? source.source_url ?? "#"} rel="noreferrer" target="_blank"><Icon name="external" size={15} /></a>}</article>)}</div></div></article>)}
-                  {chatLoading && <div className="chat-loading"><span><i /><i /><i /></span><div><strong>Kaynaklar bulunuyor ve yanıt hazırlanıyor…</strong><small>Yerel model ilk yanıtta biraz daha uzun sürebilir.</small></div><button onClick={stopChat} type="button">Durdur</button></div>}
-                  {chatError && <div className="chat-error"><Icon name="warning" size={17} /><span>{chatError}</span><button onClick={() => setChatError(null)} type="button"><Icon name="close" size={14} /></button></div>}
+            <div className="assistant-shell">
+              {/*
+                Claude/Gemini benzeri tek panelli sohbet: baslik, kapsam/tarih/model
+                ayarlarinin hepsi sohbetin kendi ust seridinde -- sayfa disina tasmaz,
+                kaydirma gerekmez, giris kutusu her zaman altta sabit ve genis durur.
+              */}
+              <div className="chat-top">
+                <div className="chat-top-identity">
+                  <span className="assistant-avatar">H</span>
+                  <div>
+                    <strong>HititFinLex Asistan</strong>
+                    <small><i /> Kaynak denetimi etkin · {health?.ollama_model ?? "Qwen 3.5"} · {assistantScope === "history" ? assistantPeriodLabel : "Güncel"}</small>
+                  </div>
                 </div>
-                <form className="chat-composer" onSubmit={(event) => { event.preventDefault(); submitChat(chatInput); }}><textarea aria-label="Asistana sorun" maxLength={500} onChange={(event) => setChatInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitChat(chatInput); } }} placeholder="Örn. 2 milyon TL konut finansmanı için hangi koşullar öne çıkıyor?" rows={2} value={chatInput} /><div><span><Icon name="shield" size={13} /> Yanıt yalnızca resmî kaynaklara dayanır</span><span>{chatInput.length}/500</span><button disabled={!chatInput.trim() || chatLoading} type="submit"><Icon name="send" size={17} /> Gönder</button></div></form>
+                <div className="chat-top-controls">
+                  <div className="segmented-control compact"><button className={assistantScope === "live" ? "active" : ""} onClick={() => setAssistantScope("live")} type="button">Güncel</button><button className={assistantScope === "history" ? "active" : ""} onClick={() => setAssistantScope("history")} type="button">Tarihsel</button></div>
+                  <div className={assistantScope === "history" ? "period-chips featured" : "period-chips featured hidden"}>{historyPeriodOptions.map((period) => <button className={assistantPeriod === period.value ? "active" : ""} key={period.value} onClick={() => setAssistantPeriod(period.value)} type="button">{period.label}</button>)}</div>
+                  <select aria-label="Ürün panosu" className="assistant-product-select" onChange={(event) => setAssistantProduct(event.target.value)} value={assistantProduct}><option value="auto">Ürün: otomatik algıla</option>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)}</option>)}</select>
+                  <button aria-label="Yeni konuşma" className="new-chat" onClick={() => { setConversation([]); setChatError(null); }} type="button"><Icon name="refresh" size={15} /></button>
+                </div>
               </div>
-              </section>
+              <div className="chat-scroll">
+                {!conversation.length && !chatLoading && <div className="chat-empty"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={31} /></span><h2>{assistantScope === "history" ? "Geçmişe kaynaklarıyla sorun." : "Verinizle konuşmaya başlayın."}</h2><p>{assistantScope === "history" ? `${formatNumber(historyOverview.searchable_document_count)} güvenli tarihsel kaydı seçili dönem içinde tarayın.` : "Ürün, banka, vade, kampanya veya masraf sorun. Yanıtla birlikte kullanılan resmî kaynakları da görün."}</p><div>{assistantQuestions.map((question) => <button key={question} onClick={() => submitChat(question)} type="button">{question}<Icon name="arrow" size={15} /></button>)}</div></div>}
+                {conversation.map((message) => <article className="conversation-item" key={message.id}><div className="question-bubble"><small>SİZ · {message.scope === "history" ? message.periodLabel : "GÜNCEL"}</small><p>{message.query}</p></div><div className="answer-card"><div className="answer-meta"><span className="assistant-avatar">H</span><div><strong>HititFinLex Asistan</strong><small>{message.model} · {message.sources.length} {message.scope === "history" ? "tarihsel kaynak" : "güncel kaynak"}</small></div></div><div className="answer-copy">{renderAnswer(message.answer, message.sources)}</div>{message.panorama ? <AssistantPanorama data={message.panorama} historical={message.scope === "history"} onOpen={(item) => { if (message.scope === "history") { if (item.source_url) window.open(item.source_url, "_blank", "noopener,noreferrer"); } else openDetail(item.document_id); }} query={message.query} /> : !message.panoramaProduct && <div className="panorama-hint"><Icon name="layers" size={16} /><span>Tüm banka panosu için soruda ürün türünü belirtin veya yukarıdaki “Ürün panosu” alanından seçim yapın.</span></div>}<div className="answer-sources"><span>LLM YANITINDA KULLANILAN KAYNAKLAR</span>{message.sources.map((source) => <article id={`source-${source.source_id}`} key={`${message.id}-${source.source_id}`}><b>{source.source_id}</b><div><strong>{source.page_title ?? "Banka belgesi"}</strong><small>{shortBank(source.bank_name)}{source.snapshot_date ? ` · ${formatDate(source.snapshot_date)}` : ""} · Hibrit skor {source.hybrid_score.toFixed(4)}</small><details><summary>Kanıt metnini göster</summary><p>{source.content}</p></details></div>{(source.archive_url ?? source.source_url) && <a aria-label="Kaynağı aç" href={source.archive_url ?? source.source_url ?? "#"} rel="noreferrer" target="_blank"><Icon name="external" size={15} /></a>}</article>)}</div></div></article>)}
+                {chatLoading && <div className="chat-loading"><span><i /><i /><i /></span><div><strong>Kaynaklar bulunuyor ve yanıt hazırlanıyor…</strong><small>Yerel model ilk yanıtta biraz daha uzun sürebilir.</small></div><button onClick={stopChat} type="button">Durdur</button></div>}
+                {chatError && <div className="chat-error"><Icon name="warning" size={17} /><span>{chatError}</span><button onClick={() => setChatError(null)} type="button"><Icon name="close" size={14} /></button></div>}
+              </div>
+              <form className="chat-composer" onSubmit={(event) => { event.preventDefault(); submitChat(chatInput); }}><div className="chat-composer-inner"><textarea aria-label="Asistana sorun" maxLength={500} onChange={(event) => setChatInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitChat(chatInput); } }} placeholder="Örn. 2 milyon TL konut finansmanı için hangi koşullar öne çıkıyor?" rows={2} value={chatInput} /><div><span><Icon name="shield" size={13} /> Yanıt yalnızca resmî kaynaklara dayanır · finansal tavsiye değildir</span><span>{chatInput.length}/500</span><button disabled={!chatInput.trim() || chatLoading} type="submit"><Icon name="send" size={17} /> Gönder</button></div></div></form>
             </div>
           )}
 

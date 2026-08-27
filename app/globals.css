@@ -59,7 +59,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .workspace-shell {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: 210px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -125,7 +125,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .rail-brand > div { display: flex; flex-direction: column; min-width: 0; }
 .rail-brand strong { font-family: Georgia, "Times New Roman", serif; font-size: 20px; letter-spacing: -.025em; }
-.rail-brand small { color: #83a599; font-size: 7px; font-weight: 750; letter-spacing: .12em; margin-top: 4px; text-transform: uppercase; white-space: nowrap; }
+/* Daralan raya sigmasi icin tek satir zorlamasi kaldirildi. */
+.rail-brand small { color: #83a599; font-size: 7px; font-weight: 750; letter-spacing: .1em; line-height: 1.4; margin-top: 4px; text-transform: uppercase; }
 .mobile-close { display: none; }
 
 .rail-nav {
@@ -252,6 +253,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   max-width: 1500px;
   padding: 32px clamp(20px, 3.5vw, 54px) 55px;
 }
+
+/*
+ * Asistan sayfasi: sabit yukseklikte, sayfa kaymasin diye topbar disinda kalan
+ * tam alani doldurur. .workspace-topbar yuksekligiyle senkron tutulmali (68px /
+ * 61px mobil breakpoint'te asagida tekrar tanimlanir).
+ */
+.workspace-content.chat-mode { display: flex; flex-direction: column; height: calc(100vh - 68px); padding: 18px clamp(20px, 3.5vw, 54px) 18px; }
 
 .api-banner {
   align-items: center;
@@ -631,36 +639,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .finance-bank-actions > button { margin-top: 0; min-width: 190px; }
 }
 
-.assistant-workspace { display: grid; gap: 14px; grid-template-columns: 260px minmax(0, 1fr); min-height: 690px; }
-.assistant-sidebar { align-self: stretch; display: flex; flex-direction: column; padding: 18px; }
-.assistant-info > span { align-items: center; background: var(--green-950); border-radius: 11px; color: #dfb96b; display: flex; height: 43px; justify-content: center; width: 43px; }
-.assistant-info strong { display: block; font-family: Georgia, serif; font-size: 17px; font-weight: 500; margin-top: 12px; }
-.assistant-info p { color: var(--muted); font-size: 8px; line-height: 1.6; margin: 7px 0 0; }
-.assistant-tech { border-bottom: 1px solid var(--line-soft); border-top: 1px solid var(--line-soft); display: grid; gap: 9px; margin: 18px 0; padding: 14px 0; }
-.assistant-tech > div { align-items: center; display: flex; justify-content: space-between; }
-.assistant-tech span { color: var(--muted); font-size: 7px; }
-.assistant-tech strong { font-size: 8px; }
-.suggestion-list { display: grid; gap: 6px; }
-.suggestion-list > span { color: var(--green-700); font-size: 7px; font-weight: 900; letter-spacing: .13em; margin-bottom: 2px; }
-.suggestion-list button { align-items: center; background: #f7f9f8; border: 1px solid var(--line-soft); border-radius: 8px; color: var(--ink-soft); cursor: pointer; display: flex; font-size: 7px; gap: 6px; justify-content: space-between; line-height: 1.4; min-height: 39px; padding: 7px 8px; text-align: left; }
-.suggestion-list button:hover { background: var(--green-50); color: var(--green-700); }
-.new-chat { align-items: center; background: transparent; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); cursor: pointer; display: flex; font-size: 7px; gap: 6px; justify-content: center; margin-top: auto; min-height: 34px; }
+/*
+ * Claude/Gemini benzeri tek panelli sohbet kabugu: page-heading ve eski disari
+ * cikarilmis kapsam/model seritleri kaldirildi, hepsi bu kabugun icinde. Kabuk
+ * pencerenin kalan tam yuksekligini kaplar (bkz. .workspace-content.chat-mode),
+ * boylece sayfa hic kaymaz -- yalnizca .chat-scroll kendi icinde kayar ve giris
+ * kutusu her zaman altta, sabit ve genis durur.
+ */
+.assistant-shell { background: #fff; border: 1px solid var(--line); border-radius: 15px; display: flex; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
 
-.chat-panel { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
-.chat-top { align-items: center; background: linear-gradient(90deg, var(--green-50), #fff 45%); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; min-height: 64px; padding: 0 18px; }
-.chat-top > div { align-items: center; display: flex; gap: 9px; }
-.assistant-avatar { align-items: center; background: var(--green-950); border-radius: 9px; color: #fff; display: flex; font-family: Georgia, serif; height: 34px; justify-content: center; width: 34px; }
-.chat-top > div > div, .answer-meta > div { display: flex; flex-direction: column; }
+.chat-top { align-items: center; background: linear-gradient(90deg, var(--green-50), #fff 45%); border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; min-height: 56px; padding: 10px 18px; }
+.chat-top-identity { align-items: center; display: flex; gap: 9px; min-width: 0; }
+.assistant-avatar { align-items: center; background: var(--green-950); border-radius: 9px; color: #fff; display: flex; flex: 0 0 auto; font-family: Georgia, serif; height: 32px; justify-content: center; width: 32px; }
+.chat-top-identity > div, .answer-meta > div { display: flex; flex-direction: column; min-width: 0; }
 .chat-top strong { font-size: 9px; }
-.chat-top small { align-items: center; color: var(--green-700); display: flex; font-size: 7px; gap: 5px; margin-top: 3px; }
-.chat-top small i { background: #2eac77; border-radius: 50%; height: 5px; width: 5px; }
-.chat-top > span { color: var(--muted); font-size: 7px; }
-.chat-scroll { display: flex; flex: 1; flex-direction: column; max-height: 620px; min-height: 520px; overflow-y: auto; padding: 20px; }
+/* Model/kapsam/tarih bilgisi burada, sohbetin kendi baslik seridinde. */
+.chat-top-identity small { align-items: center; color: var(--muted); display: flex; font-size: 6px; gap: 4px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-top-identity small i { background: #2eac77; border-radius: 50%; flex: 0 0 auto; height: 5px; width: 5px; }
+.chat-top-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.chat-top-controls .period-chips { margin-left: 0; }
+.chat-top-controls .period-chips button { font-size: 6px; min-height: 26px; padding: 0 8px; }
+.assistant-product-select { appearance: none; background: #fff; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); cursor: pointer; font-size: 7px; height: 26px; max-width: 150px; padding: 0 9px; }
+.new-chat { align-items: center; background: transparent; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); cursor: pointer; display: flex; flex: 0 0 auto; height: 26px; justify-content: center; width: 26px; }
+.new-chat:hover { background: var(--green-50); color: var(--green-700); }
+
+.chat-scroll { display: flex; flex: 1; flex-direction: column; min-height: 0; overflow-y: auto; padding: 20px; }
 .chat-empty { align-items: center; display: flex; flex: 1; flex-direction: column; justify-content: center; padding: 40px; text-align: center; }
 .chat-empty > span { align-items: center; background: var(--green-100); border: 1px solid #cae6d8; border-radius: 15px; color: var(--green-700); display: flex; height: 60px; justify-content: center; width: 60px; }
 .chat-empty h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 500; letter-spacing: -.025em; margin: 17px 0 7px; }
 .chat-empty p { color: var(--muted); font-size: 9px; line-height: 1.55; margin: 0; max-width: 460px; }
-.chat-empty > div { display: flex; gap: 7px; margin-top: 18px; }
+/* Ornek sorular yalnizca burada duruyor; dordu birden sigsin diye sarmalanir. */
+.chat-empty > div { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; margin-top: 18px; max-width: 560px; }
 .chat-empty button { align-items: center; background: #f7f9f8; border: 1px solid var(--line); border-radius: 9px; color: var(--ink-soft); cursor: pointer; display: flex; font-size: 7px; gap: 7px; max-width: 210px; padding: 9px 10px; text-align: left; }
 .conversation-item { display: grid; gap: 11px; margin-bottom: 22px; }
 .question-bubble { background: #f1f5f3; border: 1px solid #e1e9e5; border-radius: 12px 12px 3px 12px; justify-self: end; max-width: 78%; padding: 10px 12px; }
@@ -687,9 +696,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .answer-sources details { margin-top: 5px; }
 .answer-sources summary { color: var(--green-700); cursor: pointer; font-size: 7px; }
 .answer-sources details p { color: var(--muted); font-size: 7px; line-height: 1.55; margin: 6px 0 0; }
-.assistant-product-select { display: grid; gap: 4px; min-width: 190px; }
-.assistant-product-select > span { color: var(--muted); font-size: 6px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.assistant-product-select select { appearance: none; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--ink-soft); font-size: 7px; height: 31px; padding: 0 9px; width: 100%; }
 .assistant-panorama { background: linear-gradient(145deg, #f4f9f6, #fff 48%); border: 1px solid #cfe2d8; border-radius: 14px; margin-top: 18px; overflow: hidden; padding: 16px; }
 .assistant-panorama > header { align-items: flex-start; display: flex; gap: 14px; justify-content: space-between; }
 .assistant-panorama > header > div:first-child > span { color: var(--green-700); font-size: 6px; font-weight: 900; letter-spacing: .14em; }
@@ -734,13 +740,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .chat-error { align-items: center; background: var(--danger-soft); border: 1px solid #edd7d5; border-radius: 9px; color: var(--danger); display: flex; font-size: 8px; gap: 7px; margin-top: 10px; padding: 9px; }
 .chat-error span { flex: 1; }
 .chat-error button { background: transparent; border: 0; color: var(--danger); cursor: pointer; }
-.chat-composer { background: #fafcfb; border-top: 1px solid var(--line); padding: 11px 14px; }
-.chat-composer textarea { background: #fff; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); display: block; font-size: 9px; line-height: 1.5; max-height: 100px; min-height: 55px; outline: 0; padding: 10px; resize: none; width: 100%; }
-.chat-composer textarea:focus { border-color: #9bcdb7; }
-.chat-composer > div { align-items: center; display: flex; gap: 12px; justify-content: flex-end; margin-top: 7px; }
-.chat-composer > div > span { align-items: center; color: var(--muted); display: flex; font-size: 6px; gap: 4px; }
-.chat-composer > div > span:first-child { margin-right: auto; }
-.chat-composer button { align-items: center; background: var(--green-950); border: 0; border-radius: 8px; color: #fff; cursor: pointer; display: flex; font-size: 8px; font-weight: 800; gap: 6px; height: 34px; padding: 0 11px; }
+/* Claude/Gemini tarzi: genis, ortalanmis, gorunur sinirlari belirgin bir giris kutusu. */
+.chat-composer { background: #fafcfb; border-top: 1px solid var(--line); padding: 14px 18px 18px; }
+.chat-composer-inner { margin: 0 auto; max-width: 820px; }
+.chat-composer textarea { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; color: var(--ink); display: block; font-size: 10px; line-height: 1.6; max-height: 160px; min-height: 74px; outline: 0; padding: 13px 15px; resize: none; width: 100%; }
+.chat-composer textarea:focus { border-color: #9bcdb7; box-shadow: 0 0 0 3px rgba(47,161,113,.08); }
+.chat-composer > .chat-composer-inner > div { align-items: center; display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+.chat-composer > .chat-composer-inner > div > span { align-items: center; color: var(--muted); display: flex; font-size: 6px; gap: 4px; }
+.chat-composer > .chat-composer-inner > div > span:first-child { margin-right: auto; }
+.chat-composer button { align-items: center; background: var(--green-950); border: 0; border-radius: 10px; color: #fff; cursor: pointer; display: flex; font-size: 8px; font-weight: 800; gap: 6px; height: 36px; padding: 0 13px; }
 .chat-composer button:disabled { cursor: not-allowed; opacity: .45; }
 
 .quality-grid { display: grid; gap: 14px; grid-template-columns: 280px minmax(0, 1fr); }
@@ -819,7 +827,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .drawer-loading span { animation: spin 900ms linear infinite; border: 3px solid var(--green-100); border-radius: 50%; border-top-color: var(--green-700); height: 35px; width: 35px; }
 .drawer-loading strong { font-size: 9px; margin-top: 11px; }
 
-.scope-toolbar, .catalog-scope-bar, .comparison-mode-bar, .assistant-mode-bar {
+.scope-toolbar, .catalog-scope-bar, .comparison-mode-bar {
   align-items: center;
   background: linear-gradient(110deg, #fff, #f8fbf9);
   display: flex;
@@ -903,7 +911,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .archive-metrics small { color: #7fac9a; font-size: 6px; margin-top: 2px; }
 .archive-ribbon > button { align-items: center; background: #d9ad55; border: 0; border-radius: 9px; color: #17342b; cursor: pointer; display: flex; font-size: 7px; font-weight: 850; gap: 8px; justify-content: center; min-height: 39px; padding: 0 12px; white-space: nowrap; }
 
-.catalog-scope-bar, .comparison-mode-bar, .assistant-mode-bar { flex-wrap: wrap; }
+.catalog-scope-bar, .comparison-mode-bar { flex-wrap: wrap; }
 .period-chips { align-items: center; display: flex; gap: 5px; margin-left: auto; }
 .period-chips.hidden { visibility: hidden; }
 .period-chips button { background: #fff; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); cursor: pointer; font-size: 7px; font-weight: 750; min-height: 28px; padding: 0 10px; white-space: nowrap; }
@@ -996,13 +1004,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .fact-cloud { grid-template-columns: repeat(2, 1fr); }
   .fact-stat:last-child { grid-column: span 2; }
   .filter-grid { grid-template-columns: repeat(2, 1fr); }
-  .assistant-workspace { grid-template-columns: 1fr; }
-  .assistant-sidebar { display: grid; gap: 15px; grid-template-columns: 1fr 1fr; }
-  .assistant-tech { margin: 0; }
-  .suggestion-list { grid-column: span 2; }
-  .new-chat { margin-top: 0; }
   .quality-grid { grid-template-columns: 1fr; }
-  .scope-toolbar, .catalog-scope-bar, .comparison-mode-bar, .assistant-mode-bar { align-items: flex-start; }
+  .scope-toolbar, .catalog-scope-bar, .comparison-mode-bar { align-items: flex-start; }
   .scope-toolbar { flex-direction: column; }
   .archive-ribbon { grid-template-columns: 1fr; }
   .archive-ribbon > button { grid-column: auto; }
@@ -1017,11 +1020,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .finance-bank-metrics { border-left: 0; border-top: 1px solid var(--line-soft); grid-column: span 2; grid-template-columns: repeat(3,1fr); padding: 12px 0 0; }
   .finance-bank-metrics > div { align-content: start; display: flex; flex-direction: column; }
   .finance-bank-metrics strong, .finance-bank-metrics small { text-align: left; }
-  .assistant-product-select { min-width: 220px; }
 }
 
 @media (max-width: 680px) {
   .workspace-topbar { gap: 8px; height: 61px; padding: 0 13px; }
+  .workspace-content.chat-mode { height: calc(100vh - 61px); padding: 12px 13px; }
   .global-search { flex: 1; width: auto; }
   .global-search kbd, .demo-chip { display: none; }
   .connection-chip { font-size: 0; padding: 8px; }
@@ -1052,8 +1055,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .config-actions { align-items: stretch; flex-direction: column; gap: 8px; }
   .config-actions button { justify-content: space-between; width: 100%; }
   .compare-intro { grid-template-columns: 1fr; }
-  .assistant-sidebar { display: flex; }
-  .suggestion-list { grid-column: auto; }
+  .assistant-tech { border-left: 0; border-top: 1px solid var(--line-soft); flex-basis: 100%; padding: 10px 0 0; }
+  .new-chat { margin-left: 0; }
   .chat-top > span { display: none; }
   .chat-scroll { min-height: 450px; padding: 13px; }
   .chat-empty { padding: 28px 10px; }
@@ -1083,7 +1086,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .finance-bank-metrics { grid-column: auto; grid-template-columns: 1fr; }
   .finance-bank-actions { align-items: stretch; display: flex; grid-column: auto; }
   .finance-bank-actions > button { min-width: 0; }
-  .assistant-product-select { min-width: 0; width: 100%; }
   .assistant-panorama > header { flex-direction: column; }
   .panorama-kpis { justify-content: flex-start; }
   .panorama-grid { grid-template-columns: 1fr; }
