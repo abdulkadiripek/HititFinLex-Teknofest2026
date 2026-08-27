@@ -4,7 +4,8 @@
   border-radius: 20px;
   box-shadow: 0 18px 46px rgba(7, 49, 40, 0.09);
   color: #173029;
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
   margin-top: 24px;
   overflow: hidden;
 }
@@ -29,14 +30,14 @@
 .heroCopy > span {
   color: #dfba6b;
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 850;
   letter-spacing: 0.16em;
 }
 
 .heroCopy h3 {
   color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
   font-size: 30px;
   font-weight: 500;
   letter-spacing: -0.035em;
@@ -46,7 +47,7 @@
 
 .heroCopy p {
   color: #b4d0c5;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.55;
   margin: 0;
 }
@@ -70,14 +71,14 @@
 
 .kpis b {
   color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: 500;
 }
 
 .kpis span {
   color: #9ec0b3;
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 4px;
 }
 
@@ -107,14 +108,14 @@
   color: #fff;
   display: flex;
   flex: 0 0 auto;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
   font-weight: 700;
   justify-content: center;
 }
 
 .highlightMark {
   border-radius: 11px;
-  font-size: 12px;
+  font-size: 14px;
   height: 46px;
   width: 46px;
 }
@@ -127,12 +128,12 @@
 
 .highlights small {
   color: #71867e;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .highlights strong {
   color: #173029;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
   font-size: 17px;
   font-weight: 600;
   margin-top: 3px;
@@ -143,7 +144,7 @@
 
 .highlights article > div > span {
   color: #147a55;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 750;
   margin-top: 3px;
 }
@@ -168,7 +169,7 @@
 
 .toolbar > div > span {
   color: #73877f;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 4px;
 }
 
@@ -179,7 +180,7 @@
   border-radius: 10px;
   color: #557068;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 750;
   gap: 7px;
   min-height: 40px;
@@ -193,7 +194,7 @@
   border-radius: 7px;
   color: #173029;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 12px;
   height: 30px;
   outline: 0;
   padding: 0 28px 0 9px;
@@ -224,7 +225,7 @@
   background: #f4f7f6;
   border-bottom: 1px solid #d8e2df;
   color: #5f766e;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 850;
   letter-spacing: 0.025em;
   min-height: 48px;
@@ -256,7 +257,7 @@
 
 .brandMark {
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 15px;
   height: 52px;
   width: 52px;
 }
@@ -276,7 +277,7 @@
 .bankCell span,
 .bankCell small {
   color: #71867e;
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 4px;
 }
 
@@ -293,13 +294,13 @@
 
 .value strong {
   color: #173029;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.35;
 }
 
 .value span {
   color: #536c63;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.35;
   margin-top: 5px;
 }
@@ -309,7 +310,7 @@
   background: #eaf5f0;
   border-radius: 999px;
   color: #147a55;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 750;
   margin-top: 7px;
   padding: 4px 7px;
@@ -317,7 +318,7 @@
 
 .emptyValue strong {
   color: #9aa9a3;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 550;
   line-height: 1.45;
 }
@@ -337,7 +338,7 @@
   color: #fff;
   cursor: pointer;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   gap: 6px;
   justify-content: center;
@@ -353,7 +354,7 @@
 
 .sourceCell > span {
   color: #71867e;
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .textSummary {
@@ -369,7 +370,7 @@
   color: #116047;
   cursor: pointer;
   display: flex;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   gap: 7px;
   list-style: none;
@@ -385,7 +386,7 @@
 
 .textSummary p {
   color: #4c655c;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.55;
   margin: 0;
 }
@@ -400,7 +401,7 @@
   border-top: 1px solid #eddfbd;
   color: #836126;
   display: flex;
-  font-size: 10px;
+  font-size: 12px;
   gap: 8px;
   line-height: 1.5;
   padding: 12px 22px;
@@ -415,7 +416,7 @@
   align-items: center;
   color: #765620;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   gap: 8px;
   justify-content: center;
   min-height: 150px;
@@ -514,7 +515,7 @@
   .row > div[role="cell"]:not(.bankCell):not(.sourceCell)::before {
     color: #71867e;
     content: attr(data-label);
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 800;
     left: 0;
     position: absolute;

@@ -13,38 +13,6 @@ import panoramaStyles from "./AssistantPanorama.module.css";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
-function safeExternalUrl(value: string | null | undefined) {
-  if (!value) return undefined;
-  try {
-    const parsed = new URL(value);
-    return (parsed.protocol === "http:" || parsed.protocol === "https:")
-      && parsed.hostname
-      && !parsed.username
-      && !parsed.password
-        ? parsed.href
-        : undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function sanitizeExternalUrls<T>(value: T): T {
-  if (Array.isArray(value)) {
-    return value.map((item) => sanitizeExternalUrls(item)) as T;
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => {
-        if (key === "source_url" || key === "archive_url") {
-          return [key, typeof item === "string" ? safeExternalUrl(item) ?? null : item];
-        }
-        return [key, sanitizeExternalUrls(item)];
-      }),
-    ) as T;
-  }
-  return value;
-}
-
 type View = "overview" | "catalog" | "compare" | "assistant" | "quality";
 type ConnectionState = "checking" | "online" | "degraded" | "offline";
 type OverviewScope = "all" | "live" | "history";
@@ -83,9 +51,6 @@ type HealthResponse = {
   ner_model_ready?: boolean;
   classifier_ready?: boolean;
   ollama_model_ready?: boolean;
-  llm_model_ready?: boolean;
-  llm_provider?: string;
-  active_model?: string;
   document_count: number;
   chunk_count: number;
   comparison_fact_count?: number;
@@ -193,18 +158,6 @@ type ComparisonValue = {
   source: string;
   confidence: number | null;
   evidence_text: string | null;
-  verified?: boolean;
-  verification_warning?: string | null;
-  document_id?: number;
-  page_title?: string | null;
-  source_url?: string | null;
-};
-
-type ComparisonSource = {
-  document_id: number;
-  page_title: string | null;
-  source_url: string | null;
-  confidence: number | null;
 };
 
 type ComparisonItem = {
@@ -230,7 +183,6 @@ type ComparisonColumn = ComparisonItem & {
   document_count: number;
   document_ids: number[];
   page_titles: string[];
-  sources: ComparisonSource[];
 };
 
 type DocumentFact = {
@@ -241,8 +193,6 @@ type DocumentFact = {
   source: string;
   confidence: number | null;
   evidence_text: string | null;
-  verified?: boolean;
-  verification_warning?: string | null;
 };
 
 type DocumentDetail = {
@@ -274,8 +224,6 @@ type ChatSource = {
   semantic_score: number;
   lexical_score: number;
   hybrid_score: number;
-  verified?: boolean;
-  verification_warning?: string | null;
 };
 
 type ChatResponse = {
@@ -283,7 +231,6 @@ type ChatResponse = {
   answer: string;
   model: string;
   sources: ChatSource[];
-  warnings?: string[];
 };
 
 type HistoricalSearchResult = {
@@ -300,15 +247,12 @@ type HistoricalSearchResult = {
   semantic_score: number;
   lexical_score: number;
   hybrid_score: number;
-  verified: boolean;
-  verification_warning: string | null;
 };
 
 type HistoricalSearchResponse = {
   query: string;
   count: number;
   results: HistoricalSearchResult[];
-  warnings?: string[];
 };
 
 type HistoricalChatResponse = {
@@ -316,7 +260,6 @@ type HistoricalChatResponse = {
   answer: string;
   model: string;
   sources: HistoricalSearchResult[];
-  warnings?: string[];
 };
 
 type HistoricalComparisonItem = {
@@ -329,8 +272,6 @@ type HistoricalComparisonItem = {
   snapshot_date: string | null;
   product_type_code: string | null;
   classification_confidence: number | null;
-  verified: boolean;
-  verification_warning: string | null;
   attributes: Record<string, ComparisonValue[]>;
 };
 
@@ -339,7 +280,6 @@ type HistoricalComparisonResponse = {
   as_of: string | null;
   count: number;
   items: HistoricalComparisonItem[];
-  warnings?: string[];
 };
 
 type ConversationItem = ChatResponse & {
@@ -469,47 +409,195 @@ const comparisonFactProfiles: Record<string, string[]> = {
   ],
 };
 
-const emptyDashboard: DashboardOverview = {
-  document_count: 0,
-  bank_count: 0,
+const demoDashboard: DashboardOverview = {
+  document_count: 771,
+  bank_count: 10,
   verified_count: 0,
-  fact_count: 0,
-  documents_with_facts: 0,
-  coverage_percentage: 0,
-  average_confidence: 0,
+  fact_count: 3236,
+  documents_with_facts: 590,
+  coverage_percentage: 76.5,
+  average_confidence: 0.72,
   pending_document_reviews: 0,
   pending_fact_reviews: 0,
-  banks: [],
-  product_types: [],
-  fact_types: [],
+  banks: [
+    ["emlak", "Emlak Katılım", 100],
+    ["ziraat", "Ziraat Katılım", 100],
+    ["albaraka", "Albaraka Türk", 99],
+    ["kuveyt", "Kuveyt Türk", 99],
+    ["vakif", "Vakıf Katılım", 99],
+    ["dunya", "Dünya Katılım", 98],
+    ["turkiye", "Türkiye Finans", 86],
+    ["hayat", "Hayat Finans", 67],
+    ["tom", "T.O.M. Katılım", 15],
+    ["adil", "Adil Katılım", 8],
+  ].map(([code, label, count]) => ({
+    code: String(code),
+    label: String(label),
+    count: Number(count),
+    percentage: Math.round((Number(count) / 771) * 1000) / 10,
+  })),
+  product_types: [
+    ["KART", "Kart kampanyası", 253],
+    ["YATIRIM_URUNU", "Yatırım ürünü", 178],
+    ["FINANSMAN", "Finansman", 141],
+    ["DIGER", "Diğer", 103],
+    ["ALISVERIS_PUANI", "Alışveriş puanı", 34],
+    ["YENI_MUSTERI", "Yeni müşteri", 22],
+    ["IHTIYAC_FINANSMANI", "İhtiyaç finansmanı", 20],
+    ["TASIT_FINANSMANI", "Taşıt finansmanı", 13],
+    ["KONUT_FINANSMANI", "Konut finansmanı", 7],
+  ].map(([code, label, count]) => ({
+    code: String(code),
+    label: String(label),
+    count: Number(count),
+    percentage: Math.round((Number(count) / 771) * 1000) / 10,
+  })),
+  fact_types: [
+    ["KAMPANYA_SURESI", 494],
+    ["VADE_SURESI", 469],
+    ["TAKSIT_SAYISI", 458],
+    ["HARCAMA_ESIGI", 268],
+    ["MASRAF_DURUMU", 255],
+    ["ALISVERIS_PUANI", 243],
+    ["HEDEF_KITLE", 191],
+    ["INDIRIM_ORANI", 190],
+    ["ODUL_MIKTARI", 178],
+    ["FINANSMAN_TUTARI", 155],
+  ].map(([code, count]) => ({
+    code: String(code),
+    label: factLabels[String(code)] ?? String(code),
+    count: Number(count),
+    percentage: Math.round((Number(count) / 3236) * 1000) / 10,
+  })),
   latest_documents: [],
 };
 
-const emptyHistory: HistoricalOverview = {
-  historical_document_count: 0,
-  searchable_document_count: 0,
-  review_document_count: 0,
-  historical_fact_count: 0,
-  historical_chunk_count: 0,
-  embedded_chunk_count: 0,
-  history_start_date: null,
-  history_end_date: null,
-  banks: [],
-  product_types: [],
+const demoHistory: HistoricalOverview = {
+  historical_document_count: 2580,
+  searchable_document_count: 1566,
+  review_document_count: 1014,
+  historical_fact_count: 3982,
+  historical_chunk_count: 3192,
+  embedded_chunk_count: 3192,
+  history_start_date: "2016-01-01",
+  history_end_date: "2026-08-21",
+  banks: [
+    { name: "Kuveyt Türk Katılım Bankası A.Ş.", count: 492 },
+    { name: "Türkiye Finans Katılım Bankası A.Ş.", count: 473 },
+    { name: "Ziraat Katılım Bankası A.Ş.", count: 410 },
+    { name: "Vakıf Katılım Bankası A.Ş.", count: 394 },
+    { name: "Albaraka Türk Katılım Bankası A.Ş.", count: 325 },
+    { name: "Türkiye Emlak Katılım Bankası A.Ş.", count: 242 },
+    { name: "Hayat Finans Katılım Bankası A.Ş.", count: 185 },
+    { name: "Dünya Katılım Bankası A.Ş.", count: 59 },
+  ],
+  product_types: [
+    { code: "KART_KAMPANYASI", count: 1407 },
+    { code: "DIGER_KAMPANYA", count: 467 },
+    { code: "DIGER", count: 170 },
+    { code: "YATIRIM_URUNU", count: 147 },
+    { code: "TICARI_FINANSMAN", count: 100 },
+    { code: "KATILMA_HESABI", count: 70 },
+    { code: "KART_URUNU", count: 63 },
+    { code: "KONUT_FINANSMANI", count: 59 },
+    { code: "IHTIYAC_FINANSMANI", count: 31 },
+    { code: "SIGORTA_TEKAFUL_URUNU", count: 22 },
+    { code: "TASIT_FINANSMANI", count: 21 },
+    { code: "DIGER_FINANSMAN", count: 19 },
+    { code: "ODEME_TRANSFER_HIZMETI", count: 4 },
+  ],
 };
 
-const emptyOptions: ComparisonOptions = {
-  campaign_types: [],
-  banks: [],
-  entity_labels: [],
-};
-
-const emptyCatalog: CatalogResponse = {
-  total: 0,
+const demoCatalog: CatalogResponse = {
+  total: 6,
   page: 1,
   page_size: 12,
-  page_count: 0,
-  items: [],
+  page_count: 1,
+  items: [
+    [693, "Ziraat Katılım", "Finansman İş Birlikleri", "TICARI_FINANSMAN", 0.9946],
+    [720, "Ziraat Katılım", "Alışveriş Finansmanı", "IHTIYAC_FINANSMANI", 0.981],
+    [723, "Ziraat Katılım", "Konut-Gayrimenkul Finansmanı", "KONUT_FINANSMANI", 0.9916],
+    [609, "Vakıf Katılım", "Kentsel Dönüşüm Finansmanı", "KONUT_FINANSMANI", 0.9923],
+    [393, "Emlak Katılım", "Finansman Ferdi Kaza Sigortası", "SIGORTA_TEKAFUL_URUNU", 0.9932],
+    [364, "Kuveyt Türk", "Finansman Ürünleri", "TICARI_FINANSMAN", 0.9944],
+  ].map(([id, bank, title, code, confidence]) => ({
+    document_id: Number(id),
+    bank_name: String(bank),
+    page_title: String(title),
+    source_url: null,
+    campaign_type_code: String(code),
+    campaign_type: String(code).replaceAll("_", " "),
+    summary_text: "Yerel API bağlandığında bu kayıt gerçek özet ve çıkarılmış alanlarla güncellenir.",
+    confidence: Number(confidence),
+    verified: false,
+    fact_count: 0,
+    fact_types: [],
+    updated_at: null,
+  })),
+};
+
+const demoOptions: ComparisonOptions = {
+  campaign_types: demoDashboard.product_types.map((item) => ({
+    code: item.code,
+    label: item.label,
+    document_count: item.count,
+    bank_count: 0,
+  })),
+  banks: demoDashboard.banks.map((item) => item.label),
+  entity_labels: demoDashboard.fact_types.map((item) => ({
+    code: item.code,
+    label: item.label,
+    entity_count: item.count,
+  })),
+};
+
+const demoComparison: ComparisonResponse = {
+  campaign_type_code: "KONUT_FINANSMANI",
+  campaign_type: "Konut Finansmanı",
+  count: 3,
+  items: [
+    {
+      document_id: 723,
+      bank_name: "Ziraat Katılım",
+      page_title: "Konut-Gayrimenkul Finansmanı",
+      source_url: "https://www.ziraatkatilim.com.tr/bireysel/finansman-urunleri/konut-gayrimenkul-finansmani",
+      campaign_type_code: "KONUT_FINANSMANI",
+      campaign_type: "Konut Finansmanı",
+      summary_text: "Konut ve gayrimenkul finansmanı seçenekleri.",
+      confidence: 0.9916,
+      attributes: {
+        ODEME_PLANI: [{ text: "Esnek ödeme planı", normalized_value: null, source: "dataset_snapshot", confidence: 0.94, evidence_text: "Esnek ödeme planı seçenekleri sunulmaktadır." }],
+        VERGI_MUAFIYETI: [{ text: "KKDF ve BSMV muafiyeti imkânı", normalized_value: null, source: "dataset_snapshot", confidence: 0.91, evidence_text: "Finansman kullanımında KKDF ve BSMV muafiyeti imkânı bulunabilir." }],
+      },
+    },
+    {
+      document_id: 1,
+      bank_name: "Türkiye Finans",
+      page_title: "Konut Finansmanı",
+      source_url: "https://www.turkiyefinans.com.tr/tr-tr/bireysel/konut-finansmani/Sayfalar/konut-finansmani.aspx",
+      campaign_type_code: "KONUT_FINANSMANI",
+      campaign_type: "Konut Finansmanı",
+      summary_text: "İlk veya mevcut konuta yönelik finansman seçenekleri.",
+      confidence: 0.97,
+      attributes: {
+        VADE_SURESI: [{ text: "120 ay", normalized_value: { value: 120, unit: "ay" }, source: "dataset_snapshot", confidence: 0.98, evidence_text: "Mortgage finansmanında maksimum vade süresi 120 aydır." }],
+        SIGORTA_KOSULU: [{ text: "Sigortalı ve sigortasız seçenekler", normalized_value: null, source: "dataset_snapshot", confidence: 0.9, evidence_text: "Sigortalı ve sigortasız alternatifler sunulur." }],
+      },
+    },
+    {
+      document_id: 609,
+      bank_name: "Vakıf Katılım",
+      page_title: "Konut Finansmanı",
+      source_url: "https://www.vakifkatilim.com.tr/tr/kendim-icin/finansmanlar/konut-finansmani",
+      campaign_type_code: "KONUT_FINANSMANI",
+      campaign_type: "Konut Finansmanı",
+      summary_text: "Katılım finans prensiplerine uygun konut finansmanı.",
+      confidence: 0.96,
+      attributes: {
+        BASVURU_KANALI: [{ text: "Web üzerinden ön başvuru", normalized_value: null, source: "dataset_snapshot", confidence: 0.95, evidence_text: "Web üzerinden ön başvuru yapılabilir." }],
+      },
+    },
+  ],
 };
 
 const quickQuestions = [
@@ -568,10 +656,6 @@ async function apiRequest<T>(
   timeoutMs = 20000,
 ): Promise<T> {
   const controller = new AbortController();
-  const callerSignal = init.signal;
-  const abortFromCaller = () => controller.abort(callerSignal?.reason);
-  if (callerSignal?.aborted) abortFromCaller();
-  else callerSignal?.addEventListener("abort", abortFromCaller, { once: true });
   const timer = window.setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -583,53 +667,10 @@ async function apiRequest<T>(
       const detail = await response.text();
       throw new Error(detail || `HTTP ${response.status}`);
     }
-    return sanitizeExternalUrls((await response.json()) as T);
+    return (await response.json()) as T;
   } finally {
     window.clearTimeout(timer);
-    callerSignal?.removeEventListener("abort", abortFromCaller);
   }
-}
-
-function canonicalProductCode(code: string | null | undefined) {
-  if (!code) return "";
-  const normalized = code.trim().toLocaleUpperCase("tr-TR");
-  return normalized === "KART_KAMPANYASI" ? "KART" : normalized;
-}
-
-function apiProductCode(code: string, scope: CompareScope) {
-  const canonical = canonicalProductCode(code);
-  if (canonical === "KART") return scope === "history" ? "KART_KAMPANYASI" : "KART";
-  return canonical;
-}
-
-function mergeProductOptions(
-  live: CampaignTypeOption[],
-  history: HistoryCountBucket[],
-) {
-  const merged = new Map<string, CampaignTypeOption>();
-  live.forEach((item) => {
-    const code = canonicalProductCode(item.code);
-    const current = merged.get(code);
-    if (current) {
-      current.document_count += item.document_count;
-      current.bank_count = Math.max(current.bank_count, item.bank_count);
-    } else {
-      merged.set(code, { ...item, code, label: friendlyCode(code, item.label) });
-    }
-  });
-  history.forEach((item) => {
-    if (!item.code) return;
-    const code = canonicalProductCode(item.code);
-    const current = merged.get(code);
-    if (current) current.document_count += item.count;
-    else merged.set(code, {
-      code,
-      label: friendlyCode(code),
-      document_count: item.count,
-      bank_count: 0,
-    });
-  });
-  return [...merged.values()].sort((left, right) => right.document_count - left.document_count);
 }
 
 function shortBank(name: string) {
@@ -646,20 +687,20 @@ function initials(name: string) {
 }
 
 const bankBrands = [
-  { match: "albaraka", slug: "albaraka", mark: "A", label: "Albaraka Türk", color: "#008b65", accent: "#d8b24c" },
-  { match: "kuveyt", slug: "kuveyt", mark: "KT", label: "Kuveyt Türk", color: "#6d3b87", accent: "#d9b24a" },
-  { match: "ziraat", slug: "ziraat", mark: "ZK", label: "Ziraat Katılım", color: "#157391", accent: "#55b899" },
-  { match: "vakıf", slug: "vakif", mark: "VK", label: "Vakıf Katılım", color: "#a63f4b", accent: "#e2b765" },
-  { match: "vakif", slug: "vakif", mark: "VK", label: "Vakıf Katılım", color: "#a63f4b", accent: "#e2b765" },
-  { match: "emlak", slug: "emlak", mark: "EK", label: "Emlak Katılım", color: "#138153", accent: "#c5a75c" },
-  { match: "türkiye finans", slug: "turkiyefinans", mark: "TF", label: "Türkiye Finans", color: "#7a5538", accent: "#d59f52" },
-  { match: "turkiye finans", slug: "turkiyefinans", mark: "TF", label: "Türkiye Finans", color: "#7a5538", accent: "#d59f52" },
-  { match: "hayat", slug: "hayat", mark: "HF", label: "Hayat Finans", color: "#23815d", accent: "#8ac7a6" },
-  { match: "dünya", slug: "dunya", mark: "DK", label: "Dünya Katılım", color: "#26778b", accent: "#d7ae55" },
-  { match: "dunya", slug: "dunya", mark: "DK", label: "Dünya Katılım", color: "#26778b", accent: "#d7ae55" },
-  { match: "t.o.m", slug: "tom", mark: "T", label: "T.O.M. Katılım", color: "#147a83", accent: "#5dc1b6" },
-  { match: "tom", slug: "tom", mark: "T", label: "T.O.M. Katılım", color: "#147a83", accent: "#5dc1b6" },
-  { match: "adil", slug: "adil", mark: "A", label: "Adil Katılım", color: "#b67a22", accent: "#e2be70" },
+  { match: "albaraka", slug: "albaraka", mark: "A", label: "Albaraka Türk", color: "#008b65", accent: "#d8b24c", logo: "/banks/albaraka-icon.ico" },
+  { match: "kuveyt", slug: "kuveyt", mark: "KT", label: "Kuveyt Türk", color: "#6d3b87", accent: "#d9b24a", logo: "/banks/kuveyt-icon.png" },
+  { match: "ziraat", slug: "ziraat", mark: "ZK", label: "Ziraat Katılım", color: "#157391", accent: "#55b899", logo: "/banks/ziraat-icon.png" },
+  { match: "vakıf", slug: "vakif", mark: "VK", label: "Vakıf Katılım", color: "#a63f4b", accent: "#e2b765", logo: "/banks/vakif-icon.png" },
+  { match: "vakif", slug: "vakif", mark: "VK", label: "Vakıf Katılım", color: "#a63f4b", accent: "#e2b765", logo: "/banks/vakif-icon.png" },
+  { match: "emlak", slug: "emlak", mark: "EK", label: "Emlak Katılım", color: "#138153", accent: "#c5a75c", logo: "/banks/emlak-icon.png" },
+  { match: "türkiye finans", slug: "turkiyefinans", mark: "TF", label: "Türkiye Finans", color: "#7a5538", accent: "#d59f52", logo: "/banks/turkiyefinans-icon.png" },
+  { match: "turkiye finans", slug: "turkiyefinans", mark: "TF", label: "Türkiye Finans", color: "#7a5538", accent: "#d59f52", logo: "/banks/turkiyefinans-icon.png" },
+  { match: "hayat", slug: "hayat", mark: "HF", label: "Hayat Finans", color: "#23815d", accent: "#8ac7a6", logo: "/banks/hayat-icon.ico" },
+  { match: "dünya", slug: "dunya", mark: "DK", label: "Dünya Katılım", color: "#26778b", accent: "#d7ae55", logo: "/banks/dunya-icon.svg" },
+  { match: "dunya", slug: "dunya", mark: "DK", label: "Dünya Katılım", color: "#26778b", accent: "#d7ae55", logo: "/banks/dunya-icon.svg" },
+  { match: "t.o.m", slug: "tom", mark: "T", label: "T.O.M. Katılım", color: "#147a83", accent: "#5dc1b6", logo: "/banks/tom-icon.png" },
+  { match: "tom", slug: "tom", mark: "T", label: "T.O.M. Katılım", color: "#147a83", accent: "#5dc1b6", logo: "/banks/tom-icon.png" },
+  { match: "adil", slug: "adil", mark: "A", label: "Adil Katılım", color: "#b67a22", accent: "#e2be70", logo: "/banks/adil-icon.png" },
 ];
 
 function bankBrand(name: string) {
@@ -670,17 +711,24 @@ function bankBrand(name: string) {
     label: shortBank(name),
     color: "#164f43",
     accent: "#d5ab4b",
+    logo: null as string | null,
   };
 }
 
 function BankLogo({ name, wordmark = false }: { name: string; wordmark?: boolean }) {
   const brand = bankBrand(name);
+  const [logoFailed, setLogoFailed] = useState(false);
+  const showLogo = Boolean(brand.logo) && !logoFailed;
   return <span
     className={`bank-logo brand-${brand.slug}${wordmark ? " with-wordmark" : ""}`}
     style={{ "--bank-color": brand.color, "--bank-accent": brand.accent } as React.CSSProperties}
     title={shortBank(name)}
   >
-    <span className="bank-logo-symbol"><i /><b>{brand.mark}</b></span>
+    <span className={showLogo ? "bank-logo-symbol has-image" : "bank-logo-symbol"}>
+      {showLogo
+        ? <img alt="" onError={() => setLogoFailed(true)} src={brand.logo ?? undefined} />
+        : <><i /><b>{brand.mark}</b></>}
+    </span>
     {wordmark && <span className="bank-logo-wordmark"><strong>{brand.label}</strong><small>Katılım finansı</small></span>}
   </span>;
 }
@@ -691,7 +739,7 @@ function inferProductType(query: string) {
   if (/taşıt|tasit|araç|arac|otomobil|motosiklet/.test(value)) return "TASIT_FINANSMANI";
   if (/ihtiyaç|ihtiyac|alışveriş finans|alisveris finans|eğitim finans|egitim finans|hac|umre|dayanıklı tüketim|dayanikli tuketim/.test(value)) return "IHTIYAC_FINANSMANI";
   if (/ticari|kobi|tarım|tarim|işletme|isletme|eximbank|ihracat|ithalat|akreditif|teminat mektubu/.test(value)) return "TICARI_FINANSMAN";
-  if (/kart|bonus|puan|taksit|harcama/.test(value)) return "KART";
+  if (/kart|bonus|puan|taksit|harcama/.test(value)) return "KART_KAMPANYASI";
   if (/yatırım|yatirim|fon|altın|altin|döviz|doviz/.test(value)) return "YATIRIM_URUNU";
   if (/katılma hesabı|katilma hesabi|mevduat|vadeli hesap/.test(value)) return "KATILMA_HESABI";
   if (/sigorta|tekafül|tekaful|hayat sigorta|ferdi kaza/.test(value)) return "SIGORTA_TEKAFUL_URUNU";
@@ -750,24 +798,9 @@ function historicalBuckets(
   items: HistoryCountBucket[],
   kind: "bank" | "product",
 ): DashboardBucket[] {
-  const grouped = new Map<string, HistoryCountBucket>();
-  items.forEach((item) => {
-    const code = kind === "bank"
-      ? item.name ?? "unknown"
-      : canonicalProductCode(item.code ?? "UNCLASSIFIED");
-    const current = grouped.get(code);
-    grouped.set(code, {
-      name: item.name ?? current?.name,
-      code,
-      count: (current?.count ?? 0) + item.count,
-    });
-  });
-  const mergedItems = [...grouped.values()];
-  const total = mergedItems.reduce((sum, item) => sum + item.count, 0);
-  return mergedItems.map((item) => {
-    const code = kind === "bank"
-      ? item.name ?? "unknown"
-      : item.code ?? "UNCLASSIFIED";
+  const total = items.reduce((sum, item) => sum + item.count, 0);
+  return items.map((item) => {
+    const code = kind === "bank" ? item.name ?? "unknown" : item.code ?? "UNCLASSIFIED";
     return {
       code,
       label: kind === "bank" ? item.name ?? "Bilinmeyen kurum" : friendlyCode(item.code ?? "UNCLASSIFIED"),
@@ -784,9 +817,7 @@ function mergeDashboardBuckets(
 ) {
   const merged = new Map<string, DashboardBucket>();
   [...live, ...history].forEach((item) => {
-    const key = kind === "bank"
-      ? shortBank(item.label).toLocaleLowerCase("tr-TR")
-      : canonicalProductCode(item.code);
+    const key = kind === "bank" ? shortBank(item.label).toLocaleLowerCase("tr-TR") : item.code;
     const current = merged.get(key);
     if (current) current.count += item.count;
     else merged.set(key, { ...item });
@@ -800,35 +831,20 @@ function mergeDashboardBuckets(
 }
 
 function normalizeHistoricalComparison(data: HistoricalComparisonResponse): ComparisonResponse {
-  const productCode = canonicalProductCode(data.product_type_code);
   return {
-    campaign_type_code: productCode,
-    campaign_type: friendlyCode(productCode),
+    campaign_type_code: data.product_type_code,
+    campaign_type: friendlyCode(data.product_type_code),
     count: data.count,
     items: data.items.map((item) => ({
       document_id: item.document_id,
       bank_name: item.bank_name,
       page_title: item.page_title,
       source_url: item.archive_url ?? item.source_url,
-      campaign_type_code: canonicalProductCode(item.product_type_code ?? data.product_type_code),
-      campaign_type: friendlyCode(canonicalProductCode(item.product_type_code ?? data.product_type_code)),
+      campaign_type_code: item.product_type_code ?? data.product_type_code,
+      campaign_type: friendlyCode(item.product_type_code ?? data.product_type_code),
       summary_text: item.snapshot_date ? `${formatDate(item.snapshot_date)} tarihli arşiv kesiti` : "Tarihsel arşiv kesiti",
       confidence: item.classification_confidence,
       attributes: item.attributes,
-    })),
-  };
-}
-
-function normalizeLiveComparison(data: ComparisonResponse): ComparisonResponse {
-  const productCode = canonicalProductCode(data.campaign_type_code);
-  return {
-    ...data,
-    campaign_type_code: productCode,
-    campaign_type: friendlyCode(productCode, data.campaign_type),
-    items: data.items.map((item) => ({
-      ...item,
-      campaign_type_code: canonicalProductCode(item.campaign_type_code),
-      campaign_type: friendlyCode(canonicalProductCode(item.campaign_type_code), item.campaign_type),
     })),
   };
 }
@@ -840,13 +856,70 @@ function scoreLabel(value: number | null) {
 function friendlyCode(code: string | null, label?: string | null) {
   if (label && label !== code) return label;
   if (!code) return "Etiketsiz";
-  const canonical = canonicalProductCode(code);
-  if (canonical === "KART") return "Kart kampanyası";
-  return canonical.toLocaleLowerCase("tr-TR").replaceAll("_", " ").replace(/(^|\s)\S/g, (char) => char.toLocaleUpperCase("tr-TR"));
+  return code.toLocaleLowerCase("tr-TR").replaceAll("_", " ").replace(/(^|\s)\S/g, (char) => char.toLocaleUpperCase("tr-TR"));
+}
+
+const PIE_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"];
+
+function ProductPieChart({ items, onSelect }: { items: DashboardBucket[]; onSelect: (code: string) => void }) {
+  const total = items.reduce((sum, item) => sum + item.count, 0);
+  const top = items.slice(0, 6);
+  const restCount = items.slice(6).reduce((sum, item) => sum + item.count, 0);
+  const other: DashboardBucket = { code: "__OTHER__", label: "Diğer türler", count: restCount, percentage: Math.round((restCount / Math.max(total, 1)) * 100) };
+  const slices = restCount > 0 ? [...top, other] : top;
+  const radius = 62;
+  const strokeWidth = 26;
+  const circumference = 2 * Math.PI * radius;
+  const gap = 3;
+  const segments = slices.reduce<{ items: { slice: DashboardBucket; length: number; dashoffset: number }[]; offset: number }>((acc, slice) => {
+    const fraction = total ? slice.count / total : 0;
+    const length = Math.max(fraction * circumference - gap, 0);
+    acc.items.push({ slice, length, dashoffset: -acc.offset });
+    acc.offset += fraction * circumference;
+    return acc;
+  }, { items: [], offset: 0 }).items;
+
+  return (
+    <div className="product-pie">
+      <div className="product-pie-chart">
+        <svg viewBox="0 0 160 160">
+          {segments.map(({ slice, length, dashoffset }, index) => {
+            const isOther = slice.code === "__OTHER__";
+            return (
+              <circle
+                className={isOther ? "" : "pie-segment"}
+                cx={80}
+                cy={80}
+                fill="none"
+                key={slice.code}
+                onClick={isOther ? undefined : () => onSelect(slice.code)}
+                r={radius}
+                stroke={PIE_COLORS[index % PIE_COLORS.length]}
+                strokeDasharray={`${length} ${circumference - length}`}
+                strokeDashoffset={dashoffset}
+                strokeLinecap="round"
+                strokeWidth={strokeWidth}
+                transform="rotate(-90 80 80)"
+              >
+                <title>{`${friendlyCode(slice.code, slice.label)}: ${formatNumber(slice.count)} (%${slice.percentage})`}</title>
+              </circle>
+            );
+          })}
+        </svg>
+        <div className="product-pie-center"><strong>{formatNumber(total)}</strong><span>toplam belge</span></div>
+      </div>
+      <ul className="product-pie-legend">
+        {slices.map((slice, index) => {
+          const isOther = slice.code === "__OTHER__";
+          const content = <><i style={{ background: PIE_COLORS[index % PIE_COLORS.length] }} /><span>{friendlyCode(slice.code, slice.label)}</span><b>%{slice.percentage}</b></>;
+          return <li key={slice.code}>{isOther ? <div className="pie-legend-row">{content}</div> : <button className="pie-legend-row" onClick={() => onSelect(slice.code)} type="button">{content}</button>}</li>;
+        })}
+      </ul>
+    </div>
+  );
 }
 
 function comparisonProfile(code: string) {
-  code = canonicalProductCode(code);
   if (code.includes("KART") || code.includes("KAMPANYA") || code === "ALISVERIS_PUANI" || code === "YENI_MUSTERI") return comparisonFactProfiles.campaign;
   if (code.includes("FINANSMAN")) return comparisonFactProfiles.finance;
   if (code.includes("YATIRIM") || code.includes("HESAP")) return comparisonFactProfiles.investment;
@@ -868,7 +941,6 @@ function aggregateComparisonItems(items: ComparisonItem[]): ComparisonColumn[] {
         document_count: 0,
         document_ids: [],
         page_titles: [],
-        sources: [],
       };
       groups.set(item.bank_name, group);
       seen.set(item.bank_name, new Set());
@@ -877,12 +949,6 @@ function aggregateComparisonItems(items: ComparisonItem[]): ComparisonColumn[] {
     group.document_count += 1;
     group.document_ids.push(item.document_id);
     if (item.page_title && !group.page_titles.includes(item.page_title)) group.page_titles.push(item.page_title);
-    group.sources.push({
-      document_id: item.document_id,
-      page_title: item.page_title,
-      source_url: item.source_url,
-      confidence: item.confidence,
-    });
     if ((item.confidence ?? 0) > (group.confidence ?? 0)) {
       group.document_id = item.document_id;
       group.page_title = item.page_title;
@@ -894,15 +960,10 @@ function aggregateComparisonItems(items: ComparisonItem[]): ComparisonColumn[] {
     Object.entries(item.attributes).forEach(([factType, values]) => {
       const bucket = group!.attributes[factType] ?? [];
       values.forEach((value) => {
-        const signature = `${item.document_id}:${factType}:${value.text.toLocaleLowerCase("tr-TR").replace(/\s+/g, " ").trim()}`;
+        const signature = `${factType}:${value.text.toLocaleLowerCase("tr-TR").replace(/\s+/g, " ").trim()}`;
         if (seen.get(item.bank_name)!.has(signature)) return;
         seen.get(item.bank_name)!.add(signature);
-        bucket.push({
-          ...value,
-          document_id: item.document_id,
-          page_title: item.page_title,
-          source_url: item.source_url,
-        });
+        bucket.push(value);
       });
       group!.attributes[factType] = bucket;
     });
@@ -930,14 +991,14 @@ function visibleComparisonFacts(code: string, columns: ComparisonColumn[]) {
   return [...preferred, ...additional].slice(0, 12);
 }
 
-function renderAnswer(text: string, sources: ChatSource[], messageId: number) {
+function renderAnswer(text: string, sources: ChatSource[]) {
   return text.split("\n").map((line, lineIndex) => {
     if (!line.trim()) return <div className="answer-space" key={`space-${lineIndex}`} />;
     const parts = line.split(/(\*\*[^*]+\*\*|\[\d+\])/g).filter(Boolean);
     const content = parts.map((part, index) => {
       const cite = part.match(/^\[(\d+)\]$/);
       if (cite && sources.some((source) => source.source_id === Number(cite[1]))) {
-        return <a className="citation" href={`#message-${messageId}-source-${cite[1]}`} key={`${part}-${index}`}>{part}</a>;
+        return <a className="citation" href={`#source-${cite[1]}`} key={`${part}-${index}`}>{part}</a>;
       }
       if (part.startsWith("**") && part.endsWith("**")) return <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>;
       return <span key={`${part}-${index}`}>{part}</span>;
@@ -946,24 +1007,18 @@ function renderAnswer(text: string, sources: ChatSource[], messageId: number) {
   });
 }
 
-function extractionLabel(source: string, verified?: boolean) {
-  return verified || /human|manual|review.*approved|gold/i.test(source)
-    ? "İnsan doğrulamalı"
-    : "Model/kural çıkarımı";
-}
-
 function BankComparisonCard({
   item,
   productCode,
   query = "",
   historical = false,
-  onOpenSource,
+  onOpen,
 }: {
   item: ComparisonColumn;
   productCode: string;
   query?: string;
   historical?: boolean;
-  onOpenSource: (source: ComparisonSource) => void;
+  onOpen: () => void;
 }) {
   const facts = prioritizedFacts(query, productCode, item);
   const metricFacts = facts.slice(0, 3);
@@ -979,45 +1034,25 @@ function BankComparisonCard({
     </div>
     <div className="finance-bank-benefits">
       <span>ÖNE ÇIKAN KOŞULLAR</span>
-      {facts.length ? (benefitFacts.length ? benefitFacts : facts).slice(0, 3).map(({ factType, values }) => <div className="benefit-row" key={factType}>
+      {facts.length ? (benefitFacts.length ? benefitFacts : facts).slice(0, 3).map(({ factType, values }) => <p key={factType}>
         <i><Icon name="check" size={13} /></i>
-        <span><b>{factLabels[factType] ?? friendlyCode(factType)}:</b>{values.slice(0, 2).map((value, index) => <button key={`${value.document_id}-${value.text}-${index}`} onClick={() => onOpenSource({ document_id: value.document_id ?? item.document_id, page_title: value.page_title ?? item.page_title, source_url: value.source_url ?? item.source_url, confidence: value.confidence })} type="button"><span>{value.text}</span><small>{value.page_title ?? `Belge #${value.document_id ?? item.document_id}`} · {extractionLabel(value.source, value.verified)}</small></button>)}</span>
-      </div>) : <div className="benefit-row fact-missing"><i><Icon name="warning" size={13} /></i><span>Kaynak belgeler bulundu; karşılaştırılabilir koşul henüz yapılandırılmamış.</span></div>}
+        <span><b>{factLabels[factType] ?? friendlyCode(factType)}:</b> {values.slice(0, 2).map((value) => value.text).join(" · ")}</span>
+      </p>) : <p className="fact-missing"><i><Icon name="warning" size={13} /></i><span>Kaynak belgeler bulundu; karşılaştırılabilir koşul henüz yapılandırılmamış.</span></p>}
       {item.page_titles.length > 1 && <small>{item.page_titles.length} farklı ürün/kaynak başlığı banka bazında birleştirildi.</small>}
     </div>
     <div className="finance-bank-metrics">
-      {metricFacts.length ? metricFacts.map(({ factType, values }) => {
-        const primary = values[0];
-        return <div key={factType}>
-          <span>{factLabels[factType] ?? friendlyCode(factType)}</span>
-          <button
-            className="metric-source-button"
-            onClick={() => onOpenSource({
-              document_id: primary?.document_id ?? item.document_id,
-              page_title: primary?.page_title ?? item.page_title,
-              source_url: primary?.source_url ?? item.source_url,
-              confidence: primary?.confidence ?? item.confidence,
-            })}
-            title="Bu değerin tam kaynağını aç"
-            type="button"
-          >
-            <strong>{primary?.text ?? "—"}</strong>
-            <small>{primary?.page_title ?? `Belge #${primary?.document_id ?? item.document_id}`}</small>
-          </button>
-          {values.length > 1 && <small>+{values.length - 1} ek değer</small>}
-        </div>;
-      }) : <div className="metric-empty"><span>Bilgi durumu</span><strong>Kaynak mevcut</strong><small>Yapılandırılmış alan bekleniyor</small></div>}
+      {metricFacts.length ? metricFacts.map(({ factType, values }) => <div key={factType}>
+        <span>{factLabels[factType] ?? friendlyCode(factType)}</span>
+        <strong>{values[0]?.text ?? "—"}</strong>
+        {values.length > 1 && <small>+{values.length - 1} ek değer</small>}
+      </div>) : <div className="metric-empty"><span>Bilgi durumu</span><strong>Kaynak mevcut</strong><small>Yapılandırılmış alan bekleniyor</small></div>}
     </div>
     <div className="finance-bank-actions">
       <span className="confidence-badge"><Icon name="shield" size={14} /> {scoreLabel(item.confidence)} güven</span>
-      <span className="model-status"><Icon name="warning" size={12} /> İnsan doğrulaması olmayan değerler model/kural çıkarımıdır.</span>
-      <details className="source-picker">
-        <summary>Kaynakları incele ({item.sources.length})</summary>
-        <div>{item.sources.map((source) => <button key={source.document_id} onClick={() => onOpenSource(source)} type="button"><span>{source.page_title ?? `Belge #${source.document_id}`}</span><small>{scoreLabel(source.confidence)} sınıflandırma güveni</small></button>)}</div>
-      </details>
+      <button onClick={onOpen} type="button">Kaynakları incele <Icon name="arrow" size={15} /></button>
       <details>
         <summary>Tüm alanları göster ({comparisonFactCount(item)})</summary>
-        <div>{Object.entries(item.attributes).map(([factType, values]) => <p key={factType}><b>{factLabels[factType] ?? friendlyCode(factType)}</b>{values.map((value, index) => <button key={`${value.document_id}-${value.text}-${index}`} onClick={() => onOpenSource({ document_id: value.document_id ?? item.document_id, page_title: value.page_title ?? item.page_title, source_url: value.source_url ?? item.source_url, confidence: value.confidence })} type="button"><span>{value.text}</span><small>{value.page_title ?? `Belge #${value.document_id ?? item.document_id}`} · {extractionLabel(value.source, value.verified)}</small></button>)}</p>)}</div>
+        <div>{Object.entries(item.attributes).map(([factType, values]) => <p key={factType}><b>{factLabels[factType] ?? friendlyCode(factType)}</b><span>{values.map((value) => value.text).join(" · ")}</span></p>)}</div>
       </details>
     </div>
   </article>;
@@ -1061,7 +1096,7 @@ function AssistantPanorama({
   data: ComparisonResponse;
   query: string;
   historical: boolean;
-  onOpen: (source: ComparisonSource) => void;
+  onOpen: (item: ComparisonColumn) => void;
 }) {
   const [sortMode, setSortMode] = useState<PanoramaSort>("coverage");
   const baseBanks = useMemo(() => aggregateComparisonItems(data.items), [data.items]);
@@ -1084,13 +1119,10 @@ function AssistantPanorama({
   ].filter((item): item is { label: string; bank: ComparisonColumn; value: string } => Boolean(item));
 
   function valueCell(item: ComparisonColumn, factTypes: string[], empty = "Kaynakta yapılandırılmamış") {
-    const values = factTypes
-      .flatMap((factType) => item.attributes[factType] ?? [])
-      .filter((value, index, all) => all.findIndex((candidate) =>
-        candidate.document_id === value.document_id && candidate.text === value.text,
-      ) === index);
+    const values = panoramaValues(item, factTypes);
     return <div className={values.length ? panoramaStyles.value : panoramaStyles.emptyValue}>
-      {values.length ? values.slice(0, 2).map((value, index) => <button className="panorama-value-source" key={`${value.document_id}-${value.text}-${index}`} onClick={() => onOpen({ document_id: value.document_id ?? item.document_id, page_title: value.page_title ?? item.page_title, source_url: value.source_url ?? item.source_url, confidence: value.confidence })} type="button">{index === 0 ? <strong>{value.text}</strong> : <span>{value.text}</span>}<small>{value.page_title ?? `Belge #${value.document_id ?? item.document_id}`}</small></button>) : <strong>{empty}</strong>}
+      <strong>{values[0] ?? empty}</strong>
+      {values[1] && <span>{values[1]}</span>}
       {values.length > 2 && <small>+{values.length - 2} ek değer</small>}
     </div>;
   }
@@ -1107,7 +1139,7 @@ function AssistantPanorama({
         return <article key={highlight.label}><span className={panoramaStyles.highlightMark} style={{ background: brand.color }}>{brand.mark}</span><div><small>{highlight.label}</small><strong>{highlight.value}</strong><span>{shortBank(highlight.bank.bank_name)}</span></div></article>;
       })}</div>}
 
-      <div className={panoramaStyles.toolbar}><div><strong>{formatNumber(banks.length)} kurum listeleniyor</strong><span>{historical ? "Seçili dönemin son kabul edilmiş tarihsel kesiti; insan doğrulaması her kaynakta ayrıca gösterilir" : "Güncel sınıflandırılmış belgeler; model/kural çıkarımları kaynaklarıyla işaretlidir"}</span></div><label><Icon name="sort" size={16} />Sırala<select onChange={(event) => setSortMode(event.target.value as PanoramaSort)} value={sortMode}><option value="coverage">En fazla bilgi</option><option value="maturity">En yüksek vade</option><option value="amount">En yüksek tutar</option><option value="confidence">En yüksek güven</option><option value="bank">Banka adı</option></select></label></div>
+      <div className={panoramaStyles.toolbar}><div><strong>{formatNumber(banks.length)} kurum listeleniyor</strong><span>{historical ? "Seçili dönemin son güvenli tarihsel kesiti" : "Güncel kabul edilmiş belgeler"}</span></div><label><Icon name="sort" size={16} />Sırala<select onChange={(event) => setSortMode(event.target.value as PanoramaSort)} value={sortMode}><option value="coverage">En fazla bilgi</option><option value="maturity">En yüksek vade</option><option value="amount">En yüksek tutar</option><option value="confidence">En yüksek güven</option><option value="bank">Banka adı</option></select></label></div>
 
       <div className={panoramaStyles.tableScroll}><div className={panoramaStyles.table} role="table" aria-label="Tüm bankalar finansman karşılaştırması">
         <div className={panoramaStyles.tableHead} role="row"><span>Banka</span><span>Finansman tutarı</span><span>Vade</span><span>Kâr payı / oran</span><span>Masraf ve ücretler</span><span>Kaynak</span></div>
@@ -1119,7 +1151,7 @@ function AssistantPanorama({
             <div role="cell" data-label="Vade">{valueCell(item, ["VADE_SURESI"])}</div>
             <div role="cell" data-label="Kâr payı / oran">{valueCell(item, ["KAR_PAYI_ORANI", "FINANSMAN_ORANI"])}</div>
             <div role="cell" data-label="Masraf ve ücretler">{valueCell(item, ["TAHSIS_UCRETI", "EKSPERTIZ_UCRETI", "IPOTEK_TESIS_UCRETI", "DIGER_UCRET", "MASRAF_DURUMU"])}</div>
-            <div className={panoramaStyles.sourceCell} role="cell"><details className="panorama-source-picker"><summary>{item.sources.length} kaynağı seç</summary><div>{item.sources.map((source) => <button key={source.document_id} onClick={() => onOpen(source)} type="button">{source.page_title ?? `Belge #${source.document_id}`} <Icon name="arrow" size={14} /></button>)}</div></details><span>Her koşul kendi belgesine bağlıdır</span></div>
+            <div className={panoramaStyles.sourceCell} role="cell"><button onClick={() => onOpen(item)} type="button">İncele <Icon name="arrow" size={16} /></button><span>{item.page_titles.length} başlık</span></div>
           </div>;
         })}
       </div></div>
@@ -1138,12 +1170,12 @@ export default function Home() {
   const [overviewScope, setOverviewScope] = useState<OverviewScope>("all");
   const [mobileMenu, setMobileMenu] = useState(false);
   const [connection, setConnection] = useState<ConnectionState>("checking");
-  const [startupNotice, setStartupNotice] = useState<string | null>(null);
+  const [demoMode, setDemoMode] = useState(false);
   const [health, setHealth] = useState<HealthResponse | null>(null);
-  const [dashboard, setDashboard] = useState<DashboardOverview>(emptyDashboard);
-  const [historyOverview, setHistoryOverview] = useState<HistoricalOverview>(emptyHistory);
-  const [options, setOptions] = useState<ComparisonOptions>(emptyOptions);
-  const [catalog, setCatalog] = useState<CatalogResponse>(emptyCatalog);
+  const [dashboard, setDashboard] = useState<DashboardOverview>(demoDashboard);
+  const [historyOverview, setHistoryOverview] = useState<HistoricalOverview>(demoHistory);
+  const [options, setOptions] = useState<ComparisonOptions>(demoOptions);
+  const [catalog, setCatalog] = useState<CatalogResponse>(demoCatalog);
   const [catalogScope, setCatalogScope] = useState<CatalogScope>("all");
   const [catalogPeriod, setCatalogPeriod] = useState<HistoryPeriod>("1y");
   const [historicalResults, setHistoricalResults] = useState<HistoricalSearchResult[]>([]);
@@ -1166,7 +1198,6 @@ export default function Home() {
   const [comparison, setComparison] = useState<ComparisonResponse | null>(null);
   const [comparisonBaseline, setComparisonBaseline] = useState<ComparisonResponse | null>(null);
   const [compareLoading, setCompareLoading] = useState(false);
-  const [compareError, setCompareError] = useState<string | null>(null);
   const [compareSort, setCompareSort] = useState("confidence");
   const [comparisonView, setComparisonView] = useState<ComparisonView>("cards");
   const [chatInput, setChatInput] = useState("");
@@ -1176,92 +1207,61 @@ export default function Home() {
   const [conversation, setConversation] = useState<ConversationItem[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
-  const catalogAbort = useRef<AbortController | null>(null);
-  const catalogRequestId = useRef(0);
-  const compareAbort = useRef<AbortController | null>(null);
-  const compareRequestId = useRef(0);
-  const detailAbort = useRef<AbortController | null>(null);
-  const detailRequestId = useRef(0);
   const chatAbort = useRef<AbortController | null>(null);
-  const chatRequestId = useRef(0);
   const messageId = useRef(1);
 
   useEffect(() => {
     let cancelled = false;
-    const bootController = new AbortController();
-    const bootCatalogRequestId = catalogRequestId.current;
     async function boot() {
-      const [healthResult, overviewResult, historyResult, optionsResult, catalogResult] = await Promise.allSettled([
-        apiRequest<HealthResponse>("/health", { signal: bootController.signal }, 15000),
-        apiRequest<DashboardOverview>("/dashboard/overview", { signal: bootController.signal }, 15000),
-        apiRequest<HistoricalOverview>("/history/overview", { signal: bootController.signal }, 15000),
-        apiRequest<ComparisonOptions>("/comparison/options", { signal: bootController.signal }, 15000),
-        apiRequest<CatalogResponse>("/catalog/search", {
-          method: "POST",
-          body: JSON.stringify({ page: 1, page_size: 12, sort_by: "confidence", sort_order: "desc" }),
-          signal: bootController.signal,
-        }, 15000),
-      ]);
-      if (cancelled) return;
-
-      const healthData = healthResult.status === "fulfilled" ? healthResult.value : null;
-      const overviewData = overviewResult.status === "fulfilled" ? overviewResult.value : null;
-      const historyData = historyResult.status === "fulfilled" ? historyResult.value : null;
-      const optionsData = optionsResult.status === "fulfilled" ? optionsResult.value : null;
-      const catalogData = catalogResult.status === "fulfilled" ? catalogResult.value : null;
-      const resolvedHistory = historyData ?? emptyHistory;
-      const resolvedOptions = optionsData ?? emptyOptions;
-      const normalizedDashboard = overviewData ? {
-        ...overviewData,
-        product_types: overviewData.product_types.map((item) => ({
-          ...item,
-          code: canonicalProductCode(item.code),
-        })),
-      } : emptyDashboard;
-      const historicalBanks = resolvedHistory.banks.map((item) => item.name).filter((item): item is string => Boolean(item));
-      const mergedOptions = {
-        ...resolvedOptions,
-        campaign_types: mergeProductOptions(resolvedOptions.campaign_types, resolvedHistory.product_types),
-        banks: [...new Set([...resolvedOptions.banks, ...historicalBanks])],
-      };
-      setHealth(healthData);
-      setDashboard(normalizedDashboard);
-      setHistoryOverview(resolvedHistory);
-      setOptions(mergedOptions);
-      if (catalogRequestId.current === bootCatalogRequestId) {
-        setCatalog(catalogData ?? emptyCatalog);
+      try {
+        const [healthData, overviewData, historyData, optionsData, catalogData] = await Promise.all([
+          apiRequest<HealthResponse>("/health", {}, 15000),
+          apiRequest<DashboardOverview>("/dashboard/overview", {}, 15000),
+          apiRequest<HistoricalOverview>("/history/overview", {}, 15000),
+          apiRequest<ComparisonOptions>("/comparison/options", {}, 15000),
+          apiRequest<CatalogResponse>("/catalog/search", {
+            method: "POST",
+            body: JSON.stringify({ page: 1, page_size: 12, sort_by: "confidence", sort_order: "desc" }),
+          }, 15000),
+        ]);
+        if (cancelled) return;
+        setHealth(healthData);
+        setDashboard(overviewData);
+        setHistoryOverview(historyData);
+        const historicalProducts = historyData.product_types
+          .filter((item) => item.code && !optionsData.campaign_types.some((option) => option.code === item.code))
+          .map((item) => ({ code: item.code!, label: friendlyCode(item.code!), document_count: item.count, bank_count: 0 }));
+        const historicalBanks = historyData.banks.map((item) => item.name).filter((item): item is string => Boolean(item));
+        const mergedOptions = {
+          ...optionsData,
+          campaign_types: [...optionsData.campaign_types, ...historicalProducts],
+          banks: [...new Set([...optionsData.banks, ...historicalBanks])],
+        };
+        setOptions(mergedOptions);
+        setCatalog(catalogData);
+        setSelectedBanks([]);
+        setSelectedProduct(
+          mergedOptions.campaign_types.some((item) => item.code === "KONUT_FINANSMANI")
+            ? "KONUT_FINANSMANI"
+            : mergedOptions.campaign_types[0]?.code ?? "KONUT_FINANSMANI",
+        );
+        setDemoMode(false);
+        setConnection(healthData.ollama_model_ready === false ? "degraded" : "online");
+      } catch (error) {
+        if (cancelled) return;
+        console.error(error);
+        setDashboard(demoDashboard);
+        setHistoryOverview(demoHistory);
+        setOptions(demoOptions);
+        setCatalog(demoCatalog);
+        setSelectedBanks([]);
+        setDemoMode(true);
+        setConnection("offline");
       }
-      setSelectedBanks([]);
-      setSelectedProduct(
-        mergedOptions.campaign_types.some((item) => item.code === "KONUT_FINANSMANI")
-          ? "KONUT_FINANSMANI"
-          : mergedOptions.campaign_types[0]?.code ?? "KONUT_FINANSMANI",
-      );
-
-      const failures = [
-        healthResult.status === "rejected" ? "sağlık kontrolü" : null,
-        overviewResult.status === "rejected" ? "genel bakış" : null,
-        historyResult.status === "rejected" ? "tarihsel özet" : null,
-        optionsResult.status === "rejected" ? "filtre seçenekleri" : null,
-        catalogResult.status === "rejected" ? "güncel katalog" : null,
-      ].filter((item): item is string => Boolean(item));
-      const successCount = 5 - failures.length;
-      setStartupNotice(failures.length
-        ? `${failures.join(", ")} yüklenemedi. Başarılı bölümler gerçek API verisiyle açık; sabit finansal örnek veri gösterilmiyor.`
-        : null);
-      setConnection(successCount === 0
-        ? "offline"
-        : failures.length || healthData?.llm_model_ready === false
-          ? "degraded"
-          : "online");
     }
     boot();
     return () => {
       cancelled = true;
-      bootController.abort();
-      catalogAbort.current?.abort();
-      compareAbort.current?.abort();
-      detailAbort.current?.abort();
       chatAbort.current?.abort();
     };
   }, []);
@@ -1270,7 +1270,7 @@ export default function Home() {
   const historicalDocumentCount = historyOverview.historical_document_count;
   const totalInventoryCount = dashboard.total_snapshot_count ?? liveDocumentCount + historicalDocumentCount;
   const totalFactCount = dashboard.fact_count + historyOverview.historical_fact_count;
-  const totalChunkCount = (health?.chunk_count ?? 0) + historyOverview.historical_chunk_count;
+  const totalChunkCount = (health?.chunk_count ?? 1772) + historyOverview.historical_chunk_count;
   const historicalCoverage = historicalDocumentCount
     ? Math.round((historyOverview.searchable_document_count / historicalDocumentCount) * 1000) / 10
     : 0;
@@ -1346,81 +1346,73 @@ export default function Home() {
     const effectiveScope = overrides?.catalogScope ?? catalogScope;
     const effectivePeriod = overrides?.catalogPeriod ?? catalogPeriod;
     const effectiveDates = periodDates(effectivePeriod, historyOverview);
-    const hasFacts = effectiveFact === "with" ? true : effectiveFact === "without" ? false : null;
-    const requestId = ++catalogRequestId.current;
-    catalogAbort.current?.abort();
-    const controller = new AbortController();
-    catalogAbort.current = controller;
     setCatalogLoading(true);
     setHistoryLoading(effectiveScope !== "live");
     setCatalogError(null);
     try {
-      const needsLive = effectiveScope !== "history";
-      const needsHistory = effectiveScope !== "live" && effectiveQuery.trim().length >= 2;
-      const liveRequest = !needsLive
+      const liveRequest = effectiveScope === "history"
         ? Promise.resolve<CatalogResponse | null>(null)
         : apiRequest<CatalogResponse>("/catalog/search", {
             method: "POST",
             body: JSON.stringify({
               query: effectiveQuery,
-              product_types: effectiveProduct ? [apiProductCode(effectiveProduct, "live")] : [],
+              product_types: effectiveProduct ? [effectiveProduct] : [],
               bank_names: effectiveBank ? [effectiveBank] : [],
-              has_facts: hasFacts,
+              has_facts: effectiveFact === "with" ? true : effectiveFact === "without" ? false : null,
               min_confidence: Number(effectiveConfidence),
               sort_by: effectiveSort,
               sort_order: effectiveOrder,
               page,
               page_size: 12,
             }),
-            signal: controller.signal,
           });
-      const historyRequest = !needsHistory
+      const historyRequest = effectiveScope === "live" || effectiveQuery.trim().length < 2
         ? Promise.resolve<HistoricalSearchResponse | null>(null)
         : apiRequest<HistoricalSearchResponse>("/history/search", {
             method: "POST",
             body: JSON.stringify({
               query: effectiveQuery,
               top_k: 12,
-              product_types: effectiveProduct ? [apiProductCode(effectiveProduct, "history")] : [],
+              product_types: effectiveProduct ? [effectiveProduct] : [],
               bank_names: effectiveBank ? [effectiveBank] : [],
-              has_facts: hasFacts,
-              min_confidence: Number(effectiveConfidence),
               date_from: effectiveDates.dateFrom,
               date_to: effectiveDates.dateTo,
             }),
-            signal: controller.signal,
           }, 60000);
-      const [liveResult, historyResult] = await Promise.allSettled([liveRequest, historyRequest]);
-      if (controller.signal.aborted || requestId !== catalogRequestId.current) return;
-
-      const failures: string[] = [];
-      if (needsLive && liveResult.status === "fulfilled" && liveResult.value) {
-        setCatalog(liveResult.value);
-      } else if (needsLive) {
-        setCatalog(emptyCatalog);
-        failures.push("güncel katalog");
-      } else {
-        setCatalog(emptyCatalog);
+      const [liveResult, historyResult] = await Promise.all([liveRequest, historyRequest]);
+      if (liveResult) setCatalog(liveResult);
+      if (effectiveScope === "history" && !liveResult) {
+        setCatalog({ total: 0, page: 1, page_size: 12, page_count: 0, items: [] });
       }
-
-      if (needsHistory && historyResult.status === "fulfilled" && historyResult.value) {
-        setHistoricalResults(historyResult.value.results);
-      } else {
-        setHistoricalResults([]);
-        if (needsHistory) failures.push("tarihsel arama");
+      setHistoricalResults(historyResult?.results ?? []);
+      setDemoMode(false);
+      setConnection((current) => current === "degraded" ? current : "online");
+    } catch (error) {
+      console.error(error);
+      const normalizedQuery = effectiveQuery.toLocaleLowerCase("tr-TR");
+      let items = demoCatalog.items.filter((item) => {
+        const matchesQuery = !normalizedQuery || `${item.page_title} ${item.bank_name} ${item.campaign_type_code}`.toLocaleLowerCase("tr-TR").includes(normalizedQuery);
+        const matchesProduct = !effectiveProduct || item.campaign_type_code === effectiveProduct;
+        const matchesBank = !effectiveBank || item.bank_name === effectiveBank;
+        const matchesConfidence = (item.confidence ?? 0) >= Number(effectiveConfidence);
+        const matchesFacts = effectiveFact === "with" ? item.fact_count > 0 : effectiveFact === "without" ? item.fact_count === 0 : true;
+        return matchesQuery && matchesProduct && matchesBank && matchesConfidence && matchesFacts;
+      });
+      items = [...items].sort((a, b) => {
+        const direction = effectiveOrder === "asc" ? 1 : -1;
+        if (effectiveSort === "bank") return a.bank_name.localeCompare(b.bank_name, "tr") * direction;
+        if (effectiveSort === "title") return (a.page_title ?? "").localeCompare(b.page_title ?? "", "tr") * direction;
+        if (effectiveSort === "facts") return (a.fact_count - b.fact_count) * direction;
+        return ((a.confidence ?? 0) - (b.confidence ?? 0)) * direction;
+      });
+      if (effectiveScope !== "history") {
+        setCatalog({ total: items.length, page: 1, page_size: 12, page_count: items.length ? 1 : 0, items });
       }
-      setCatalogError(failures.length
-        ? `${failures.join(" ve ")} yüklenemedi; sabit finansal örnek veri gösterilmiyor.`
-        : null);
-      if ((needsLive && liveResult.status === "fulfilled") || (needsHistory && historyResult.status === "fulfilled")) {
-        setConnection((current) => current === "online" ? current : "degraded");
-      }
+      setHistoricalResults([]);
+      setCatalogError("Canlı katalog yerine veri seti önizlemesi filtreleniyor. Tam sonuçlar için API V2.5’i çalıştırın.");
     } finally {
-      if (requestId === catalogRequestId.current) {
-        setCatalogLoading(false);
-        setHistoryLoading(false);
-        if (catalogAbort.current === controller) catalogAbort.current = null;
-      }
+      setCatalogLoading(false);
+      setHistoryLoading(false);
     }
   }
 
@@ -1431,130 +1423,81 @@ export default function Home() {
   }
 
   async function openDetail(documentId: number) {
-    const requestId = ++detailRequestId.current;
-    detailAbort.current?.abort();
-    const controller = new AbortController();
-    detailAbort.current = controller;
-    setDetail(null);
+    if (demoMode) {
+      const item = catalog.items.find((candidate) => candidate.document_id === documentId);
+      if (!item) return;
+      setDetail({
+        ...item,
+        raw_text: "Yerel API bağlı olmadığından ham belge gösterilemiyor.",
+        facts: [],
+      });
+      return;
+    }
     setDetailLoading(true);
     try {
-      const data = await apiRequest<DocumentDetail>(`/documents/${documentId}`, {
-        signal: controller.signal,
-      });
-      if (requestId === detailRequestId.current && !controller.signal.aborted) setDetail(data);
+      setDetail(await apiRequest<DocumentDetail>(`/documents/${documentId}`));
     } catch (error) {
-      if (!controller.signal.aborted && requestId === detailRequestId.current) {
-        console.error(error);
-        setCatalogError("Belge ayrıntısı yüklenemedi; yerine sabit örnek içerik gösterilmedi.");
-      }
+      console.error(error);
+      setCatalogError("Belge ayrıntısı yüklenemedi.");
     } finally {
-      if (requestId === detailRequestId.current) {
-        setDetailLoading(false);
-        if (detailAbort.current === controller) detailAbort.current = null;
-      }
+      setDetailLoading(false);
     }
   }
 
   function toggleBank(bank: string) {
-    invalidateComparison();
     setSelectedBanks((current) => {
       if (current.includes(bank)) return current.filter((item) => item !== bank);
       return [...current, bank];
     });
   }
 
-  function invalidateComparison() {
-    compareRequestId.current += 1;
-    compareAbort.current?.abort();
-    compareAbort.current = null;
-    setCompareLoading(false);
-    setCompareError(null);
-    setComparison(null);
-    setComparisonBaseline(null);
-  }
-
-  function changeCompareScope(next: CompareScope) {
-    if (next === compareScope) return;
-    invalidateComparison();
-    setCompareScope(next);
-  }
-
-  function changeComparisonProduct(next: string) {
-    invalidateComparison();
-    setSelectedProduct(canonicalProductCode(next));
-  }
-
-  function closeDetail() {
-    detailRequestId.current += 1;
-    detailAbort.current?.abort();
-    detailAbort.current = null;
-    setDetailLoading(false);
-    setDetail(null);
-  }
-
   async function runComparison() {
-    const requestScope = compareScope;
-    const requestProduct = selectedProduct;
-    const requestBanks = [...selectedBanks];
-    const requestPeriod = comparePeriod;
-    const requestId = ++compareRequestId.current;
-    compareAbort.current?.abort();
-    const controller = new AbortController();
-    compareAbort.current = controller;
     setCompareLoading(true);
-    setCompareError(null);
-    setComparison(null);
-    setComparisonBaseline(null);
     try {
-      if (requestScope === "live") {
+      if (compareScope === "live") {
         const data = await apiRequest<ComparisonResponse>("/comparison", {
           method: "POST",
           body: JSON.stringify({
-            campaign_type_code: apiProductCode(requestProduct, "live"),
-            bank_names: requestBanks,
+            campaign_type_code: selectedProduct,
+            bank_names: selectedBanks,
             limit: 100,
           }),
-          signal: controller.signal,
         });
-        if (requestId !== compareRequestId.current || controller.signal.aborted) return;
-        setComparison(normalizeLiveComparison(data));
+        setComparison(data);
+        setComparisonBaseline(null);
       } else {
-        const dates = periodDates(requestPeriod, historyOverview);
+        const dates = periodDates(comparePeriod, historyOverview);
         const request = (asOf: string | null) => apiRequest<HistoricalComparisonResponse>("/history/comparison", {
           method: "POST",
           body: JSON.stringify({
-            product_type_code: apiProductCode(requestProduct, "history"),
-            bank_names: requestBanks,
+            product_type_code: selectedProduct,
+            bank_names: selectedBanks,
             as_of: asOf,
             limit: 50,
           }),
-          signal: controller.signal,
         }, 60000);
-        const [currentResult, baselineResult] = await Promise.allSettled([
+        const [currentData, baselineData] = await Promise.all([
           request(dates.dateTo),
-          dates.dateFrom && requestPeriod !== "all" ? request(dates.dateFrom) : Promise.resolve(null),
+          dates.dateFrom && comparePeriod !== "all" ? request(dates.dateFrom) : Promise.resolve(null),
         ]);
-        if (requestId !== compareRequestId.current || controller.signal.aborted) return;
-        if (currentResult.status === "rejected") throw currentResult.reason;
-        setComparison(normalizeHistoricalComparison(currentResult.value));
-        if (baselineResult.status === "fulfilled" && baselineResult.value) {
-          setComparisonBaseline(normalizeHistoricalComparison(baselineResult.value));
-        } else if (baselineResult.status === "rejected") {
-          setCompareError("Dönem sonu yüklendi; başlangıç kesiti alınamadığı için değişim özeti gösterilemiyor.");
-        }
+        setComparison(normalizeHistoricalComparison(currentData));
+        setComparisonBaseline(baselineData ? normalizeHistoricalComparison(baselineData) : null);
       }
-      setConnection((current) => current === "online" ? current : "degraded");
+      setDemoMode(false);
     } catch (error) {
-      if (!controller.signal.aborted && requestId === compareRequestId.current) {
-        console.error(error);
-        setCompareError("Karşılaştırma yüklenemedi; sabit finansal örnek veri gösterilmiyor.");
-        setConnection((current) => current === "offline" ? current : "degraded");
-      }
+      console.error(error);
+      const fallback = selectedProduct === "KONUT_FINANSMANI"
+        ? {
+            ...demoComparison,
+            items: demoComparison.items.filter((item) =>
+              !selectedBanks.length || selectedBanks.some((bank) => shortBank(bank) === shortBank(item.bank_name)),
+            ),
+          }
+        : { campaign_type_code: selectedProduct, campaign_type: null, count: 0, items: [] };
+      setComparison({ ...fallback, count: fallback.items.length });
+      setComparisonBaseline(null);
     } finally {
-      if (requestId === compareRequestId.current) {
-        setCompareLoading(false);
-        if (compareAbort.current === controller) compareAbort.current = null;
-      }
+      setCompareLoading(false);
     }
   }
 
@@ -1593,27 +1536,17 @@ export default function Home() {
     return { changedBanks, factDelta: currentFacts - baselineFacts, baselineBanks: baseline.length };
   }, [compareScope, comparison, comparisonBaseline]);
 
-  function openComparisonSource(source: ComparisonSource) {
+  function openComparisonItem(item: ComparisonColumn) {
     if (compareScope === "history") {
-      const externalUrl = safeExternalUrl(source.source_url);
-      if (externalUrl) window.open(externalUrl, "_blank", "noopener,noreferrer");
+      if (item.source_url) window.open(item.source_url, "_blank", "noopener,noreferrer");
       return;
     }
-    openDetail(source.document_id);
-  }
-
-  function openComparisonItem(item: ComparisonColumn) {
-    if (item.sources.length === 1) openComparisonSource(item.sources[0]);
-    else setComparisonView("cards");
+    openDetail(item.document_id);
   }
 
   async function submitChat(question: string) {
     const clean = question.trim();
     if (!clean || chatLoading) return;
-    const requestScope = assistantScope;
-    const requestPeriod = assistantPeriod;
-    const requestProduct = assistantProduct;
-    const requestId = ++chatRequestId.current;
     setChatInput("");
     setChatError(null);
     setChatLoading(true);
@@ -1621,42 +1554,41 @@ export default function Home() {
     chatAbort.current = controller;
     const timer = window.setTimeout(() => controller.abort(), 180000);
     try {
-      const dates = periodDates(requestPeriod, historyOverview);
-      const productCode = canonicalProductCode(requestProduct === "auto" ? inferProductType(clean) : requestProduct);
+      const dates = periodDates(assistantPeriod, historyOverview);
+      const productCode = assistantProduct === "auto" ? inferProductType(clean) : assistantProduct;
       const chatPromise = (async () => {
-        const response = await fetch(`${API_BASE_URL}${requestScope === "history" ? "/history/chat" : "/chat"}`, {
+        const response = await fetch(`${API_BASE_URL}${assistantScope === "history" ? "/history/chat" : "/chat"}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestScope === "history"
-            ? { query: clean, top_k: 8, product_types: productCode ? [apiProductCode(productCode, "history")] : [], date_from: dates.dateFrom, date_to: dates.dateTo }
+          body: JSON.stringify(assistantScope === "history"
+            ? { query: clean, top_k: 8, date_from: dates.dateFrom, date_to: dates.dateTo }
             : { query: clean, top_k: 8 }),
           signal: controller.signal,
         });
         if (!response.ok) throw new Error(await response.text());
-        return sanitizeExternalUrls(await response.json());
+        return response.json();
       })();
       const panoramaPromise = productCode ? (async () => {
-        const response = await fetch(`${API_BASE_URL}${requestScope === "history" ? "/history/comparison" : "/comparison"}`, {
+        const response = await fetch(`${API_BASE_URL}${assistantScope === "history" ? "/history/comparison" : "/comparison"}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(requestScope === "history"
-            ? { product_type_code: apiProductCode(productCode, "history"), bank_names: [], as_of: dates.dateTo, limit: 50 }
-            : { campaign_type_code: apiProductCode(productCode, "live"), bank_names: [], limit: 100 }),
+          body: JSON.stringify(assistantScope === "history"
+            ? { product_type_code: productCode, bank_names: [], as_of: dates.dateTo, limit: 50 }
+            : { campaign_type_code: productCode, bank_names: [], limit: 100 }),
           signal: controller.signal,
         });
         if (!response.ok) throw new Error(await response.text());
-        const payload = sanitizeExternalUrls(await response.json());
-        return requestScope === "history"
+        const payload = await response.json();
+        return assistantScope === "history"
           ? normalizeHistoricalComparison(payload as HistoricalComparisonResponse)
-          : normalizeLiveComparison(payload as ComparisonResponse);
+          : payload as ComparisonResponse;
       })() : Promise.resolve<ComparisonResponse | null>(null);
 
       const [chatResult, panoramaResult] = await Promise.allSettled([chatPromise, panoramaPromise]);
-      if (requestId !== chatRequestId.current || controller.signal.aborted) return;
       if (chatResult.status === "rejected") throw chatResult.reason;
       const panorama = panoramaResult.status === "fulfilled" ? panoramaResult.value : null;
       let normalized: ChatResponse;
-      if (requestScope === "history") {
+      if (assistantScope === "history") {
         const data = chatResult.value as HistoricalChatResponse;
         normalized = {
           query: data.query,
@@ -1670,49 +1602,26 @@ export default function Home() {
       setConversation((current) => [...current, {
         ...normalized,
         id: messageId.current++,
-        scope: requestScope,
-        periodLabel: requestScope === "history"
-          ? historyPeriodOptions.find((item) => item.value === requestPeriod)?.label
+        scope: assistantScope,
+        periodLabel: assistantScope === "history"
+          ? historyPeriodOptions.find((item) => item.value === assistantPeriod)?.label
           : undefined,
         panorama,
         panoramaProduct: productCode,
       }]);
-      setConnection((current) => current === "online" ? current : "degraded");
+      setConnection("online");
     } catch (error) {
-      if (requestId === chatRequestId.current) {
-        const aborted = (error as Error).name === "AbortError";
-        setChatError(aborted ? "İstek durduruldu veya zaman aşımına uğradı." : "Asistan yanıt veremedi. API, Ollama ve CORS durumunu kontrol edin.");
-      }
+      const aborted = (error as Error).name === "AbortError";
+      setChatError(aborted ? "İstek durduruldu veya zaman aşımına uğradı." : "Asistan yanıt veremedi. API, Ollama ve CORS durumunu kontrol edin.");
     } finally {
       window.clearTimeout(timer);
-      if (requestId === chatRequestId.current) {
-        if (chatAbort.current === controller) chatAbort.current = null;
-        setChatLoading(false);
-      }
+      chatAbort.current = null;
+      setChatLoading(false);
     }
   }
 
   function stopChat() {
     chatAbort.current?.abort();
-  }
-
-  function changeAssistantScope(next: CompareScope) {
-    if (next === assistantScope) return;
-    chatRequestId.current += 1;
-    chatAbort.current?.abort();
-    chatAbort.current = null;
-    setChatLoading(false);
-    setChatError(null);
-    setAssistantScope(next);
-  }
-
-  function clearConversation() {
-    chatRequestId.current += 1;
-    chatAbort.current?.abort();
-    chatAbort.current = null;
-    setChatLoading(false);
-    setConversation([]);
-    setChatError(null);
   }
 
   function resetFilters() {
@@ -1761,26 +1670,21 @@ export default function Home() {
       <section className="workspace-main">
         <header className="workspace-topbar">
           <button className="menu-button" onClick={() => setMobileMenu(true)} type="button"><Icon name="menu" /></button>
-          <form className="global-search" onSubmit={submitGlobalSearch}>
-            <Icon name="search" size={18} />
-            <input aria-label="Tüm belgelerde ara" onChange={(event) => setQuery(event.target.value)} placeholder={`${formatNumber(totalInventoryCount)} canlı ve tarihsel kayıtta ara…`} value={query} />
-            <kbd>ENTER</kbd>
-          </form>
-          <div className="topbar-actions">
-            {startupNotice && <span className="partial-chip">KISMİ API</span>}
-            <span className={`connection-chip ${connection}`}><i />{connection === "online" ? "Canlı veri" : connection === "degraded" ? "Kısmi hazır" : connection === "checking" ? "Bağlanıyor" : "API çevrimdışı"}</span>
-          </div>
         </header>
 
         {/* Sohbet, Claude/Gemini gibi kaydirmasiz tam yukseklik kaplasin diye baslik ve dis
-            dolgu bu görünümde atlanir; asistanin kendi basligi sohbet paneli icinde yer alir. */}
+            dolgu bu görünümde atlanir; asistanin kendi basligi sohbet paneli icinde yer alir.
+            Baslik/HititFinLex Asistan basligi her sekmede en ustte kalsin diye demo/API
+            bildirim seritleri kaldirildi -- baglanti durumu yan menudeki rail-system'de. */}
         <div className={view === "assistant" ? "workspace-content chat-mode" : "workspace-content"}>
-          {startupNotice && <div className="api-banner"><Icon name="warning" size={18} /><div><strong>Bazı API bölümleri kullanılamıyor.</strong><span>{startupNotice}</span></div><button onClick={() => window.location.reload()} type="button"><Icon name="refresh" size={15} /> Yeniden dene</button></div>}
-
           {view !== "assistant" && (
             <div className="page-heading">
               <div><span>{viewMeta[view].eyebrow}</span><h1>{viewMeta[view].title}</h1><p>{viewMeta[view].description}</p></div>
               <div className="page-heading-actions">
+                {view === "catalog" && <form className="heading-search" onSubmit={submitGlobalSearch}>
+                  <Icon name="search" size={16} />
+                  <input aria-label="Tüm belgelerde ara" onChange={(event) => setQuery(event.target.value)} placeholder="Ara…" value={query} />
+                </form>}
                 <button className="ghost-button" onClick={() => changeView("assistant")} type="button"><Icon name="spark" size={17} /> Asistana sor</button>
                 <button className="primary-button" onClick={() => changeView("catalog")} type="button"><Icon name="search" size={17} /> Kataloğu aç</button>
               </div>
@@ -1792,50 +1696,22 @@ export default function Home() {
               <section className="scope-toolbar panel" aria-label="Veri kapsamı">
                 <div><span><Icon name="database" size={16} /></span><div><strong>Veri evreni</strong><small>Dağılımları canlı envanter, tarihsel arşiv veya birleşik görünümde inceleyin.</small></div></div>
                 <div className="segmented-control">
-                  <button className={overviewScope === "all" ? "active" : ""} onClick={() => setOverviewScope("all")} type="button">Birleşik <b>{formatNumber(totalInventoryCount)}</b></button>
-                  <button className={overviewScope === "live" ? "active" : ""} onClick={() => setOverviewScope("live")} type="button">Güncel <b>{formatNumber(liveDocumentCount)}</b></button>
-                  <button className={overviewScope === "history" ? "active" : ""} onClick={() => setOverviewScope("history")} type="button">Arşiv <b>{formatNumber(historicalDocumentCount)}</b></button>
+                  <button className={overviewScope === "all" ? "active" : ""} onClick={() => setOverviewScope("all")} type="button"><Icon name="layers" size={14} /> Toplam <b>{formatNumber(totalInventoryCount)}</b></button>
+                  <button className={overviewScope === "live" ? "active" : ""} onClick={() => setOverviewScope("live")} type="button"><Icon name="database" size={14} /> Güncel <b>{formatNumber(liveDocumentCount)}</b></button>
+                  <button className={overviewScope === "history" ? "active" : ""} onClick={() => setOverviewScope("history")} type="button"><Icon name="clock" size={14} /> Arşiv <b>{formatNumber(historicalDocumentCount)}</b></button>
                 </div>
               </section>
               <section className="kpi-grid">
                 <article className="kpi-card accent"><div className="kpi-icon"><Icon name="document" /></div><div><span>Toplam veri envanteri</span><strong>{formatNumber(totalInventoryCount)}</strong><small>{formatNumber(liveDocumentCount)} güncel · {formatNumber(historicalDocumentCount)} tarihsel</small></div><b>CANLI + ARŞİV</b></article>
                 <article className="kpi-card"><div className="kpi-icon blue"><Icon name="layers" /></div><div><span>Çıkarılmış bilgi</span><strong>{formatNumber(totalFactCount)}</strong><small>{formatNumber(totalChunkCount)} semantik arama parçası</small></div></article>
                 <article className="kpi-card"><div className="kpi-icon gold"><Icon name="chart" /></div><div><span>Canlı bilgi kapsaması</span><strong>%{dashboard.coverage_percentage.toLocaleString("tr-TR")}</strong><small>{formatNumber(dashboard.documents_with_facts)} güncel belgede yapılandırılmış alan</small></div></article>
-                <article className="kpi-card"><div className="kpi-icon violet"><Icon name="shield" /></div><div><span>Ortalama model güveni</span><strong>%{Math.round(dashboard.average_confidence * 100)}</strong><small>{formatNumber(dashboard.verified_count)} insan doğrulamalı belge · {dashboard.pending_document_reviews + dashboard.pending_fact_reviews} bekleyen inceleme</small></div></article>
+                <article className="kpi-card"><div className="kpi-icon violet"><Icon name="shield" /></div><div><span>Ortalama güven</span><strong>%{Math.round(dashboard.average_confidence * 100)}</strong><small>{dashboard.pending_document_reviews + dashboard.pending_fact_reviews} bekleyen inceleme</small></div></article>
               </section>
 
               <section className="archive-ribbon">
                 <div className="archive-lead"><span><Icon name="clock" size={21} /></span><div><small>TARİHSEL ZEKÂ AKTİF</small><h2>{formatDate(historyOverview.history_start_date)} — {formatDate(historyOverview.history_end_date)}</h2><p>Katılım finansının yaklaşık on yıllık değişimini kaynak, tarih ve ürün türüyle izleyin.</p></div></div>
-                <div className="archive-metrics"><div><span>Aranabilir arşiv</span><strong>{formatNumber(historyOverview.searchable_document_count)}</strong><small>%{historicalCoverage} aranabilir kapsam</small></div><div><span>Tarihsel bilgi</span><strong>{formatNumber(historyOverview.historical_fact_count)}</strong><small>kabul edilmiş alan</small></div><div><span>Vektör parçası</span><strong>{formatNumber(historyOverview.embedded_chunk_count)}</strong><small>eksiksiz embedding</small></div><div><span>Kaynak kurum</span><strong>{historyOverview.banks.length}</strong><small>katılım bankası</small></div></div>
+                <div className="archive-metrics"><div><span>Aranabilir arşiv</span><strong>{formatNumber(historyOverview.searchable_document_count)}</strong><small>%{historicalCoverage} güvenli kapsam</small></div><div><span>Tarihsel bilgi</span><strong>{formatNumber(historyOverview.historical_fact_count)}</strong><small>kabul edilmiş alan</small></div><div><span>Vektör parçası</span><strong>{formatNumber(historyOverview.embedded_chunk_count)}</strong><small>eksiksiz embedding</small></div><div><span>Kaynak kurum</span><strong>{historyOverview.banks.length}</strong><small>katılım bankası</small></div></div>
                 <button onClick={() => { setCatalogScope("history"); setView("catalog"); }} type="button">Arşivde keşfe çık <Icon name="arrow" size={16} /></button>
-              </section>
-
-              <section className="dashboard-grid">
-                <article className="panel product-panel">
-                  <div className="panel-heading"><div><span>ÜRÜN DAĞILIMI</span><h2>Veri setinin ürün haritası</h2></div><button onClick={() => changeView("catalog")} type="button">Tüm kayıtlar <Icon name="arrow" size={15} /></button></div>
-                  <div className="product-bars">
-                    {visibleProducts.slice(0, 8).map((item, index) => (
-                      <button key={item.code} onClick={() => { const nextScope = overviewScope === "live" ? "live" : overviewScope === "history" ? "history" : "all"; setProductFilter(item.code); setCatalogScope(nextScope); changeView("catalog"); loadCatalog(1, "", { productFilter: item.code, catalogScope: nextScope }); }} type="button">
-                        <span className={`bar-index tone-${index % 6}`}>{String(index + 1).padStart(2, "0")}</span>
-                        <div><strong>{friendlyCode(item.code, item.label)}</strong><i><u style={{ width: `${Math.max(item.percentage, 3)}%` }} /></i></div>
-                        <b>{formatNumber(item.count)}</b><small>%{item.percentage}</small>
-                      </button>
-                    ))}
-                  </div>
-                </article>
-
-                <article className="panel bank-panel">
-                  <div className="panel-heading"><div><span>KURUM KAPSAMI</span><h2>Bankalara göre belgeler</h2></div><div className="live-mark"><i /> {overviewScope === "all" ? "Birleşik" : overviewScope === "history" ? "Arşiv" : "Güncel"}</div></div>
-                  <div className="bank-chart">
-                    {visibleBanks.slice(0, 10).map((bank) => (
-                      <button key={bank.code} onClick={() => { const nextScope = overviewScope === "live" ? "live" : overviewScope === "history" ? "history" : "all"; setBankFilter(bank.label); setCatalogScope(nextScope); changeView("catalog"); loadCatalog(1, "", { bankFilter: bank.label, catalogScope: nextScope }); }} type="button">
-                        <BankLogo name={bank.label} />
-                        <div><strong>{shortBank(bank.label)}</strong><i><u style={{ width: `${Math.max(bank.percentage * 6.7, 4)}%` }} /></i></div>
-                        <b>{bank.count}</b>
-                      </button>
-                    ))}
-                  </div>
-                </article>
               </section>
 
               <section className="dashboard-grid lower">
@@ -1848,6 +1724,26 @@ export default function Home() {
 
                 <article className="panel action-panel">
                   <span className="action-symbol"><Icon name="spark" size={26} /></span><span>AKILLI KEŞİF</span><h2>Veriden doğrudan<br/>karara geçin.</h2><p>Doğal dilde sorun, ilgili ürünleri hibrit aramayla bulun ve resmî kanıtları tek ekranda inceleyin.</p><button onClick={() => { changeView("assistant"); setChatInput("Konut finansmanı ürünlerini vade ve masraflarıyla karşılaştır"); }} type="button">Yeni analiz başlat <Icon name="arrow" size={17} /></button>
+                </article>
+              </section>
+
+              <section className="dashboard-grid">
+                <article className="panel bank-panel">
+                  <div className="panel-heading"><div><span>KURUM KAPSAMI</span><h2>Bankalara göre belgeler</h2></div><div className="live-mark"><i /> {overviewScope === "all" ? "Toplam" : overviewScope === "history" ? "Arşiv" : "Güncel"}</div></div>
+                  <div className="bank-chart">
+                    {visibleBanks.slice(0, 10).map((bank) => (
+                      <button key={bank.code} onClick={() => { const nextScope = overviewScope === "live" ? "live" : overviewScope === "history" ? "history" : "all"; setBankFilter(bank.label); setCatalogScope(nextScope); changeView("catalog"); loadCatalog(1, "", { bankFilter: bank.label, catalogScope: nextScope }); }} type="button">
+                        <BankLogo name={bank.label} />
+                        <div><strong>{shortBank(bank.label)}</strong><i><u style={{ width: `${Math.max(bank.percentage * 6.7, 4)}%` }} /></i></div>
+                        <b>{bank.count}</b>
+                      </button>
+                    ))}
+                  </div>
+                </article>
+
+                <article className="panel product-panel">
+                  <div className="panel-heading"><div><span>ÜRÜN DAĞILIMI</span><h2>Veri setinin ürün haritası</h2></div><button onClick={() => changeView("catalog")} type="button">Tüm kayıtlar <Icon name="arrow" size={15} /></button></div>
+                  <ProductPieChart items={visibleProducts} onSelect={(code) => { const nextScope = overviewScope === "live" ? "live" : overviewScope === "history" ? "history" : "all"; setProductFilter(code); setCatalogScope(nextScope); changeView("catalog"); loadCatalog(1, "", { productFilter: code, catalogScope: nextScope }); }} />
                 </article>
               </section>
 
@@ -1871,7 +1767,7 @@ export default function Home() {
               <section className="filter-panel panel">
                 <div className="filter-top"><div className="catalog-search"><Icon name="search" size={18} /><input onChange={(event) => setQuery(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") loadCatalog(1); }} placeholder="Ürün adı, koşul veya belge metni…" value={query} /><button onClick={() => loadCatalog(1)} type="button">Ara</button></div><button className="reset-button" onClick={resetFilters} type="button"><Icon name="refresh" size={15} /> Filtreleri temizle</button></div>
                 <div className="filter-grid">
-                  <label><span><Icon name="layers" size={14} /> Ürün türü</span><select onChange={(event) => setProductFilter(event.target.value)} value={productFilter}><option value="">Tüm ürünler</option>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)} ({item.document_count})</option>)}</select></label>
+                  <label><span><Icon name="layers" size={14} /> Ürün türü</span><select onChange={(event) => setProductFilter(event.target.value)} value={productFilter}><option value="">Tüm ürünler</option>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)}</option>)}</select></label>
                   <label><span><Icon name="building" size={14} /> Banka</span><select onChange={(event) => setBankFilter(event.target.value)} value={bankFilter}><option value="">Tüm bankalar</option>{options.banks.map((bank) => <option key={bank} value={bank}>{shortBank(bank)}</option>)}</select></label>
                   <label><span><Icon name="database" size={14} /> Bilgi kapsamı</span><select onChange={(event) => setFactFilter(event.target.value)} value={factFilter}><option value="all">Tüm kayıtlar</option><option value="with">Çıkarılmış bilgisi olan</option><option value="without">Bilgisi eksik olan</option></select></label>
                   <label><span><Icon name="shield" size={14} /> En az güven</span><select onChange={(event) => setMinConfidence(event.target.value)} value={minConfidence}><option value="0">Tüm güven düzeyleri</option><option value="0.7">%70 ve üzeri</option><option value="0.8">%80 ve üzeri</option><option value="0.9">%90 ve üzeri</option><option value="0.95">%95 ve üzeri</option></select></label>
@@ -1883,7 +1779,7 @@ export default function Home() {
 
               {catalogScope !== "live" && <section className="panel history-results-panel">
                 <div className="panel-heading history-results-heading"><div><span>TARİHSEL HİBRİT ARAMA</span><h2>Arşiv kesitleri</h2><p>{formatDate(catalogDateRange.dateFrom)} — {formatDate(catalogDateRange.dateTo)} · Sonuçlar semantik ve tam metin skoruyla sıralanır.</p></div><span className={historyLoading ? "loading-pill active" : "loading-pill"}><i />{historyLoading ? "Arşiv taranıyor" : `${historicalResults.length} eşleşme`}</span></div>
-                {query.trim().length < 2 ? <div className="history-search-prompt"><span><Icon name="clock" size={25} /></span><div><strong>{formatNumber(historyOverview.searchable_document_count)} aranabilir tarihsel kayıt hazır.</strong><p>Arşivi taramak için en az iki karakterli bir ürün, kampanya, banka veya koşul yazın.</p></div></div> : historicalResults.length ? <div className="history-result-grid">{historicalResults.map((item) => <article key={item.archive_key}><div className="history-result-top"><span className="history-rank">{String(item.rank).padStart(2, "0")}</span><div><strong>{item.page_title ?? "Başlıksız arşiv belgesi"}</strong><small>{shortBank(item.bank_name)}</small></div><time>{formatDate(item.snapshot_date)}</time></div><p>{item.content}</p><div className="history-result-bottom"><span className="type-pill">{friendlyCode(item.product_type_code)}</span><span className={item.verified ? "verification-badge verified" : "verification-badge model"}>{item.verified ? "İnsan doğrulamalı" : "Model · insan doğrulaması yok"}</span><span>Hibrit skor <b>{item.hybrid_score.toFixed(4)}</b></span><a href={item.archive_url ?? item.source_url ?? "#"} rel="noreferrer" target="_blank">Arşiv kaynağı <Icon name="external" size={13} /></a></div></article>)}</div> : !historyLoading && <div className="empty-state"><span><Icon name="clock" size={26} /></span><h3>Bu dönemde tarihsel eşleşme bulunamadı.</h3><p>Daha geniş bir dönem veya daha genel bir sorgu seçin.</p></div>}
+                {query.trim().length < 2 ? <div className="history-search-prompt"><span><Icon name="clock" size={25} /></span><div><strong>{formatNumber(historyOverview.searchable_document_count)} aranabilir tarihsel kayıt hazır.</strong><p>Arşivi taramak için en az iki karakterli bir ürün, kampanya, banka veya koşul yazın.</p></div></div> : historicalResults.length ? <div className="history-result-grid">{historicalResults.map((item) => <article key={item.archive_key}><div className="history-result-top"><span className="history-rank">{String(item.rank).padStart(2, "0")}</span><div><strong>{item.page_title ?? "Başlıksız arşiv belgesi"}</strong><small>{shortBank(item.bank_name)}</small></div><time>{formatDate(item.snapshot_date)}</time></div><p>{item.content}</p><div className="history-result-bottom"><span className="type-pill">{friendlyCode(item.product_type_code)}</span><span>Hibrit skor <b>{item.hybrid_score.toFixed(4)}</b></span><a href={item.archive_url ?? item.source_url ?? "#"} rel="noreferrer" target="_blank">Arşiv kaynağı <Icon name="external" size={13} /></a></div></article>)}</div> : !historyLoading && <div className="empty-state"><span><Icon name="clock" size={26} /></span><h3>Bu dönemde tarihsel eşleşme bulunamadı.</h3><p>Daha geniş bir dönem veya daha genel bir sorgu seçin.</p></div>}
               </section>}
 
               {catalogScope !== "history" && <section className="panel catalog-panel">
@@ -1895,7 +1791,7 @@ export default function Home() {
                       <span className="catalog-title"><BankLogo name={item.bank_name} /><span><strong>{item.page_title ?? "Başlıksız belge"}</strong><small>{shortBank(item.bank_name)} · Belge #{item.document_id}</small></span></span>
                       <span><em className="type-pill">{friendlyCode(item.campaign_type_code, item.campaign_type)}</em></span>
                       <span className="fact-coverage"><b>{item.fact_count}</b><span>{item.fact_types.slice(0, 2).map((fact) => factLabels[fact] ?? fact).join(" · ") || "Yapılandırılmış alan yok"}</span></span>
-                      <span className="score-cell"><b>{scoreLabel(item.confidence)}</b><i><u style={{ width: `${Math.round((item.confidence ?? 0) * 100)}%` }} /></i><small className={item.verified ? "verification-badge verified" : "verification-badge model"}>{item.verified ? "İnsan doğrulamalı" : "Model · doğrulanmadı"}</small></span>
+                      <span className="score-cell"><b>{scoreLabel(item.confidence)}</b><i><u style={{ width: `${Math.round((item.confidence ?? 0) * 100)}%` }} /></i></span>
                       <span className="date-cell">{formatDate(item.updated_at)}</span>
                       <span><Icon name="chevron" size={16} /></span>
                     </button>
@@ -1911,29 +1807,27 @@ export default function Home() {
             <div className="view-stack">
               <section className="comparison-mode-bar panel">
                 <div className="scope-copy"><span><Icon name={compareScope === "history" ? "clock" : "database"} size={18} /></span><div><strong>{compareScope === "history" ? "Tarihsel değişim analizi" : "Güncel ürün karşılaştırması"}</strong><small>{compareScope === "history" ? "Dönemin başlangıç ve bitiş kesitlerini karşılaştırır." : "Canlı ürün belgelerindeki en güncel koşulları gösterir."}</small></div></div>
-                <div className="segmented-control compact"><button className={compareScope === "live" ? "active" : ""} onClick={() => changeCompareScope("live")} type="button">Güncel</button><button className={compareScope === "history" ? "active" : ""} onClick={() => changeCompareScope("history")} type="button">Tarihsel</button></div>
+                <div className="segmented-control compact"><button className={compareScope === "live" ? "active" : ""} onClick={() => { setCompareScope("live"); setComparison(null); setComparisonBaseline(null); }} type="button">Güncel</button><button className={compareScope === "history" ? "active" : ""} onClick={() => { setCompareScope("history"); setComparison(null); setComparisonBaseline(null); }} type="button">Tarihsel</button></div>
                 {/* Katalogdaki gibi: cipleri sokup cikarmak ustteki kontrolu yerinden oynatiyordu. */}
-                <div className={compareScope === "history" ? "period-chips featured" : "period-chips featured hidden"} aria-label="Karşılaştırma dönemi">{historyPeriodOptions.map((period) => <button className={comparePeriod === period.value ? "active" : ""} key={period.value} onClick={() => { invalidateComparison(); setComparePeriod(period.value); }} type="button">{period.label}</button>)}</div>
+                <div className={compareScope === "history" ? "period-chips featured" : "period-chips featured hidden"} aria-label="Karşılaştırma dönemi">{historyPeriodOptions.map((period) => <button className={comparePeriod === period.value ? "active" : ""} key={period.value} onClick={() => { setComparePeriod(period.value); setComparison(null); setComparisonBaseline(null); }} type="button">{period.label}</button>)}</div>
               </section>
               <section className="compare-config panel">
-                <div className="config-step"><span>1</span><div><strong>Ürün türünü seçin</strong><small>Veritabanındaki sınıflandırılmış ürünler</small></div><select onChange={(event) => changeComparisonProduct(event.target.value)} value={selectedProduct}>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)} · {item.document_count} belge</option>)}</select></div>
+                <div className="config-step"><span>1</span><div><strong>Ürün türünü seçin</strong><small>Veritabanındaki sınıflandırılmış ürünler</small></div><select onChange={(event) => { setSelectedProduct(event.target.value); setComparison(null); }} value={selectedProduct}>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)} · {item.document_count} belge</option>)}</select></div>
                 <div className="config-divider" />
-                <div className="config-step banks-step"><span>2</span><div><strong>Bankaları belirleyin</strong><small>Varsayılan: verisi bulunan tüm kurumlar</small></div><div className="bank-selector"><button className={!selectedBanks.length ? "selected all-banks" : "all-banks"} onClick={() => { invalidateComparison(); setSelectedBanks([]); }} type="button"><Icon name="building" size={15} />Tüm bankalar ({options.banks.length}){!selectedBanks.length && <Icon name="check" size={13} />}</button>{options.banks.map((bank) => <button className={selectedBanks.includes(bank) ? "selected" : ""} key={bank} onClick={() => toggleBank(bank)} type="button"><BankLogo name={bank} />{shortBank(bank)}{selectedBanks.includes(bank) && <Icon name="check" size={13} />}</button>)}</div></div>
+                <div className="config-step banks-step"><span>2</span><div><strong>Bankaları belirleyin</strong><small>Varsayılan: verisi bulunan tüm kurumlar</small></div><div className="bank-selector"><button className={!selectedBanks.length ? "selected all-banks" : "all-banks"} onClick={() => setSelectedBanks([])} type="button"><Icon name="building" size={15} />Tüm bankalar ({options.banks.length}){!selectedBanks.length && <Icon name="check" size={13} />}</button>{options.banks.map((bank) => <button className={selectedBanks.includes(bank) ? "selected" : ""} key={bank} onClick={() => toggleBank(bank)} type="button"><BankLogo name={bank} />{shortBank(bank)}{selectedBanks.includes(bank) && <Icon name="check" size={13} />}</button>)}</div></div>
                 <div className="config-actions"><span>{selectedBanks.length ? `${selectedBanks.length} banka seçildi` : `Tüm ${options.banks.length} banka taranacak`} · {compareScope === "history" ? activePeriodLabel : "güncel görünüm"}</span><button disabled={!selectedProduct || compareLoading} onClick={runComparison} type="button">{compareLoading ? "Veriler hazırlanıyor…" : compareScope === "history" ? "Dönem değişimini hesapla" : "Tüm bankaları karşılaştır"}<Icon name="arrow" size={17} /></button></div>
               </section>
 
-              {compareError && <div className="error-banner"><Icon name="warning" size={17} />{compareError}<button onClick={runComparison} type="button">Tekrar dene</button></div>}
-
               {comparison && <section className="panel matrix-panel">
-                <div className="panel-heading matrix-heading"><div><span>{compareScope === "history" ? "TARİHSEL BANKA PANOSU" : "BANKA KARŞILAŞTIRMA PANOSU"}</span><h2>{friendlyCode(comparison.campaign_type_code, comparison.campaign_type)}</h2><p>{compareScope === "history" ? `${formatDate(periodDates(comparePeriod, historyOverview).dateFrom)} — ${formatDate(periodDates(comparePeriod, historyOverview).dateTo)} aralığında arama kalite eşiğini geçen kesitler.` : `${comparison.count} kaynak belge banka bazında birleştirildi; verisi bulunan bütün kurumlar gösteriliyor.`}</p></div><div className="result-heading-actions"><label>Sırala<select onChange={(event) => setCompareSort(event.target.value)} value={compareSort}><option value="confidence">En yüksek güven</option><option value="facts">En fazla bilgi</option><option value="bank">Banka adı</option></select></label><div className="segmented-control compact"><button className={comparisonView === "cards" ? "active" : ""} onClick={() => setComparisonView("cards")} type="button">Kartlar</button><button className={comparisonView === "matrix" ? "active" : ""} onClick={() => setComparisonView("matrix")} type="button">Matris</button></div></div></div>
+                <div className="panel-heading matrix-heading"><div><span>{compareScope === "history" ? "TARİHSEL BANKA PANOSU" : "BANKA KARŞILAŞTIRMA PANOSU"}</span><h2>{friendlyCode(comparison.campaign_type_code, comparison.campaign_type)}</h2><p>{compareScope === "history" ? `${formatDate(periodDates(comparePeriod, historyOverview).dateFrom)} — ${formatDate(periodDates(comparePeriod, historyOverview).dateTo)} aralığındaki güvenli kesitler.` : `${comparison.count} kaynak belge banka bazında birleştirildi; verisi bulunan bütün kurumlar gösteriliyor.`}</p></div><div className="result-heading-actions"><label>Sırala<select onChange={(event) => setCompareSort(event.target.value)} value={compareSort}><option value="confidence">En yüksek güven</option><option value="facts">En fazla bilgi</option><option value="bank">Banka adı</option></select></label><div className="segmented-control compact"><button className={comparisonView === "cards" ? "active" : ""} onClick={() => setComparisonView("cards")} type="button">Kartlar</button><button className={comparisonView === "matrix" ? "active" : ""} onClick={() => setComparisonView("matrix")} type="button">Matris</button></div></div></div>
                 {comparisonTrend && <div className="trend-strip"><div><span><Icon name="chart" size={18} /></span><div><strong>{activePeriodLabel} değişim özeti</strong><small>Dönem başındaki son kesit ile arşiv sonundaki son kesit karşılaştırıldı.</small></div></div><b>{comparisonTrend.changedBanks}<small>kurumda değişim</small></b><b className={comparisonTrend.factDelta >= 0 ? "positive" : "negative"}>{comparisonTrend.factDelta >= 0 ? "+" : ""}{comparisonTrend.factDelta}<small>bilgi alanı farkı</small></b><b>{comparisonTrend.baselineBanks}<small>başlangıç kurumu</small></b></div>}
                 {sortedComparison.length ? <>
-                  <div className="matrix-summary"><span><b>{sortedComparison.length}</b> banka</span><span><b>{comparison.count}</b> kaynak belge</span><span><b>{activeMatrixFacts.length}</b> karşılaştırılabilir alan</span><span><b>{sortedComparison.reduce((total, item) => total + comparisonFactCount(item), 0)}</b> kaynaklı bulgu</span><span className="extraction-disclosure"><Icon name="warning" size={12} /> İnsan doğrulaması belirtilmeyen değerler model/kural çıkarımıdır</span></div>
-                  {comparisonView === "cards" ? <div className="finance-card-list">{sortedComparison.map((item) => <BankComparisonCard historical={compareScope === "history"} item={item} key={item.bank_name} onOpenSource={openComparisonSource} productCode={comparison.campaign_type_code} />)}</div> : <div className="comparison-scroll"><div className="comparison-matrix" style={{ "--compare-count": sortedComparison.length } as React.CSSProperties}>
+                  <div className="matrix-summary"><span><b>{sortedComparison.length}</b> banka</span><span><b>{comparison.count}</b> kaynak belge</span><span><b>{activeMatrixFacts.length}</b> karşılaştırılabilir alan</span><span><b>{sortedComparison.reduce((total, item) => total + comparisonFactCount(item), 0)}</b> kaynaklı bulgu</span></div>
+                  {comparisonView === "cards" ? <div className="finance-card-list">{sortedComparison.map((item) => <BankComparisonCard historical={compareScope === "history"} item={item} key={item.bank_name} onOpen={() => openComparisonItem(item)} productCode={comparison.campaign_type_code} />)}</div> : <div className="comparison-scroll"><div className="comparison-matrix" style={{ "--compare-count": sortedComparison.length } as React.CSSProperties}>
                     <div className="matrix-corner"><span>Banka bazlı görünüm</span><small>Yatay kaydırarak verisi bulunan bütün bankaları inceleyebilirsiniz.</small></div>
                     {sortedComparison.map((item) => <button className="matrix-bank" key={item.bank_name} onClick={() => openComparisonItem(item)} type="button"><BankLogo name={item.bank_name} /><strong>{shortBank(item.bank_name)}</strong><small>{compareScope === "history" ? item.summary_text : `${item.document_count} belge · ${comparisonFactCount(item)} bulgu`}</small><b>{compareScope === "history" ? `${comparisonFactCount(item)} tarihsel bulgu` : `En yüksek ${scoreLabel(item.confidence)} güven`}</b></button>)}
                     <div className="matrix-row"><div className="matrix-label"><strong>Kaynak ürünler</strong><small>Belge başlıkları</small></div>{sortedComparison.map((item) => <div className="matrix-value source-products" key={`${item.bank_name}-sources`}>{item.page_titles.slice(0, 3).map((title) => <span key={title}>{title}</span>)}{item.page_titles.length > 3 && <em>+{item.page_titles.length - 3} farklı belge</em>}</div>)}</div>
-                    {activeMatrixFacts.map((fact) => <div className="matrix-row" key={fact}><div className="matrix-label"><strong>{factLabels[fact] ?? friendlyCode(fact)}</strong><small>{fact}</small></div>{sortedComparison.map((item) => { const values = item.attributes[fact] ?? []; return <div className={values.length ? "matrix-value" : "matrix-value empty"} key={`${item.bank_name}-${fact}`}>{values.length ? <>{values.slice(0, 3).map((value, index) => <button key={`${value.document_id}-${value.text}-${index}`} onClick={() => openComparisonSource({ document_id: value.document_id ?? item.document_id, page_title: value.page_title ?? item.page_title, source_url: value.source_url ?? item.source_url, confidence: value.confidence })} title={value.evidence_text ?? undefined} type="button"><span>{value.text}</span><small>{value.page_title ?? `Belge #${value.document_id ?? item.document_id}`} · {extractionLabel(value.source, value.verified)}{value.confidence != null ? ` · %${Math.round(value.confidence * 100)} güven` : ""}</small></button>)}{values.length > 3 && <em>+{values.length - 3} ek değer</em>}</> : <span>Seçili kaynaklarda yapılandırılmış alan yok</span>}</div>; })}</div>)}
+                    {activeMatrixFacts.map((fact) => <div className="matrix-row" key={fact}><div className="matrix-label"><strong>{factLabels[fact] ?? friendlyCode(fact)}</strong><small>{fact}</small></div>{sortedComparison.map((item) => { const values = item.attributes[fact] ?? []; return <div className={values.length ? "matrix-value" : "matrix-value empty"} key={`${item.bank_name}-${fact}`}>{values.length ? <>{values.slice(0, 3).map((value, index) => <span key={`${value.text}-${index}`} title={value.evidence_text ?? undefined}>{value.text}<small>{value.confidence != null ? `%${Math.round(value.confidence * 100)} güven` : value.source}</small></span>)}{values.length > 3 && <em>+{values.length - 3} ek değer</em>}</> : <span>Seçili kaynaklarda yapılandırılmış alan yok</span>}</div>; })}</div>)}
                   </div></div>}
                   {!activeMatrixFacts.length && <div className="matrix-no-facts"><Icon name="warning" size={18} /><div><strong>Bu ürün grubunda yapılandırılmış alan bulunamadı.</strong><p>Kaynak belge başlıkları yine gösteriliyor. Bu durum bankanın ürünü sunmadığı anlamına gelmez.</p></div></div>}
                 </> : <div className="empty-state"><span><Icon name="compare" size={28} /></span><h3>Seçiminize uygun kayıt bulunamadı.</h3><p>Başka bir ürün türü veya banka seçerek tekrar deneyin.</p></div>}
@@ -1955,19 +1849,19 @@ export default function Home() {
                   <span className="assistant-avatar">H</span>
                   <div>
                     <strong>HititFinLex Asistan</strong>
-                    <small><i /> Kaynak denetimi etkin · {health?.active_model ?? health?.ollama_model ?? "Yerel LLM"} · {assistantScope === "history" ? assistantPeriodLabel : "Güncel"}</small>
+                    <small><i /> Kaynak denetimi etkin · {health?.ollama_model ?? "Qwen 3.5"} · {assistantScope === "history" ? assistantPeriodLabel : "Güncel"}</small>
                   </div>
                 </div>
                 <div className="chat-top-controls">
-                  <div className="segmented-control compact"><button className={assistantScope === "live" ? "active" : ""} onClick={() => changeAssistantScope("live")} type="button">Güncel</button><button className={assistantScope === "history" ? "active" : ""} onClick={() => changeAssistantScope("history")} type="button">Tarihsel</button></div>
+                  <div className="segmented-control compact"><button className={assistantScope === "live" ? "active" : ""} onClick={() => setAssistantScope("live")} type="button">Güncel</button><button className={assistantScope === "history" ? "active" : ""} onClick={() => setAssistantScope("history")} type="button">Tarihsel</button></div>
                   <div className={assistantScope === "history" ? "period-chips featured" : "period-chips featured hidden"}>{historyPeriodOptions.map((period) => <button className={assistantPeriod === period.value ? "active" : ""} key={period.value} onClick={() => setAssistantPeriod(period.value)} type="button">{period.label}</button>)}</div>
                   <select aria-label="Ürün panosu" className="assistant-product-select" onChange={(event) => setAssistantProduct(event.target.value)} value={assistantProduct}><option value="auto">Ürün: otomatik algıla</option>{options.campaign_types.map((item) => <option key={item.code} value={item.code}>{friendlyCode(item.code, item.label)}</option>)}</select>
-                  <button aria-label="Yeni konuşma" className="new-chat" onClick={clearConversation} type="button"><Icon name="refresh" size={15} /></button>
+                  <button aria-label="Yeni konuşma" className="new-chat" onClick={() => { setConversation([]); setChatError(null); }} type="button"><Icon name="refresh" size={15} /></button>
                 </div>
               </div>
               <div className="chat-scroll">
-                {!conversation.length && !chatLoading && <div className="chat-empty"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={31} /></span><h2>{assistantScope === "history" ? "Geçmişe kaynaklarıyla sorun." : "Verinizle konuşmaya başlayın."}</h2><p>{assistantScope === "history" ? `${formatNumber(historyOverview.searchable_document_count)} arama kalite eşiğini geçen tarihsel kaydı seçili dönem içinde tarayın.` : "Ürün, banka, vade, kampanya veya masraf sorun. Yanıtla birlikte kullanılan resmî kaynakları da görün."}</p><div>{assistantQuestions.map((question) => <button key={question} onClick={() => submitChat(question)} type="button">{question}<Icon name="arrow" size={15} /></button>)}</div></div>}
-                {conversation.map((message) => <article className="conversation-item" key={message.id}><div className="question-bubble"><small>SİZ · {message.scope === "history" ? message.periodLabel : "GÜNCEL"}</small><p>{message.query}</p></div><div className="answer-card"><div className="answer-meta"><span className="assistant-avatar">H</span><div><strong>HititFinLex Asistan</strong><small>{message.model} · {message.sources.length} {message.scope === "history" ? "tarihsel kaynak" : "güncel kaynak"}</small></div></div><div className="answer-copy">{renderAnswer(message.answer, message.sources, message.id)}</div>{message.panorama ? <AssistantPanorama data={message.panorama} historical={message.scope === "history"} onOpen={(source) => { if (message.scope === "history") { if (source.source_url) window.open(source.source_url, "_blank", "noopener,noreferrer"); } else openDetail(source.document_id); }} query={message.query} /> : !message.panoramaProduct && <div className="panorama-hint"><Icon name="layers" size={16} /><span>Tüm banka panosu için soruda ürün türünü belirtin veya yukarıdaki “Ürün panosu” alanından seçim yapın.</span></div>}<div className="answer-sources"><span>LLM YANITINDA KULLANILAN KAYNAKLAR</span>{message.sources.map((source) => <article id={`message-${message.id}-source-${source.source_id}`} key={`${message.id}-${source.source_id}`}><b>{source.source_id}</b><div><strong>{source.page_title ?? "Banka belgesi"}</strong><small>{shortBank(source.bank_name)}{source.snapshot_date ? ` · ${formatDate(source.snapshot_date)}` : ""} · Hibrit skor {source.hybrid_score.toFixed(4)} · {source.verified ? "İnsan doğrulamalı" : "Model kaynağı · insan doğrulaması yok"}</small><details><summary>Kanıt metnini göster</summary><p>{source.content}</p></details></div>{(source.archive_url ?? source.source_url) && <a aria-label="Kaynağı aç" href={source.archive_url ?? source.source_url ?? "#"} rel="noreferrer" target="_blank"><Icon name="external" size={15} /></a>}</article>)}</div></div></article>)}
+                {!conversation.length && !chatLoading && <div className="chat-empty"><span><Icon name={assistantScope === "history" ? "clock" : "spark"} size={31} /></span><h2>{assistantScope === "history" ? "Geçmişe kaynaklarıyla sorun." : "Verinizle konuşmaya başlayın."}</h2><p>{assistantScope === "history" ? `${formatNumber(historyOverview.searchable_document_count)} güvenli tarihsel kaydı seçili dönem içinde tarayın.` : "Ürün, banka, vade, kampanya veya masraf sorun. Yanıtla birlikte kullanılan resmî kaynakları da görün."}</p><div>{assistantQuestions.map((question) => <button key={question} onClick={() => submitChat(question)} type="button">{question}<Icon name="arrow" size={15} /></button>)}</div></div>}
+                {conversation.map((message) => <article className="conversation-item" key={message.id}><div className="question-bubble"><small>SİZ · {message.scope === "history" ? message.periodLabel : "GÜNCEL"}</small><p>{message.query}</p></div><div className="answer-card"><div className="answer-meta"><span className="assistant-avatar">H</span><div><strong>HititFinLex Asistan</strong><small>{message.model} · {message.sources.length} {message.scope === "history" ? "tarihsel kaynak" : "güncel kaynak"}</small></div></div><div className="answer-copy">{renderAnswer(message.answer, message.sources)}</div>{message.panorama ? <AssistantPanorama data={message.panorama} historical={message.scope === "history"} onOpen={(item) => { if (message.scope === "history") { if (item.source_url) window.open(item.source_url, "_blank", "noopener,noreferrer"); } else openDetail(item.document_id); }} query={message.query} /> : !message.panoramaProduct && <div className="panorama-hint"><Icon name="layers" size={16} /><span>Tüm banka panosu için soruda ürün türünü belirtin veya yukarıdaki “Ürün panosu” alanından seçim yapın.</span></div>}<div className="answer-sources"><span>LLM YANITINDA KULLANILAN KAYNAKLAR</span>{message.sources.map((source) => <article id={`source-${source.source_id}`} key={`${message.id}-${source.source_id}`}><b>{source.source_id}</b><div><strong>{source.page_title ?? "Banka belgesi"}</strong><small>{shortBank(source.bank_name)}{source.snapshot_date ? ` · ${formatDate(source.snapshot_date)}` : ""} · Hibrit skor {source.hybrid_score.toFixed(4)}</small><details><summary>Kanıt metnini göster</summary><p>{source.content}</p></details></div>{(source.archive_url ?? source.source_url) && <a aria-label="Kaynağı aç" href={source.archive_url ?? source.source_url ?? "#"} rel="noreferrer" target="_blank"><Icon name="external" size={15} /></a>}</article>)}</div></div></article>)}
                 {chatLoading && <div className="chat-loading"><span><i /><i /><i /></span><div><strong>Kaynaklar bulunuyor ve yanıt hazırlanıyor…</strong><small>Yerel model ilk yanıtta biraz daha uzun sürebilir.</small></div><button onClick={stopChat} type="button">Durdur</button></div>}
                 {chatError && <div className="chat-error"><Icon name="warning" size={17} /><span>{chatError}</span><button onClick={() => setChatError(null)} type="button"><Icon name="close" size={14} /></button></div>}
               </div>
@@ -1979,12 +1873,12 @@ export default function Home() {
             <div className="view-stack">
               <section className="quality-grid">
                 <article className="quality-score panel"><span>GENEL VERİ KAPSAMI</span><div className="score-ring" style={{ "--score": `${dashboard.coverage_percentage * 3.6}deg` } as React.CSSProperties}><div><strong>%{dashboard.coverage_percentage}</strong><small>belgede bilgi var</small></div></div><h2>{formatNumber(dashboard.documents_with_facts)} / {formatNumber(dashboard.document_count)} belge</h2><p>En az bir yapılandırılmış karşılaştırma alanı içeriyor.</p></article>
-                <article className="panel quality-summary"><div className="panel-heading"><div><span>İŞLEM DURUMU</span><h2>İnsan denetimi kuyruğu</h2></div><span className={dashboard.pending_document_reviews + dashboard.pending_fact_reviews ? "review-badge warn" : "review-badge"}>{dashboard.pending_document_reviews + dashboard.pending_fact_reviews ? "İnceleme gerekli" : "Kuyruk temiz"}</span></div><div className="quality-kpis"><div><span>Belge incelemesi</span><strong>{dashboard.pending_document_reviews}</strong><small>Sınıflandırma kararı bekliyor</small></div><div><span>Bilgi incelemesi</span><strong>{dashboard.pending_fact_reviews}</strong><small>NER adayı bekliyor</small></div><div><span>Ortalama güven</span><strong>%{Math.round(dashboard.average_confidence * 100)}</strong><small>Model sınıflandırmaları</small></div><div><span>İnsan doğrulamalı belge</span><strong>{formatNumber(dashboard.verified_count)}</strong><small>Model etiketlerinden ayrı</small></div></div></article>
+                <article className="panel quality-summary"><div className="panel-heading"><div><span>İŞLEM DURUMU</span><h2>İnsan denetimi kuyruğu</h2></div><span className={dashboard.pending_document_reviews + dashboard.pending_fact_reviews ? "review-badge warn" : "review-badge"}>{dashboard.pending_document_reviews + dashboard.pending_fact_reviews ? "İnceleme gerekli" : "Kuyruk temiz"}</span></div><div className="quality-kpis"><div><span>Belge incelemesi</span><strong>{dashboard.pending_document_reviews}</strong><small>Sınıflandırma kararı bekliyor</small></div><div><span>Bilgi incelemesi</span><strong>{dashboard.pending_fact_reviews}</strong><small>NER adayı bekliyor</small></div><div><span>Ortalama güven</span><strong>%{Math.round(dashboard.average_confidence * 100)}</strong><small>Tüm sınıflandırmalar</small></div><div><span>Yapılandırılmış bilgi</span><strong>{formatNumber(dashboard.fact_count)}</strong><small>Karşılaştırılabilir alan</small></div></div></article>
               </section>
 
               <section className="archive-quality panel">
-                <div className="archive-quality-title"><span><Icon name="clock" size={20} /></span><div><small>TARİHSEL VERİ KALİTESİ</small><h2>Arşiv, kalite eşiğini geçen kayıtlarla aramaya açıldı</h2><p>İnceleme statüsündeki belgeler saklanır ancak arama ve RAG sonuçlarına dahil edilmez.</p></div></div>
-                <div><article><span>Toplam arşiv</span><strong>{formatNumber(historyOverview.historical_document_count)}</strong><small>ham tarihsel kesit</small></article><article className="good"><span>Aranabilir</span><strong>{formatNumber(historyOverview.searchable_document_count)}</strong><small>%{historicalCoverage} aranabilir kapsam</small></article><article className="warn"><span>İncelemede</span><strong>{formatNumber(historyOverview.review_document_count)}</strong><small>arama dışında tutuluyor</small></article><article><span>Kabul edilen bilgi</span><strong>{formatNumber(historyOverview.historical_fact_count)}</strong><small>kaynaklı NER alanı</small></article><article className="good"><span>Embedding durumu</span><strong>{historyOverview.embedded_chunk_count === historyOverview.historical_chunk_count ? "%100" : `%${Math.round(historyOverview.embedded_chunk_count / Math.max(historyOverview.historical_chunk_count, 1) * 100)}`}</strong><small>{formatNumber(historyOverview.embedded_chunk_count)} / {formatNumber(historyOverview.historical_chunk_count)} parça</small></article></div>
+                <div className="archive-quality-title"><span><Icon name="clock" size={20} /></span><div><small>TARİHSEL VERİ KALİTESİ</small><h2>Arşiv, güvenli kayıtlarla aramaya açıldı</h2><p>İnceleme statüsündeki belgeler saklanır ancak arama ve RAG sonuçlarına dahil edilmez.</p></div></div>
+                <div><article><span>Toplam arşiv</span><strong>{formatNumber(historyOverview.historical_document_count)}</strong><small>ham tarihsel kesit</small></article><article className="good"><span>Aranabilir</span><strong>{formatNumber(historyOverview.searchable_document_count)}</strong><small>%{historicalCoverage} güvenli kapsam</small></article><article className="warn"><span>İncelemede</span><strong>{formatNumber(historyOverview.review_document_count)}</strong><small>arama dışında tutuluyor</small></article><article><span>Kabul edilen bilgi</span><strong>{formatNumber(historyOverview.historical_fact_count)}</strong><small>kaynaklı NER alanı</small></article><article className="good"><span>Embedding durumu</span><strong>{historyOverview.embedded_chunk_count === historyOverview.historical_chunk_count ? "%100" : `%${Math.round(historyOverview.embedded_chunk_count / Math.max(historyOverview.historical_chunk_count, 1) * 100)}`}</strong><small>{formatNumber(historyOverview.embedded_chunk_count)} / {formatNumber(historyOverview.historical_chunk_count)} parça</small></article></div>
               </section>
 
               <section className="dashboard-grid quality-lower">
@@ -1996,7 +1890,7 @@ export default function Home() {
         </div>
       </section>
 
-      {(detail || detailLoading) && <div className="drawer-layer"><button aria-label="Belge ayrıntısını kapat" className="drawer-backdrop" onClick={closeDetail} type="button" /><aside className="detail-drawer">{detailLoading && !detail ? <div className="drawer-loading"><span /><strong>Belge hazırlanıyor…</strong></div> : detail && <><header><div><span>BELGE #{detail.document_id}</span><h2>{detail.page_title ?? "Başlıksız belge"}</h2><p>{shortBank(detail.bank_name)}</p></div><button onClick={closeDetail} type="button"><Icon name="close" /></button></header><div className="drawer-scroll"><div className="drawer-meta"><span><small>Ürün türü</small><strong>{friendlyCode(detail.campaign_type_code, detail.campaign_type)}</strong></span><span><small>Sınıflandırma güveni</small><strong>{scoreLabel(detail.confidence)}</strong></span><span><small>Çıkarılmış bilgi</small><strong>{detail.facts.length}</strong></span></div><div className={detail.verified ? "verification-notice verified" : "verification-notice model"}><Icon name={detail.verified ? "check" : "warning"} size={14} /><span>{detail.verified ? "Bu belge insan tarafından doğrulandı." : "Bu belge sınıflandırması model çıktısıdır ve insan tarafından doğrulanmamıştır."}</span></div>{detail.source_url && <a className="source-link" href={detail.source_url} rel="noreferrer" target="_blank"><Icon name="external" size={16} /> Resmî banka sayfasını aç</a>}<section><div className="drawer-section-title"><span>YAPILANDIRILMIŞ BİLGİLER</span><b>{detail.facts.length}</b></div>{detail.facts.length ? <div className="drawer-facts">{detail.facts.map((fact, index) => <article key={`${fact.fact_type}-${fact.text}-${index}`}><div><span>{fact.label}</span><em>{extractionLabel(fact.source, fact.verified)} · {fact.source}</em></div><strong>{fact.text}</strong>{fact.evidence_text && <p>“{fact.evidence_text}”</p>}<small>{fact.confidence == null ? "Güven bilgisi yok" : `%${Math.round(fact.confidence * 100)} güven`}</small></article>)}</div> : <div className="drawer-empty">Bu belgede yapılandırılmış bilgi bulunamadı.</div>}</section><section><div className="drawer-section-title"><span>BELGE ÖZETİ</span></div><p className="drawer-copy">{detail.summary_text || "Özet bulunmuyor."}</p></section><details className="raw-document"><summary>Ham belge metnini göster</summary><p>{detail.raw_text}</p></details></div></>}</aside></div>}
+      {(detail || detailLoading) && <div className="drawer-layer"><button aria-label="Belge ayrıntısını kapat" className="drawer-backdrop" onClick={() => setDetail(null)} type="button" /><aside className="detail-drawer">{detailLoading && !detail ? <div className="drawer-loading"><span /><strong>Belge hazırlanıyor…</strong></div> : detail && <><header><div><span>BELGE #{detail.document_id}</span><h2>{detail.page_title ?? "Başlıksız belge"}</h2><p>{shortBank(detail.bank_name)}</p></div><button onClick={() => setDetail(null)} type="button"><Icon name="close" /></button></header><div className="drawer-scroll"><div className="drawer-meta"><span><small>Ürün türü</small><strong>{friendlyCode(detail.campaign_type_code, detail.campaign_type)}</strong></span><span><small>Sınıflandırma güveni</small><strong>{scoreLabel(detail.confidence)}</strong></span><span><small>Çıkarılmış bilgi</small><strong>{detail.facts.length}</strong></span></div>{detail.source_url && <a className="source-link" href={detail.source_url} rel="noreferrer" target="_blank"><Icon name="external" size={16} /> Resmî banka sayfasını aç</a>}<section><div className="drawer-section-title"><span>YAPILANDIRILMIŞ BİLGİLER</span><b>{detail.facts.length}</b></div>{detail.facts.length ? <div className="drawer-facts">{detail.facts.map((fact, index) => <article key={`${fact.fact_type}-${fact.text}-${index}`}><div><span>{fact.label}</span><em>{fact.source}</em></div><strong>{fact.text}</strong>{fact.evidence_text && <p>“{fact.evidence_text}”</p>}<small>{fact.confidence == null ? "Güven bilgisi yok" : `%${Math.round(fact.confidence * 100)} güven`}</small></article>)}</div> : <div className="drawer-empty">Bu belgede yapılandırılmış bilgi bulunamadı.</div>}</section><section><div className="drawer-section-title"><span>BELGE ÖZETİ</span></div><p className="drawer-copy">{detail.summary_text || "Özet bulunmuyor."}</p></section><details className="raw-document"><summary>Ham belge metnini göster</summary><p>{detail.raw_text}</p></details></div></>}</aside></div>}
     </main>
   );
 }
