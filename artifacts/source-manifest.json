@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "release": "source-v1.3.0",
-  "generated_at": "2026-08-27T14:14:53.589Z",
+  "generated_at": "2026-08-27T14:23:41.984Z",
   "hash_algorithm": "sha256",
   "artifacts": [
     {
@@ -36,13 +36,13 @@
       "id": "dataset-manifest",
       "version": "dataset-v1.0",
       "path": "../dataset/HititFinLex_VeriSeti_v1.0_2026-08-24/MANIFEST.json",
-      "bytes": 4146,
-      "sha256": "db1572ef1db33cd65c1a3085b679b6550a33f5e293c7a5d0f474a54aad20274a",
+      "bytes": 4124,
+      "sha256": "43f0c037248b52ef141ae08b2cb0d14e5548c727d6574ed1dbc74a970c437ed6",
       "files": [
         {
           "path": ".",
-          "bytes": 4146,
-          "sha256": "4cc7d00d578f8412282caad897db8b9512eee643c1efa9afb68bb295e60aa1a2"
+          "bytes": 4124,
+          "sha256": "b6978e69f8c84af5e3bb009bca5524ff3e36f46abe53e767ac3f1eb3355677ef"
         }
       ]
     },

@@ -74,47 +74,47 @@
       "satir": null
     },
     "dokuman/veri_toplama_README.md": {
-      "bayt": 29342,
+      "bayt": 28761,
       "satir": null
     },
     "korpus/korpus_arsiv.jsonl": {
-      "bayt": 11870302,
+      "bayt": 11867632,
       "satir": 2670
     },
     "korpus/korpus_canli.jsonl": {
-      "bayt": 2714440,
+      "bayt": 2713669,
       "satir": 771
     },
     "korpus/korpus_tum.csv": {
-      "bayt": 12939355,
+      "bayt": 12936003,
       "satir": null
     },
     "korpus/korpus_tum.jsonl": {
-      "bayt": 14336949,
+      "bayt": 14333598,
       "satir": 3351
     },
     "LICENSE": {
-      "bayt": 11558,
+      "bayt": 11357,
       "satir": null
     },
     "OKUBENI.md": {
-      "bayt": 10545,
+      "bayt": 10298,
       "satir": null
     },
     "ozet/toplama_ozeti_arsiv.json": {
-      "bayt": 8681,
+      "bayt": 8455,
       "satir": null
     },
     "ozet/toplama_ozeti_canli.json": {
-      "bayt": 5430,
+      "bayt": 5233,
       "satir": null
     },
     "ozet/veri_seti_ozeti.json": {
-      "bayt": 3466,
+      "bayt": 3369,
       "satir": null
     },
     "semalar/bankalar.yaml": {
-      "bayt": 18804,
+      "bayt": 18354,
       "satir": null
     },
     "semalar/etiket_semasi.yaml": {
@@ -126,47 +126,47 @@
       "satir": null
     },
     "veri_seti/bilgi_cikarim/test.jsonl": {
-      "bayt": 705562,
+      "bayt": 704516,
       "satir": 1046
     },
     "veri_seti/bilgi_cikarim/test_bio.jsonl": {
-      "bayt": 950179,
+      "bayt": 949133,
       "satir": 1046
     },
     "veri_seti/bilgi_cikarim/train.jsonl": {
-      "bayt": 3401256,
+      "bayt": 3396241,
       "satir": 5015
     },
     "veri_seti/bilgi_cikarim/train_bio.jsonl": {
-      "bayt": 4597381,
+      "bayt": 4592366,
       "satir": 5015
     },
     "veri_seti/bilgi_cikarim/val.jsonl": {
-      "bayt": 758554,
+      "bayt": 757377,
       "satir": 1177
     },
     "veri_seti/bilgi_cikarim/val_bio.jsonl": {
-      "bayt": 992583,
+      "bayt": 991406,
       "satir": 1177
     },
     "veri_seti/etiketler_sinif.json": {
-      "bayt": 307,
+      "bayt": 297,
       "satir": null
     },
     "veri_seti/etiketler_span.json": {
-      "bayt": 271,
+      "bayt": 257,
       "satir": null
     },
     "veri_seti/siniflandirma/test.jsonl": {
-      "bayt": 1262562,
+      "bayt": 1262061,
       "satir": 501
     },
     "veri_seti/siniflandirma/train.jsonl": {
-      "bayt": 7774754,
+      "bayt": 7772408,
       "satir": 2346
     },
     "veri_seti/siniflandirma/val.jsonl": {
-      "bayt": 1321009,
+      "bayt": 1320505,
       "satir": 504
     }
   }
