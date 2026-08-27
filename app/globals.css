@@ -317,6 +317,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .kpi-icon.violet { background: var(--violet-soft); color: var(--violet); }
 .kpi-card > div:last-of-type { display: flex; flex-direction: column; min-width: 0; }
 .kpi-card span { color: var(--muted); font-size: 8px; font-weight: 700; }
+.kpi-card:has(> b) span { padding-right: 58px; }
 .kpi-card.accent span { color: #a5c4b8; }
 .kpi-card strong { font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-weight: 500; letter-spacing: -.025em; margin-top: 3px; }
 .kpi-card small { color: #90a19b; font-size: 7px; margin-top: 4px; }

@@ -31,7 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning>
+    // Arayuz kucuk px olcegiyle tasarlandi; butun oraniyla birlikte buyutulur.
+    <html lang="tr" suppressHydrationWarning style={{ zoom: 1.4 }}>
       <body>{children}</body>
     </html>
   );
