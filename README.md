@@ -70,10 +70,11 @@ flowchart LR
     end
 
     subgraph API["FastAPI Servisi (backend/)"]
-        REST["REST uçları\n/health /dashboard /catalog\n/comparison /documents /chat\n/history/* (tarihsel arşiv)"]
+        REST["REST uçları\n/health /dashboard /catalog\n/comparison /documents /chat\n/history/* /rag/v2/*"]
         NER["Türkçe NER\nner_v4_best"]
         CLS["Kampanya + Ürün\nsınıflandırıcıları"]
         HYB["Hibrit Arama\n(BM25 + vektör)"]
+        RAG["RAG v2 servisi\noturum · yönlendirme\nkanıt doğrulama"]
         LLM["Cevap üretimi\nEVREN llm-fast\nveya Ollama qwen3.5:9b"]
     end
 
@@ -88,7 +89,9 @@ flowchart LR
     HYB --> REST
     EMB --> HYB
     PG --> HYB
-    LLM -- "kaynaklı cevap üretimi" --> REST
+    HYB --> RAG
+    LLM --> RAG
+    RAG -- "kaynaklı cevap üretimi" --> REST
     PG --> NER
     PG --> CLS
 ```
@@ -225,6 +228,8 @@ HititFinLex/
 ├── .github/workflows/     # Windows/Linux CI ve DB migration smoke
 ├── backend/               # FastAPI NLP/RAG servisi (bkz. backend/README.md)
 │   ├── api.py               # REST giriş noktası
+│   ├── rag_v2/              # Asistanın RAG v2 servisi (/rag/v2/* uçları)
+│   ├── evaluation/          # RAG v2 metrikleri ve karşılaştırma araçları
 │   ├── ner_service.py       # Türkçe NER servisi
 │   ├── classifier_service.py
 │   ├── hybrid_search.py
@@ -352,6 +357,12 @@ Cevap üreten modeli backend tarafında `backend/.env` belirler:
 | `OLLAMA_BASE_URL` / `OLLAMA_MODEL` | `http://127.0.0.1:11434` / `qwen3.5:9b` | Yerel LLM adresi ve modeli |
 | `EVREN_BASE_URL` / `EVREN_TEXT_MODEL` | `.../v1` / `llm-fast` | EVREN uç adresi ve metin modeli |
 | `EVREN_API_KEY` | *(boş)* | `LLM_PROVIDER=evren` için zorunlu; örnek dosyadaki placeholder kasıtlı olarak reddedilir |
+| `RAG_V2_*` | bkz. `.env.example` | Asistanın getirme ağırlıkları, güven eşikleri, oturum ömrü ve bağlantı havuzu ayarları |
+| `QDRANT_*` | *(opsiyonel)* | Harici vektör deposu kullanılacaksa erişim bilgileri |
+
+Tam liste ve varsayılanlar
+[`backend/.env.example`](backend/.env.example) içindedir; ayrıntılı açıklama
+için [`backend/README.md`](backend/README.md)'ye bakın.
 
 `/health` çıktısındaki `llm_provider` ve `active_model` alanları o an hangi
 modelin servis ettiğini gösterir; arayüzdeki asistan başlığı da bu değeri

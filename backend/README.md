@@ -51,14 +51,15 @@ flowchart LR
     subgraph Search["Arama ve Üretim"]
         EMB["BAAI/bge-m3\nembedding"]
         HYB["Hibrit arama\n(BM25 + vektör)"]
-        LLM["Ollama qwen3.5:9b\n(yerel LLM)"]
+        RAG["RAG v2 servisi\n(oturum, yönlendirme,\nkanıt doğrulama)"]
+        LLM["Cevap üretimi\nEVREN llm-fast veya\nOllama qwen3.5:9b"]
     end
 
     subgraph Store["Depolama"]
         PG[("PostgreSQL 18\n+ pgvector")]
     end
 
-    API["FastAPI (api.py)\n/health /dashboard /catalog\n/comparison /documents /chat"]
+    API["FastAPI (api.py)\n/health /dashboard /catalog\n/comparison /documents /chat\n/history/* /rag/v2/*"]
 
     SCRAPE --> PRE --> NER --> FACT
     PRE --> CLS --> FACT
@@ -67,19 +68,38 @@ flowchart LR
     HYB --> PG
     HYB --> EMB
     API --> HYB
-    API --> LLM
+    API --> RAG
+    RAG --> HYB
+    RAG --> LLM
     API --> PG
 ```
 
-Sistem tamamen **on-premise** çalışacak şekilde tasarlanmıştır: embedding,
-NER ve sınıflandırma çıkarımı yerel GPU üzerinde, LLM cevapları yerel Ollama
-üzerinden üretilir; müşteri verisi hiçbir dış servise gönderilmez.
+**Veri katmanı tamamen yereldir:** belge alımı, embedding üretimi, NER ve
+sınıflandırma çıkarımı makinenin kendi GPU'sunda yapılır; belgeler ve
+vektörler yerel PostgreSQL'de kalır.
+
+**Cevap üretimi katmanı seçilebilir.** `LLM_PROVIDER=ollama` (kod varsayılanı)
+tüm zinciri çevrimdışı tutar. `LLM_PROVIDER=evren` seçildiğinde yalnızca son
+adım — kullanıcı sorusu ve hibrit aramanın getirdiği kaynak pasajları —
+harici EVREN metin modeli API'sine gönderilir. Bu tercih, dış veri akışı
+gözden geçirildikten ve `EVREN_API_KEY` tanımlandıktan sonra bilinçli olarak
+yapılmalıdır.
 
 ## Proje yapısı
 
 ```text
 HititFinLex/backend/
 ├── api.py                       # FastAPI giriş noktası (tüm REST uçları, /history/* dahil)
+├── rag_v2/                        # Asistanın RAG v2 servisi (/rag/v2/* uçları)
+│   ├── api_router.py                # Oturum ve sohbet uçlarının router'ı
+│   ├── service.py / settings.py     # Orkestrasyon ve ortam değişkeni ayarları
+│   ├── sessions.py                  # Oturum yaşam döngüsü ve konuşma bağlamı
+│   ├── routing.py / retrieval.py    # Sorgu yönlendirme ve hibrit getirme
+│   ├── evidence.py / validation.py  # Kanıt eşleme ve yanıt doğrulama (fail-closed)
+│   ├── indexer.py / chunking.py     # Chunk'lama ve indeksleme
+│   └── providers.py / database.py   # LLM/embedding sağlayıcıları, bağlantı havuzu
+├── evaluation/                    # RAG v2 metrikleri, getirme/yönlendirme karşılaştırması
+│                                     ve sır hijyeni tarayıcısı
 ├── ner_service.py                # Türkçe NER servisi (ner_v4_best)
 ├── classifier_service.py         # Kampanya + ürün sınıflandırıcıları
 ├── hybrid_search.py               # BM25 + pgvector hibrit arama
@@ -183,6 +203,7 @@ DB_NAME=katilim_finans
 DB_USER=hititfinlex_app
 DB_PASSWORD=<uygulama-rolu-parolasi>
 DATA_DIR=./data
+LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://127.0.0.1:11434
 OLLAMA_MODEL=qwen3.5:9b
 OLLAMA_MAX_OUTPUT_TOKENS=768
@@ -194,6 +215,21 @@ HITITFINLEX_RATE_LIMIT_PER_MINUTE=120
 HITITFINLEX_ADMIN_RATE_LIMIT_PER_MINUTE=30
 HITITFINLEX_TRUST_PROXY_HEADERS=false
 ```
+
+Asistanın RAG v2 servisi kendi ayar grubunu kullanır; tamamının varsayılanı
+[`.env.example`](.env.example) içindedir ve hiçbiri zorunlu değildir:
+
+| Grup | Örnek değişkenler | Ne yapar |
+| --- | --- | --- |
+| Sağlayıcı | `LLM_PROVIDER`, `EVREN_*`, `OLLAMA_*` | Cevabı hangi modelin üreteceğini seçer |
+| Getirme | `RAG_V2_DENSE_WEIGHT`, `RAG_V2_LEXICAL_WEIGHT`, `RAG_V2_RRF_K` | Hibrit aramada yoğun/seyrek skor dengesi |
+| Güven eşiği | `RAG_V2_ACCEPTED_CONFIDENCE`, `RAG_V2_REVIEW_CONFIDENCE` | Yanıtın doğrulanmış sayılma ve incelemeye düşme sınırları |
+| Oturum | `RAG_V2_SESSION_TTL_SECONDS`, `RAG_V2_HISTORY_TURNS` | Konuşma bağlamının ömrü ve derinliği |
+| Havuz | `RAG_V2_DB_POOL_*`, `RAG_V2_DB_STATEMENT_TIMEOUT_MS` | PostgreSQL bağlantı havuzu ve sorgu zaman aşımı |
+| Vektör deposu | `QDRANT_*` | Harici vektör deposu kullanılacaksa erişim bilgileri |
+
+RAG v2 uçları `db/migrations/0003_rag_v2.sql` ve `0004_rag_v2_conversation.sql`
+migration'larını gerektirir; `python db\migrate.py check` bunları doğrular.
 
 `HITITFINLEX_ADMIN_API_KEY` en az 32 karakterlik benzersiz bir değer olmalıdır.
 Örnek dosyadaki `CHANGE_ME_TO_A_LONG_RANDOM_VALUE`, yaygın zayıf değerler ve
