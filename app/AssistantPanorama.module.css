@@ -1,11 +1,13 @@
 .panel {
   background: #eef3f5;
   border: 1px solid #d8e2e5;
-  border-radius: 20px;
-  box-shadow: 0 18px 46px rgba(7, 49, 40, 0.09);
-  color: #173029;
-  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  margin-top: 24px;
+  border-radius: 15px;
+  box-shadow: 0 14px 34px rgba(6, 32, 50, 0.08);
+  color: #162731;
+  container-type: inline-size;
+  font-family: var(--font-sans), ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  margin-top: 16px;
   overflow: hidden;
 }
 
@@ -13,13 +15,13 @@
   align-items: center;
   background:
     radial-gradient(circle at 92% -30%, rgba(221, 177, 83, 0.28), transparent 300px),
-    linear-gradient(118deg, #07372e, #0d5642);
+    linear-gradient(118deg, #062238, #0b3c58);
   color: #fff;
   display: flex;
-  gap: 28px;
+  gap: 18px;
   justify-content: space-between;
-  min-height: 152px;
-  padding: 28px 30px;
+  min-height: 84px;
+  padding: 14px 18px;
 }
 
 .heroCopy {
@@ -29,94 +31,104 @@
 .heroCopy > span {
   color: #dfba6b;
   display: block;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 850;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
 }
 
 .heroCopy h3 {
   color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 30px;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-size: 19px;
   font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.1;
-  margin: 8px 0 7px;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 4px 0 3px;
 }
 
 .heroCopy p {
-  color: #b4d0c5;
-  font-size: 12px;
-  line-height: 1.55;
+  color: #b3cad1;
+  font-size: 10px;
+  line-height: 1.5;
   margin: 0;
 }
 
 .kpis {
   display: grid;
   flex: 0 0 auto;
-  gap: 8px;
-  grid-template-columns: repeat(4, minmax(76px, 1fr));
+  gap: 6px;
+  grid-template-columns: repeat(4, minmax(58px, 1fr));
 }
 
 .kpis > div {
   background: rgba(255, 255, 255, 0.09);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
+  border-radius: 9px;
   display: flex;
   flex-direction: column;
-  min-width: 80px;
-  padding: 13px 12px;
+  min-width: 58px;
+  padding: 7px 9px;
 }
 
 .kpis b {
   color: #fff;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 22px;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-size: 15px;
   font-weight: 500;
 }
 
 .kpis span {
-  color: #9ec0b3;
-  font-size: 9px;
-  margin-top: 4px;
+  color: #9db8c1;
+  font-size: 8.5px;
+  margin-top: 2px;
 }
 
 .highlights {
   display: grid;
-  gap: 12px;
+  gap: 8px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  padding: 18px 22px 0;
+  padding: 11px 14px 0;
 }
 
 .highlights article {
   align-items: center;
   background: #fff;
-  border: 1px solid #dae4e1;
-  border-radius: 13px;
+  border: 1px solid #dae1e4;
+  border-radius: 10px;
   display: flex;
-  gap: 12px;
-  min-height: 90px;
-  padding: 14px;
+  gap: 9px;
+  min-height: 54px;
+  padding: 8px 10px;
 }
 
 .highlightMark,
 .brandMark {
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.34);
-  box-shadow: 0 8px 20px rgba(8, 43, 35, 0.14);
+  box-shadow: 0 8px 20px rgba(7, 29, 44, 0.14);
   color: #fff;
   display: flex;
   flex: 0 0 auto;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
   font-weight: 700;
   justify-content: center;
+  overflow: hidden;
+}
+
+/* Gercek banka logosu basildiginda rozet beyaz zemine doner (bkz.
+   PanoramaBrandMark); logo kutuya oranli ve kirpilmadan yerlesir. */
+.highlightMark img,
+.brandMark img {
+  height: 66%;
+  object-fit: contain;
+  width: 66%;
 }
 
 .highlightMark {
-  border-radius: 11px;
+  border-radius: 10px;
   font-size: 12px;
-  height: 46px;
-  width: 46px;
+  height: 34px;
+  width: 34px;
 }
 
 .highlights article > div {
@@ -126,34 +138,34 @@
 }
 
 .highlights small {
-  color: #71867e;
-  font-size: 9px;
+  color: #708187;
+  font-size: 8.5px;
 }
 
 .highlights strong {
-  color: #173029;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 17px;
+  color: #162731;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: 3px;
+  margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .highlights article > div > span {
-  color: #147a55;
-  font-size: 9px;
+  color: #11607d;
+  font-size: 8.5px;
   font-weight: 750;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .toolbar {
   align-items: center;
   display: flex;
-  gap: 18px;
+  gap: 12px;
   justify-content: space-between;
-  padding: 22px 22px 12px;
+  padding: 12px 14px 7px;
 }
 
 .toolbar > div {
@@ -162,53 +174,54 @@
 }
 
 .toolbar strong {
-  color: #173029;
-  font-size: 14px;
+  color: #162731;
+  font-size: 11px;
 }
 
 .toolbar > div > span {
-  color: #73877f;
-  font-size: 10px;
-  margin-top: 4px;
+  color: #738388;
+  font-size: 9px;
+  margin-top: 2px;
 }
 
 .toolbar label {
   align-items: center;
   background: #fff;
-  border: 1px solid #d5e0dc;
-  border-radius: 10px;
-  color: #557068;
+  border: 1px solid #d5dde0;
+  border-radius: 8px;
+  color: #546771;
   display: flex;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 750;
-  gap: 7px;
-  min-height: 40px;
-  padding: 0 6px 0 11px;
+  gap: 5px;
+  min-height: 28px;
+  padding: 0 4px 0 9px;
 }
 
 .toolbar select {
   appearance: none;
-  background: #f5f8f6;
+  background: #f5f8f8;
   border: 0;
-  border-radius: 7px;
-  color: #173029;
+  border-radius: 6px;
+  color: #162731;
   cursor: pointer;
-  font-size: 10px;
-  height: 30px;
+  font-size: 9px;
+  height: 22px;
   outline: 0;
-  padding: 0 28px 0 9px;
+  padding: 0 20px 0 7px;
 }
 
 .tableScroll {
   overflow-x: auto;
-  padding: 0 22px 18px;
+  padding: 0 14px 12px;
 }
 
 .table {
   background: #fff;
-  border: 1px solid #d8e2df;
-  border-radius: 15px;
-  min-width: 1050px;
+  border: 1px solid #d8dfe2;
+  border-radius: 11px;
+  /* Sutunlarin dogal toplami (651px) + bosluklar (50px) + satir dolgusu (24px). */
+  min-width: 725px;
   overflow: hidden;
 }
 
@@ -216,26 +229,26 @@
 .row {
   align-items: center;
   display: grid;
-  gap: 18px;
-  grid-template-columns: 225px minmax(155px, 1.05fr) minmax(115px, 0.7fr) minmax(145px, 0.85fr) minmax(170px, 1fr) 92px;
+  gap: 10px;
+  grid-template-columns: 158px minmax(115px, 1.05fr) minmax(80px, 0.7fr) minmax(105px, 0.85fr) minmax(125px, 1fr) 68px;
 }
 
 .tableHead {
-  background: #f4f7f6;
-  border-bottom: 1px solid #d8e2df;
-  color: #5f766e;
-  font-size: 10px;
+  background: #f4f6f7;
+  border-bottom: 1px solid #d8dfe2;
+  color: #5e7077;
+  font-size: 8.5px;
   font-weight: 850;
-  letter-spacing: 0.025em;
-  min-height: 48px;
-  padding: 0 18px;
+  letter-spacing: 0.02em;
+  min-height: 30px;
+  padding: 0 12px;
   text-transform: uppercase;
 }
 
 .row {
-  border-top: 1px solid #e8eeeb;
-  min-height: 112px;
-  padding: 15px 18px;
+  border-top: 1px solid #e8edee;
+  min-height: 58px;
+  padding: 8px 12px;
   transition: background 150ms ease;
 }
 
@@ -244,21 +257,21 @@
 }
 
 .row:hover {
-  background: #f8fbf9;
+  background: #f8fbfb;
 }
 
 .bankCell {
   align-items: center;
   display: flex;
-  gap: 12px;
+  gap: 9px;
   min-width: 0;
 }
 
 .brandMark {
-  border-radius: 12px;
-  font-size: 13px;
-  height: 52px;
-  width: 52px;
+  border-radius: 9px;
+  font-size: 11px;
+  height: 34px;
+  width: 34px;
 }
 
 .bankCell > div {
@@ -268,20 +281,20 @@
 }
 
 .bankCell strong {
-  color: #173029;
-  font-size: 14px;
+  color: #162731;
+  font-size: 11px;
   line-height: 1.25;
 }
 
 .bankCell span,
 .bankCell small {
-  color: #71867e;
-  font-size: 9px;
-  margin-top: 4px;
+  color: #708187;
+  font-size: 8.5px;
+  margin-top: 2px;
 }
 
 .bankCell small {
-  color: #16835b;
+  color: #136786;
   font-weight: 750;
 }
 
@@ -292,106 +305,112 @@
 }
 
 .value strong {
-  color: #173029;
-  font-size: 13px;
-  line-height: 1.35;
+  color: #162731;
+  font-size: 11.5px;
+  line-height: 1.3;
 }
 
 .value span {
-  color: #536c63;
-  font-size: 11px;
-  line-height: 1.35;
-  margin-top: 5px;
+  color: #52656d;
+  font-size: 10px;
+  line-height: 1.3;
+  margin-top: 3px;
 }
 
+/* Kaynak basligi tek satirda kalir; uzun basliklar sarip satiri
+   uzatmasin diye uc noktayla kisalir (tam metin butonun title'inda). */
 .value small {
   align-self: flex-start;
-  background: #eaf5f0;
+  background: #eaf3f5;
   border-radius: 999px;
-  color: #147a55;
+  color: #11607d;
   font-size: 8px;
   font-weight: 750;
-  margin-top: 7px;
-  padding: 4px 7px;
+  margin-top: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 2px 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .emptyValue strong {
-  color: #9aa9a3;
-  font-size: 10px;
+  color: #9aa6a9;
+  font-size: 9.5px;
   font-weight: 550;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .sourceCell {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 4px;
 }
 
 .sourceCell button {
   align-items: center;
-  background: #0a4034;
+  background: #092a41;
   border: 0;
-  border-radius: 9px;
+  border-radius: 7px;
   color: #fff;
   cursor: pointer;
   display: flex;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
-  gap: 6px;
+  gap: 4px;
   justify-content: center;
-  min-height: 38px;
-  padding: 0 12px;
+  min-height: 26px;
+  padding: 0 9px;
   transition: background 150ms ease, transform 150ms ease;
 }
 
 .sourceCell button:hover {
-  background: #116047;
+  background: #0f4862;
   transform: translateY(-1px);
 }
 
 .sourceCell > span {
-  color: #71867e;
+  color: #708187;
   font-size: 8px;
 }
 
 .textSummary {
   background: #fff;
-  border: 1px solid #d8e2df;
-  border-radius: 12px;
-  margin: 0 22px 15px;
+  border: 1px solid #d8dfe2;
+  border-radius: 10px;
+  margin: 0 14px 11px;
   overflow: hidden;
 }
 
 .textSummary summary {
   align-items: center;
-  color: #116047;
+  color: #0f4862;
   cursor: pointer;
   display: flex;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
-  gap: 7px;
+  gap: 6px;
   list-style: none;
-  padding: 13px 15px;
+  padding: 9px 11px;
 }
 
 .textSummary > div {
-  border-top: 1px solid #e5ece9;
+  border-top: 1px solid #e5ebec;
   display: grid;
-  gap: 8px;
-  padding: 14px 15px;
+  gap: 6px;
+  padding: 10px 11px;
 }
 
 .textSummary p {
-  color: #4c655c;
-  font-size: 11px;
-  line-height: 1.55;
+  color: #4b5e66;
+  font-size: 10px;
+  line-height: 1.5;
   margin: 0;
 }
 
 .textSummary p b {
-  color: #173029;
+  color: #162731;
 }
 
 .note {
@@ -400,10 +419,10 @@
   border-top: 1px solid #eddfbd;
   color: #836126;
   display: flex;
-  font-size: 10px;
-  gap: 8px;
-  line-height: 1.5;
-  padding: 12px 22px;
+  font-size: 9px;
+  gap: 6px;
+  line-height: 1.45;
+  padding: 8px 14px;
 }
 
 .note svg {
@@ -415,7 +434,7 @@
   align-items: center;
   color: #765620;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   gap: 8px;
   justify-content: center;
   min-height: 150px;
@@ -437,35 +456,21 @@
   }
 }
 
-@media (max-width: 680px) {
-  .panel {
-    border-radius: 14px;
-  }
-
-  .hero {
-    padding: 22px 18px;
-  }
-
-  .heroCopy h3 {
-    font-size: 24px;
-  }
-
-  .kpis {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .toolbar {
-    align-items: stretch;
-    flex-direction: column;
-    padding-inline: 14px;
-  }
-
-  .toolbar label {
-    justify-content: space-between;
-  }
-
+/*
+ * Tablo 6 sabit sutunlu (banka + 4 alan + kaynak); kompaktlastirma sonrasi
+ * dogal minimum genisligi ~820px. Panel genisligi (kenar cubugu + sohbet
+ * kartinin kendi alani) bunun altina dustugunde viewport genis olsa bile
+ * yatay kaydirma gerekiyordu. Panelin kendi genisligine bakan bir container
+ * query ile, ekran boyutundan bagimsiz olarak tabloyu her zaman sigacak
+ * sekilde etiket/deger karti duzenine ceviriyoruz -- yatay kaydirma hic
+ * gerekmez. Esik, tablonun yeni genisligine gore 1080'den 755'e cekildi
+ * (725px tablo + 2x14px tableScroll dolgusu): boylece sohbet panelinin
+ * tipik genisliginde (~790px) kart yigini yerine gercek, kompakt tablo
+ * gorunur -- kullanicinin "kartlar cok buyuk, takibi zor" geri bildirimi.
+ */
+@container (max-width: 755px) {
   .tableScroll {
-    padding-inline: 14px;
+    padding-inline: 11px;
   }
 
   .table {
@@ -481,55 +486,103 @@
 
   .row {
     background: #fff;
-    border: 1px solid #d8e2df;
-    border-radius: 13px;
-    gap: 0;
-    grid-template-columns: 1fr 1fr;
-    margin-bottom: 10px;
-    padding: 15px;
+    border: 1px solid #d8dfe2;
+    border-radius: 10px;
+    gap: 0 10px;
+    /* Dort alan iki yerine dort sutuna yayilir: kart bir ekran boyu
+       uzamak yerine iki satirda toplanir, takibi kolaylasir. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 7px;
+    padding: 10px 11px;
   }
 
   .row:first-of-type {
-    border-top: 1px solid #d8e2df;
+    border-top: 1px solid #d8dfe2;
+  }
+
+  .bankCell,
+  .sourceCell {
+    grid-column: span 4;
+  }
+
+  .bankCell {
+    border-bottom: 1px solid #e5ebec;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .row > div[role="cell"]:not(.bankCell):not(.sourceCell) {
+    min-height: 44px;
+    padding: 15px 0 2px;
+    position: relative;
+  }
+
+  .row > div[role="cell"]:not(.bankCell):not(.sourceCell)::before {
+    color: #708187;
+    content: attr(data-label);
+    font-size: 8px;
+    font-weight: 800;
+    left: 0;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    top: 2px;
+    white-space: nowrap;
+  }
+
+  .sourceCell {
+    align-items: center;
+    border-top: 1px solid #edf1f1;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+}
+
+/* Cok dar panelde dort sutun okunmaz; ikiye duser. */
+@container (max-width: 620px) {
+  .row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .bankCell,
   .sourceCell {
     grid-column: span 2;
   }
+}
 
-  .bankCell {
-    border-bottom: 1px solid #e5ece9;
-    margin-bottom: 13px;
-    padding-bottom: 13px;
+@media (max-width: 680px) {
+  .panel {
+    border-radius: 12px;
   }
 
-  .row > div[role="cell"]:not(.bankCell):not(.sourceCell) {
-    border-bottom: 1px solid #edf1ef;
-    min-height: 82px;
-    padding: 25px 8px 10px 0;
-    position: relative;
+  .hero {
+    padding: 13px 14px;
   }
 
-  .row > div[role="cell"]:not(.bankCell):not(.sourceCell)::before {
-    color: #71867e;
-    content: attr(data-label);
-    font-size: 8px;
-    font-weight: 800;
-    left: 0;
-    position: absolute;
-    text-transform: uppercase;
-    top: 8px;
+  .heroCopy h3 {
+    font-size: 17px;
   }
 
-  .sourceCell {
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .toolbar {
     align-items: stretch;
-    flex-direction: row;
+    flex-direction: column;
+    padding-inline: 11px;
+  }
+
+  .toolbar label {
     justify-content: space-between;
-    padding-top: 13px;
   }
 
   .textSummary {
-    margin-inline: 14px;
+    margin-inline: 11px;
   }
 }

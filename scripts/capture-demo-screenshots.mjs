@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
-const outputDir = join(projectRoot, "docs", "teslim", "ekran-goruntuleri");
+const outputDir = join(projectRoot, "docs", "ekran-goruntuleri");
 const appUrl = process.env.HITITFINLEX_DEMO_URL ?? "http://localhost:3000";
 const edgePath =
   process.env.EDGE_PATH ??
@@ -199,27 +199,31 @@ async function main() {
       throw new Error("HititFinLex arayüzü ekran görüntüsü için hazır değil.");
     }
 
-    let connectionLabel = "";
+    // Baglanti rozeti arayuzden kaldirildi; hazir olmayi artik gercek veriden
+    // anliyoruz: ilk KPI kartindaki toplam envanter sayisi dolduysa API canli.
+    let inventoryLabel = "";
     for (let attempt = 0; attempt < 90; attempt += 1) {
-      connectionLabel = await evaluate(
+      inventoryLabel = await evaluate(
         client,
-        "document.querySelector('.connection-chip')?.textContent?.trim() ?? ''",
+        "document.querySelector('.kpi-card strong')?.textContent?.trim() ?? ''",
       );
-      if (connectionLabel && connectionLabel !== "Bağlanıyor") break;
+      if (inventoryLabel && inventoryLabel !== "0") break;
       await pause(500);
     }
-    if (!["Canlı veri", "Kısmi hazır"].includes(connectionLabel)) {
-      throw new Error(`Frontend canlı API'ye bağlanamadı: ${connectionLabel || "durum yok"}`);
+    if (!inventoryLabel || inventoryLabel === "0") {
+      throw new Error("Frontend canlı API'den veri alamadı; ekran görüntüsü boş olurdu.");
     }
-    process.stdout.write(`API durumu: ${connectionLabel}\n`);
+    process.stdout.write(`Toplam veri envanteri: ${inventoryLabel}\n`);
 
     await capture(client, "01-genel-bakis.png");
     await clickNavigation(client, "Ürün kataloğu", "Ürün ve belge keşfi");
     await capture(client, "02-urun-katalogu.png");
     await clickNavigation(client, "Karşılaştırma", "Koşulları yan yana görün");
     await clickButtonByText(client, "Tüm bankaları karşılaştır");
-    await waitForSelector(client, ".matrix-panel", 45000);
-    await focusElement(client, ".matrix-panel");
+    // Sonuc alani varsayilan "kart" gorunumunde .finance-card-list, matris
+    // gorunumune gecildiginde .comparison-matrix olarak render edilir.
+    await waitForSelector(client, ".finance-card-list, .comparison-matrix", 45000);
+    await focusElement(client, ".finance-card-list, .comparison-matrix");
     await capture(client, "03-karsilastirma.png");
     await clickNavigation(client, "Akıllı asistan", "HititFinLex Asistan");
     const quickQuestionClicked = await evaluate(

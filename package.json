@@ -12,10 +12,11 @@
     "build": "node scripts/build-verified.mjs",
     "start": "node scripts/start-production.mjs",
     "test": "npm run build && npm run test:smoke",
-    "test:smoke": "node --test tests/rendered-html.test.mjs tests/frontend-safety.test.mjs",
+    "test:smoke": "node --test tests/rendered-html.test.mjs tests/frontend-safety.test.mjs tests/rag-v2.test.mjs",
     "lint": "node scripts/run-with-env.mjs eslint app scripts tests vite.config.ts next.config.ts eslint.config.mjs",
     "typecheck": "node scripts/run-with-env.mjs tsc --noEmit",
-    "artifacts": "node scripts/artifact-manifest.mjs"
+    "artifacts": "node scripts/artifact-manifest.mjs",
+    "screenshots": "node scripts/capture-demo-screenshots.mjs"
   },
   "dependencies": {
     "next": "16.3.3",
