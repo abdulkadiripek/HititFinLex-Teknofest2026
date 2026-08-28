@@ -82,15 +82,15 @@ flowchart LR
         EMB["BAAI/bge-m3\n1024 boyut embedding"]
     end
 
-    UI -- "fetch (JSON)" --> REST
-    REST --> NER
-    REST --> CLS
-    REST --> HYB
-    HYB --> EMB
-    HYB --> PG
-    REST -- "kaynaklı cevap üretimi" --> LLM
-    NER --> PG
-    CLS --> PG
+    REST -- "fetch (JSON)" --> UI
+    NER --> REST
+    CLS --> REST
+    HYB --> REST
+    EMB --> HYB
+    PG --> HYB
+    LLM -- "kaynaklı cevap üretimi" --> REST
+    PG --> NER
+    PG --> CLS
 ```
 
 Backend'in referans yapılandırması (kurulum rehberinden alınmıştır):
