@@ -413,6 +413,11 @@ python backend\db\migrate.py check
 python -m unittest discover -s backend\tests -p "test_*.py"
 ```
 
+> `test:smoke`, `app/rag-v2.ts` modülünü doğrudan içe aktardığı için
+> `--experimental-strip-types` bayrağıyla çalışır; bu, deponun Node tabanı
+> olan 22.13'te `.ts` dosyalarının test koşucusu tarafından yüklenmesini
+> sağlar (yeni Node sürümlerinde bayrak zararsızdır).
+
 README'deki ekran görüntüleri, backend ve frontend ayakta iken tek komutla
 yeniden üretilir (headless Edge kullanır, `docs/ekran-goruntuleri/` altına yazar):
 
