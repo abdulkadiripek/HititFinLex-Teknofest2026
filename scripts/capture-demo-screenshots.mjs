@@ -147,7 +147,16 @@ async function focusElement(client, selector, offset = 105) {
   await pause(500);
 }
 
+// Argüman verilirse yalnızca eşleşen görüntüler yeniden yazılır; böylece tek
+// bir ekranı tazelerken diğer dosyalar baytı baytına aynı kalır.
+// Örn: node scripts/capture-demo-screenshots.mjs akilli-asistan
+const requestedShots = new Set(process.argv.slice(2));
+
 async function capture(client, filename) {
+  if (requestedShots.size > 0 && ![...requestedShots].some((name) => filename.includes(name))) {
+    process.stdout.write(`Atlandı: ${filename}\n`);
+    return;
+  }
   const { data } = await client.send("Page.captureScreenshot", {
     format: "png",
     captureBeyondViewport: false,
@@ -155,6 +164,30 @@ async function capture(client, filename) {
   });
   await writeFile(join(outputDir, filename), Buffer.from(data, "base64"));
   process.stdout.write(`Yazıldı: ${filename}\n`);
+}
+
+// Asistan görünümü sayfa yüksekliğini tam kaplar ve kendi iç kaydırmasını
+// kullanır; sayfayı kaydırmak üst çubuğu kırpıyordu. Bunun yerine sohbet
+// listesini kaydırıp yanıtı çerçeveye oturtuyoruz.
+async function focusChatAnswer(client) {
+  const aligned = await evaluate(
+    client,
+    `(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      const scroller = document.querySelector(".chat-scroll");
+      const card = document.querySelector(".conversation-item");
+      if (!scroller || !card) return false;
+      scroller.scrollTop +=
+        card.getBoundingClientRect().top - scroller.getBoundingClientRect().top - 10;
+      return true;
+    })()`,
+  );
+  if (!aligned) throw new Error("Sohbet yanıtı çerçeveye hizalanamadı.");
+  await evaluate(
+    client,
+    "new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))",
+  );
+  await pause(600);
 }
 
 async function main() {
@@ -242,7 +275,7 @@ async function main() {
       "document.querySelector('.chat-error')?.textContent?.trim() ?? ''",
     );
     if (chatError) throw new Error(`Asistan demo yanıtı üretilemedi: ${chatError}`);
-    await focusElement(client, ".conversation-item", 0);
+    await focusChatAnswer(client);
     await capture(client, "04-akilli-asistan.png");
     await clickNavigation(client, "Veri kalitesi", "Kalite ve kapsama görünümü");
     await capture(client, "05-veri-kalitesi.png");
