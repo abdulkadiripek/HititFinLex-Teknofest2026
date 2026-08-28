@@ -18,3 +18,11 @@ HititFinLex_VeriSeti_2.zip
 
 # misc caches
 *.tsbuildinfo
+
+# evaluation local outputs (generated per machine)
+evaluation/*.local.json
+evaluation/*.latest.json
+
+# local runtime output
+runtime_logs/
+uvicorn*.log

@@ -113,12 +113,14 @@ def get_cors_settings() -> dict[str, Any]:
         "allow_origins": origins,
         "allow_origin_regex": origin_regex.strip() if origin_regex else None,
         "allow_credentials": allow_credentials,
-        "allow_methods": ["GET", "POST", "OPTIONS"],
+        "allow_methods": ["GET", "POST", "DELETE", "OPTIONS"],
         "allow_headers": [
             "Accept",
             "Authorization",
             "Content-Type",
             ADMIN_API_KEY_HEADER,
+            "X-RAG-Client-Id",
+            "X-RAG-Session-Id",
         ],
     }
 

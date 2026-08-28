@@ -1,0 +1,605 @@
+{
+  "schema_version": "1.0",
+  "dataset_label": "silver_unverified",
+  "description": "Manually authored multi-turn routing cases. These labels are silver_unverified and are not factual retrieval ground truth.",
+  "scenarios": [
+    {
+      "scenario_id": "mt_001_bank_product_inheritance",
+      "label": "silver_unverified",
+      "categories": ["bank_inheritance", "product_inheritance"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım konut finansmanında en yüksek tutar nedir?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel konut finansmanı teklifinde en yüksek tutar nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt001:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Peki vadesi ne kadar?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel konut finansmanı teklifinin vade süresi nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt001:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_002_same_bank_new_product",
+      "label": "silver_unverified",
+      "categories": ["bank_inheritance", "topic_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Kuveyt Türk ihtiyaç finansmanının ücretini göster.",
+          "expected": {"standalone_query": "Kuveyt Türk güncel ihtiyaç finansmanının ücreti nedir?", "intent": "lookup", "banks": ["Kuveyt Türk"], "product_types": ["ihtiyaç finansmanı"], "field_types": ["ücret"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Kuveyt Türk"], "active_products": ["ihtiyaç finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt002:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Aynı bankanın kredi kartı aidatı nedir?",
+          "expected": {"standalone_query": "Kuveyt Türk güncel kredi kartı aidatı nedir?", "intent": "lookup", "banks": ["Kuveyt Türk"], "product_types": ["kredi kartı"], "field_types": ["ücret"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "scope"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["product_types", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_003_new_bank_product_inheritance",
+      "label": "silver_unverified",
+      "categories": ["product_inheritance", "explicit_override"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım taşıt finansmanı tutarı ne kadar?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel taşıt finansmanı tutarı ne kadar?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt003:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Vakıf Katılım için de tutarı söyle.",
+          "expected": {"standalone_query": "Vakıf Katılım güncel taşıt finansmanı tutarı ne kadar?", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["product_types", "scope"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["banks", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_004_bank_inheritance_list",
+      "label": "silver_unverified",
+      "categories": ["bank_inheritance", "field_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Albaraka Türk kart kampanyalarını listele.",
+          "expected": {"standalone_query": "Albaraka Türk güncel kart kampanyalarını listele.", "intent": "list", "banks": ["Albaraka Türk"], "product_types": ["kart kampanyası"], "field_types": ["kampanya"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Albaraka Türk"], "active_products": ["kart kampanyası"], "active_scope": "current", "active_offer_ids": ["eval:mt004:offer:1", "eval:mt004:offer:2"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Peki harcama eşikleri neler?",
+          "expected": {"standalone_query": "Albaraka Türk güncel kart kampanyalarının harcama eşikleri nelerdir?", "intent": "list", "banks": ["Albaraka Türk"], "product_types": ["kart kampanyası"], "field_types": ["harcama eşiği"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt004:offer:1", "eval:mt004:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_005_product_inheritance_compare_banks",
+      "label": "silver_unverified",
+      "categories": ["product_inheritance", "compare"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Konut finansmanında Ziraat Katılım ile Vakıf Katılımı karşılaştır.",
+          "expected": {"standalone_query": "Ziraat Katılım ile Vakıf Katılım güncel konut finansmanı tekliflerini karşılaştır.", "intent": "compare", "banks": ["Ziraat Katılım", "Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım", "Vakıf Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt005:offer:1", "eval:mt005:offer:2"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "İki bankanın vadelerini de karşılaştır.",
+          "expected": {"standalone_query": "Ziraat Katılım ile Vakıf Katılım güncel konut finansmanı vadelerini karşılaştır.", "intent": "compare", "banks": ["Ziraat Katılım", "Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt005:offer:1", "eval:mt005:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_006_explicit_product_override",
+      "label": "silver_unverified",
+      "categories": ["product_inheritance", "explicit_override", "topic_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Türkiye Finans konut finansmanı oranı nedir?",
+          "expected": {"standalone_query": "Türkiye Finans güncel konut finansmanı oranı nedir?", "intent": "lookup", "banks": ["Türkiye Finans"], "product_types": ["konut finansmanı"], "field_types": ["oran"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Türkiye Finans"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt006:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Peki ihtiyaç finansmanı vadesi?",
+          "expected": {"standalone_query": "Türkiye Finans güncel ihtiyaç finansmanı vadesi nedir?", "intent": "lookup", "banks": ["Türkiye Finans"], "product_types": ["ihtiyaç finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "scope"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["product_types", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_007_year_scope_followup",
+      "label": "silver_unverified",
+      "categories": ["year_inheritance", "date_inheritance", "historical"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Kuveyt Türk konut finansmanı 2025 yılında nasıldı?",
+          "expected": {"standalone_query": "Kuveyt Türk konut finansmanı 2025 yılında nasıldı?", "intent": "historical", "banks": ["Kuveyt Türk"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Kuveyt Türk"], "active_products": ["konut finansmanı"], "active_scope": "historical", "active_year": 2025, "active_offer_ids": ["eval:mt007:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "O yıl vadesi ne kadardı?",
+          "expected": {"standalone_query": "Kuveyt Türk konut finansmanının 2025 yılındaki vadesi ne kadardı?", "intent": "historical", "banks": ["Kuveyt Türk"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": ["eval:mt007:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "year", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_008_date_range_inheritance",
+      "label": "silver_unverified",
+      "categories": ["date_inheritance", "historical"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "1 Ocak 2025 ile 30 Haziran 2025 arasında Vakıf Katılım taşıt kampanyalarını listele.",
+          "expected": {"standalone_query": "Vakıf Katılım taşıt finansmanı kampanyalarını 1 Ocak 2025 ile 30 Haziran 2025 arasında listele.", "intent": "historical", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["kampanya tarihi"], "scope": "historical", "year": null, "date_from": "2025-01-01", "date_to": "2025-06-30", "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Vakıf Katılım"], "active_products": ["taşıt finansmanı"], "active_scope": "historical", "active_date_from": "2025-01-01", "active_date_to": "2025-06-30", "active_offer_ids": ["eval:mt008:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Aynı dönemde tutar sınırı neydi?",
+          "expected": {"standalone_query": "Vakıf Katılım taşıt finansmanının 1 Ocak 2025 ile 30 Haziran 2025 arasındaki tutar sınırı neydi?", "intent": "historical", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "historical", "year": null, "date_from": "2025-01-01", "date_to": "2025-06-30", "offer_ids": ["eval:mt008:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "date_from", "date_to", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_009_explicit_year_override",
+      "label": "silver_unverified",
+      "categories": ["year_inheritance", "explicit_override", "scope_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Albaraka Türk kart kampanyalarının 2024 ödülleri neydi?",
+          "expected": {"standalone_query": "Albaraka Türk kart kampanyalarının 2024 yılındaki ödülleri neydi?", "intent": "historical", "banks": ["Albaraka Türk"], "product_types": ["kart kampanyası"], "field_types": ["ödül"], "scope": "historical", "year": 2024, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Albaraka Türk"], "active_products": ["kart kampanyası"], "active_scope": "historical", "active_year": 2024, "active_offer_ids": ["eval:mt009:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "2025 için olanları göster.",
+          "expected": {"standalone_query": "Albaraka Türk kart kampanyalarının 2025 yılındaki ödüllerini göster.", "intent": "historical", "banks": ["Albaraka Türk"], "product_types": ["kart kampanyası"], "field_types": ["ödül"], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "product_types", "scope"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["year", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_010_date_range_override",
+      "label": "silver_unverified",
+      "categories": ["date_inheritance", "explicit_override"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ocak-Mart 2025 döneminde Türkiye Finans kampanyalarını bul.",
+          "expected": {"standalone_query": "Türkiye Finans kampanyalarını 1 Ocak 2025 ile 31 Mart 2025 arasında bul.", "intent": "historical", "banks": ["Türkiye Finans"], "product_types": ["kampanya"], "field_types": ["kampanya tarihi"], "scope": "historical", "year": null, "date_from": "2025-01-01", "date_to": "2025-03-31", "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Türkiye Finans"], "active_products": ["kampanya"], "active_scope": "historical", "active_date_from": "2025-01-01", "active_date_to": "2025-03-31", "active_offer_ids": ["eval:mt010:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Hayır, Nisan-Haziran 2025 dönemini kastettim.",
+          "expected": {"standalone_query": "Türkiye Finans kampanyalarını 1 Nisan 2025 ile 30 Haziran 2025 arasında bul.", "intent": "historical", "banks": ["Türkiye Finans"], "product_types": ["kampanya"], "field_types": ["kampanya tarihi"], "scope": "historical", "year": null, "date_from": "2025-04-01", "date_to": "2025-06-30", "offer_ids": [], "inherited_fields": ["banks", "product_types", "scope"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["date_from", "date_to", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_011_second_offer_reference",
+      "label": "silver_unverified",
+      "categories": ["ordinal_reference", "compare"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "En avantajlı iki konut finansmanı teklifini sırala.",
+          "expected": {"standalone_query": "Güncel en avantajlı iki konut finansmanı teklifini sırala.", "intent": "compare", "banks": [], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_a", "eval_bank_b"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt011:offer:1", "eval:mt011:offer:2"], "ranked_offers": [{"offer_id": "eval:mt011:offer:1", "rank": 1, "bank": "eval_bank_a"}, {"offer_id": "eval:mt011:offer:2", "rank": 2, "bank": "eval_bank_b"}]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "İkincisinin vadesi ne kadar?",
+          "expected": {"standalone_query": "Sıralamadaki ikinci güncel konut finansmanı teklifinin vade süresi nedir?", "intent": "lookup", "banks": ["eval_bank_b"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt011:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_012_first_offer_reference",
+      "label": "silver_unverified",
+      "categories": ["ordinal_reference", "compare"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Taşıt finansmanı tekliflerini tutara göre sırala.",
+          "expected": {"standalone_query": "Güncel taşıt finansmanı tekliflerini tutara göre sırala.", "intent": "compare", "banks": [], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_c", "eval_bank_d"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt012:offer:1", "eval:mt012:offer:2"], "ranked_offers": [{"offer_id": "eval:mt012:offer:1", "rank": 1, "bank": "eval_bank_c"}, {"offer_id": "eval:mt012:offer:2", "rank": 2, "bank": "eval_bank_d"}]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Birincisinin oranını söyle.",
+          "expected": {"standalone_query": "Sıralamadaki birinci güncel taşıt finansmanı teklifinin oranı nedir?", "intent": "lookup", "banks": ["eval_bank_c"], "product_types": ["taşıt finansmanı"], "field_types": ["oran"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt012:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_013_third_offer_reference",
+      "label": "silver_unverified",
+      "categories": ["ordinal_reference", "list"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Üç güncel kart kampanyasını ödüle göre sırala.",
+          "expected": {"standalone_query": "Üç güncel kart kampanyasını ödüle göre sırala.", "intent": "compare", "banks": [], "product_types": ["kart kampanyası"], "field_types": ["ödül"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_e", "eval_bank_f", "eval_bank_g"], "active_products": ["kart kampanyası"], "active_scope": "current", "active_offer_ids": ["eval:mt013:offer:1", "eval:mt013:offer:2", "eval:mt013:offer:3"], "ranked_offers": [{"offer_id": "eval:mt013:offer:1", "rank": 1, "bank": "eval_bank_e"}, {"offer_id": "eval:mt013:offer:2", "rank": 2, "bank": "eval_bank_f"}, {"offer_id": "eval:mt013:offer:3", "rank": 3, "bank": "eval_bank_g"}]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Üçüncünün harcama eşiği nedir?",
+          "expected": {"standalone_query": "Sıralamadaki üçüncü güncel kart kampanyasının harcama eşiği nedir?", "intent": "lookup", "banks": ["eval_bank_g"], "product_types": ["kart kampanyası"], "field_types": ["harcama eşiği"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt013:offer:3"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_014_ordinal_after_resort",
+      "label": "silver_unverified",
+      "categories": ["ordinal_reference", "deterministic_order"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Konut tekliflerini vadesi en uzun olandan başlayarak sırala.",
+          "expected": {"standalone_query": "Güncel konut finansmanı tekliflerini vadesi en uzun olandan başlayarak sırala.", "intent": "compare", "banks": [], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_h", "eval_bank_i"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt014:offer:1", "eval:mt014:offer:2"], "ranked_offers": [{"offer_id": "eval:mt014:offer:1", "rank": 1, "bank": "eval_bank_h"}, {"offer_id": "eval:mt014:offer:2", "rank": 2, "bank": "eval_bank_i"}]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "İkinci teklifin tutarı nedir?",
+          "expected": {"standalone_query": "Vade sıralamasındaki ikinci güncel konut finansmanı teklifinin tutarı nedir?", "intent": "lookup", "banks": ["eval_bank_i"], "product_types": ["konut finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt014:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_015_topic_switch_bank_and_product",
+      "label": "silver_unverified",
+      "categories": ["topic_change", "explicit_override"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım konut finansmanı vadesi nedir?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel konut finansmanı vadesi nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt015:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Şimdi Vakıf Katılım taşıt finansmanına geçelim.",
+          "expected": {"standalone_query": "Vakıf Katılım güncel taşıt finansmanı bilgilerini göster.", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["banks", "product_types", "offer_ids"]},
+          "context_after_turn": {"active_banks": ["Vakıf Katılım"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt015:offer:2"]}
+        },
+        {
+          "turn_id": "t3",
+          "user_query": "Peki tutarı ne kadar?",
+          "expected": {"standalone_query": "Vakıf Katılım güncel taşıt finansmanı tutarı ne kadar?", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt015:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_016_topic_switch_keep_nothing",
+      "label": "silver_unverified",
+      "categories": ["topic_change", "context_clear"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Kuveyt Türk taşıt finansmanının oranı ve vadesi nedir?",
+          "expected": {"standalone_query": "Kuveyt Türk güncel taşıt finansmanının oranı ve vadesi nedir?", "intent": "lookup", "banks": ["Kuveyt Türk"], "product_types": ["taşıt finansmanı"], "field_types": ["oran", "vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Kuveyt Türk"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt016:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Albaraka Türk cari hesap ücretlerini anlat.",
+          "expected": {"standalone_query": "Albaraka Türk güncel cari hesap ücretlerini anlat.", "intent": "lookup", "banks": ["Albaraka Türk"], "product_types": ["cari hesap"], "field_types": ["ücret"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["banks", "product_types", "offer_ids", "year", "date_from", "date_to"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_017_prompt_reference_flow",
+      "label": "silver_unverified",
+      "categories": ["ordinal_reference", "year_inheritance", "topic_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "En avantajlı iki konut finansmanı teklifini sırala.",
+          "expected": {"standalone_query": "Güncel en avantajlı iki konut finansmanı teklifini sırala.", "intent": "compare", "banks": [], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_j", "eval_bank_k"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt017:offer:1", "eval:mt017:offer:2"], "ranked_offers": [{"offer_id": "eval:mt017:offer:1", "rank": 1, "bank": "eval_bank_j"}, {"offer_id": "eval:mt017:offer:2", "rank": 2, "bank": "eval_bank_k"}]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "İkincisinin vadesi ne kadar?",
+          "expected": {"standalone_query": "Sıralamadaki ikinci güncel konut finansmanı teklifinin vadesi ne kadar?", "intent": "lookup", "banks": ["eval_bank_k"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt017:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_k"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt017:offer:2"]}
+        },
+        {
+          "turn_id": "t3",
+          "user_query": "2025 yılında da aynı banka mıydı?",
+          "expected": {"standalone_query": "2025 yılında konut finansmanında aynı banka en avantajlı teklif miydi?", "intent": "historical", "banks": ["eval_bank_k"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "product_types"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["scope", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_018_topic_switch_after_historical",
+      "label": "silver_unverified",
+      "categories": ["topic_change", "scope_change"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Türkiye Finans 2023 konut finansmanı kampanyalarını göster.",
+          "expected": {"standalone_query": "Türkiye Finans 2023 konut finansmanı kampanyalarını göster.", "intent": "historical", "banks": ["Türkiye Finans"], "product_types": ["konut finansmanı"], "field_types": ["kampanya"], "scope": "historical", "year": 2023, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Türkiye Finans"], "active_products": ["konut finansmanı"], "active_scope": "historical", "active_year": 2023, "active_offer_ids": ["eval:mt018:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Şimdi güncel Kuveyt Türk KOBİ finansmanına bakalım.",
+          "expected": {"standalone_query": "Kuveyt Türk güncel KOBİ finansmanı bilgilerini göster.", "intent": "lookup", "banks": ["Kuveyt Türk"], "product_types": ["KOBİ finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["banks", "product_types", "scope", "year", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_019_current_to_historical_scope",
+      "label": "silver_unverified",
+      "categories": ["scope_change", "year_inheritance"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım güncel konut finansmanı oranı nedir?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel konut finansmanı oranı nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": ["oran"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt019:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "2024'te nasıldı?",
+          "expected": {"standalone_query": "Ziraat Katılım konut finansmanı oranı 2024 yılında nasıldı?", "intent": "historical", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": ["oran"], "scope": "historical", "year": 2024, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "product_types"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["scope", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_020_historical_to_current_scope",
+      "label": "silver_unverified",
+      "categories": ["scope_change", "explicit_override"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Vakıf Katılım 2022 taşıt finansmanı vadesi neydi?",
+          "expected": {"standalone_query": "Vakıf Katılım taşıt finansmanı vadesi 2022 yılında neydi?", "intent": "historical", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["vade"], "scope": "historical", "year": 2022, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Vakıf Katılım"], "active_products": ["taşıt finansmanı"], "active_scope": "historical", "active_year": 2022, "active_offer_ids": ["eval:mt020:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Güncel vadesi nedir?",
+          "expected": {"standalone_query": "Vakıf Katılım güncel taşıt finansmanı vadesi nedir?", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "product_types"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["scope", "year", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_021_all_scope_override",
+      "label": "silver_unverified",
+      "categories": ["scope_change", "historical"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Kuveyt Türk 2025 kart kampanyalarını listele.",
+          "expected": {"standalone_query": "Kuveyt Türk 2025 kart kampanyalarını listele.", "intent": "historical", "banks": ["Kuveyt Türk"], "product_types": ["kart kampanyası"], "field_types": ["kampanya"], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Kuveyt Türk"], "active_products": ["kart kampanyası"], "active_scope": "historical", "active_year": 2025, "active_offer_ids": ["eval:mt021:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Tüm dönemleri göster.",
+          "expected": {"standalone_query": "Kuveyt Türk kart kampanyalarını tüm dönemler için göster.", "intent": "list", "banks": ["Kuveyt Türk"], "product_types": ["kart kampanyası"], "field_types": ["kampanya"], "scope": "all", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks", "product_types"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["scope", "year", "offer_ids"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_022_scope_inheritance_all",
+      "label": "silver_unverified",
+      "categories": ["scope_change", "date_inheritance"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Albaraka Türk konut finansmanı için tüm dönemleri karşılaştır.",
+          "expected": {"standalone_query": "Albaraka Türk konut finansmanı tekliflerini tüm dönemler için karşılaştır.", "intent": "compare", "banks": ["Albaraka Türk"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "all", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Albaraka Türk"], "active_products": ["konut finansmanı"], "active_scope": "all", "active_offer_ids": ["eval:mt022:offer:1", "eval:mt022:offer:2"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Tutar değişimini de göster.",
+          "expected": {"standalone_query": "Albaraka Türk konut finansmanı tutar değişimini tüm dönemler için göster.", "intent": "historical", "banks": ["Albaraka Türk"], "product_types": ["konut finansmanı"], "field_types": ["tutar"], "scope": "all", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt022:offer:1", "eval:mt022:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_023_ambiguous_pronoun",
+      "label": "silver_unverified",
+      "categories": ["ambiguous_reference", "clarification"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım ve Vakıf Katılım konut tekliflerini karşılaştır.",
+          "expected": {"standalone_query": "Ziraat Katılım ve Vakıf Katılım güncel konut finansmanı tekliflerini karşılaştır.", "intent": "compare", "banks": ["Ziraat Katılım", "Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım", "Vakıf Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt023:offer:1", "eval:mt023:offer:2"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Onunki ne kadar?",
+          "expected": {"standalone_query": "Konut finansmanı tekliflerinden hangisinin tutarı soruluyor?", "intent": "clarification", "banks": ["Ziraat Katılım", "Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt023:offer:1", "eval:mt023:offer:2"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": true, "clarification_question": "Ziraat Katılım teklifini mi, Vakıf Katılım teklifini mi soruyorsunuz?", "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_024_ambiguous_same_bank",
+      "label": "silver_unverified",
+      "categories": ["ambiguous_reference", "clarification"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Üç bankanın taşıt finansmanı kampanyalarını listele.",
+          "expected": {"standalone_query": "Üç farklı bankanın güncel taşıt finansmanı kampanyalarını listele.", "intent": "list", "banks": [], "product_types": ["taşıt finansmanı"], "field_types": ["kampanya"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_l", "eval_bank_m", "eval_bank_n"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt024:offer:1", "eval:mt024:offer:2", "eval:mt024:offer:3"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Aynı bankada 2025'te nasıldı?",
+          "expected": {"standalone_query": "Taşıt finansmanı için hangi bankanın 2025 yılı soruluyor?", "intent": "clarification", "banks": ["eval_bank_l", "eval_bank_m", "eval_bank_n"], "product_types": ["taşıt finansmanı"], "field_types": [], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": ["eval:mt024:offer:1", "eval:mt024:offer:2", "eval:mt024:offer:3"], "inherited_fields": ["banks", "product_types", "offer_ids"], "needs_clarification": true, "clarification_question": "2025 yılı için hangi bankayı karşılaştırmamı istersiniz?", "topic_change_cleared_fields": ["scope"]}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_025_ordinal_without_order",
+      "label": "silver_unverified",
+      "categories": ["ambiguous_reference", "ordinal_reference", "clarification"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Konut finansmanı hakkında genel bilgi ver.",
+          "expected": {"standalone_query": "Güncel konut finansmanı hakkında genel bilgi ver.", "intent": "lookup", "banks": [], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": [], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": [], "ranked_offers": []}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "İkincisinin vadesi nedir?",
+          "expected": {"standalone_query": "Konut finansmanında ikinci teklif ile neyin kastedildiği belirsizdir.", "intent": "clarification", "banks": [], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["product_types", "scope"], "needs_clarification": true, "clarification_question": "Hangi sıralamadaki ikinci teklifi kastediyorsunuz?", "topic_change_cleared_fields": []}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_026_no_data_out_of_domain",
+      "label": "silver_unverified",
+      "categories": ["no_data", "unsupported_rejection"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım konut finansmanı koşulları nedir?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel konut finansmanı koşulları nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["konut finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt026:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Peki bankanın yarınki Bitcoin fiyat tahmini nedir?",
+          "expected": {"standalone_query": "Ziraat Katılımın yarınki Bitcoin fiyat tahmini nedir?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["Bitcoin"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["product_types", "offer_ids"], "should_reject": true}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_027_no_data_impossible_period",
+      "label": "silver_unverified",
+      "categories": ["no_data", "unsupported_rejection", "historical"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Albaraka Türk güncel kart ödüllerini göster.",
+          "expected": {"standalone_query": "Albaraka Türk güncel kart kampanyası ödüllerini göster.", "intent": "list", "banks": ["Albaraka Türk"], "product_types": ["kart kampanyası"], "field_types": ["ödül"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Albaraka Türk"], "active_products": ["kart kampanyası"], "active_scope": "current", "active_offer_ids": ["eval:mt027:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "1990 yılındaki mobil uygulama kampanyasının ödülü neydi?",
+          "expected": {"standalone_query": "Albaraka Türk mobil uygulama kampanyasının 1990 yılındaki ödülü neydi?", "intent": "historical", "banks": ["Albaraka Türk"], "product_types": ["mobil uygulama kampanyası"], "field_types": ["ödül"], "scope": "historical", "year": 1990, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": ["banks"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": ["product_types", "scope", "offer_ids"], "should_reject": true}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_028_wrong_prior_numeric_answer",
+      "label": "silver_unverified",
+      "categories": ["wrong_prior_answer", "fresh_retrieval"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Vakıf Katılım konut finansmanı vadesi nedir?",
+          "expected": {"standalone_query": "Vakıf Katılım güncel konut finansmanı vadesi nedir?", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "simulated_untrusted_assistant_answer": "Vade 120 aydır. Bu yanıt kasıtlı olarak doğrulanmamıştır.",
+          "context_after_turn": {"active_banks": ["Vakıf Katılım"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt028:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Önceki cevabında 120 ay demiştin; bu doğru mu?",
+          "expected": {"standalone_query": "Vakıf Katılım güncel konut finansmanı vade süresi nedir?", "intent": "lookup", "banks": ["Vakıf Katılım"], "product_types": ["konut finansmanı"], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt028:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "requires_fresh_retrieval": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_029_wrong_prior_bank_answer",
+      "label": "silver_unverified",
+      "categories": ["wrong_prior_answer", "bank_inheritance", "fresh_retrieval"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "user_query": "Ziraat Katılım taşıt finansmanı teklifini göster.",
+          "expected": {"standalone_query": "Ziraat Katılım güncel taşıt finansmanı teklifini göster.", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["taşıt finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "simulated_untrusted_assistant_answer": "Vakıf Katılım teklifi şöyledir. Bu banka adı kasıtlı olarak yanlıştır.",
+          "context_after_turn": {"active_banks": ["Ziraat Katılım"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt029:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "user_query": "Aynı bankanın tutarı ne kadar?",
+          "expected": {"standalone_query": "Ziraat Katılım güncel taşıt finansmanı teklifinin tutarı ne kadar?", "intent": "lookup", "banks": ["Ziraat Katılım"], "product_types": ["taşıt finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": ["eval:mt029:offer:1"], "inherited_fields": ["banks", "product_types", "scope", "offer_ids"], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "requires_fresh_retrieval": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_030_session_bank_isolation",
+      "label": "silver_unverified",
+      "categories": ["session_isolation", "ambiguous_reference"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "session_key": "session_a",
+          "user_query": "Türkiye Finans konut finansmanı tutarını göster.",
+          "expected": {"standalone_query": "Türkiye Finans güncel konut finansmanı tutarını göster.", "intent": "lookup", "banks": ["Türkiye Finans"], "product_types": ["konut finansmanı"], "field_types": ["tutar"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Türkiye Finans"], "active_products": ["konut finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt030:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "session_key": "session_b",
+          "user_query": "Peki vadesi ne kadar?",
+          "expected": {"standalone_query": "Hangi banka ve ürün için vade soruluyor?", "intent": "clarification", "banks": [], "product_types": [], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": true, "clarification_question": "Hangi banka ve ürün için vade bilgisini istiyorsunuz?", "topic_change_cleared_fields": [], "isolation_expected": true}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_031_session_ordinal_isolation",
+      "label": "silver_unverified",
+      "categories": ["session_isolation", "ordinal_reference", "clarification"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "session_key": "session_a",
+          "user_query": "İki taşıt finansmanı teklifini sırala.",
+          "expected": {"standalone_query": "İki güncel taşıt finansmanı teklifini sırala.", "intent": "compare", "banks": [], "product_types": ["taşıt finansmanı"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["eval_bank_o", "eval_bank_p"], "active_products": ["taşıt finansmanı"], "active_scope": "current", "active_offer_ids": ["eval:mt031:offer:1", "eval:mt031:offer:2"], "ranked_offers": [{"offer_id": "eval:mt031:offer:1", "rank": 1, "bank": "eval_bank_o"}, {"offer_id": "eval:mt031:offer:2", "rank": 2, "bank": "eval_bank_p"}]}
+        },
+        {
+          "turn_id": "t2",
+          "session_key": "session_b",
+          "user_query": "İkincisinin vadesi nedir?",
+          "expected": {"standalone_query": "Hangi sıralamadaki ikinci teklifin vadesi soruluyor?", "intent": "clarification", "banks": [], "product_types": [], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": true, "clarification_question": "Hangi sıralamadaki ikinci teklifi kastediyorsunuz?", "topic_change_cleared_fields": [], "isolation_expected": true}
+        }
+      ]
+    },
+    {
+      "scenario_id": "mt_032_session_year_isolation",
+      "label": "silver_unverified",
+      "categories": ["session_isolation", "year_inheritance", "clarification"],
+      "turns": [
+        {
+          "turn_id": "t1",
+          "session_key": "session_a",
+          "user_query": "Kuveyt Türk 2025 konut finansmanı oranını göster.",
+          "expected": {"standalone_query": "Kuveyt Türk 2025 konut finansmanı oranını göster.", "intent": "historical", "banks": ["Kuveyt Türk"], "product_types": ["konut finansmanı"], "field_types": ["oran"], "scope": "historical", "year": 2025, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": false, "clarification_question": null, "topic_change_cleared_fields": []},
+          "context_after_turn": {"active_banks": ["Kuveyt Türk"], "active_products": ["konut finansmanı"], "active_scope": "historical", "active_year": 2025, "active_offer_ids": ["eval:mt032:offer:1"]}
+        },
+        {
+          "turn_id": "t2",
+          "session_key": "session_b",
+          "user_query": "O yıl aynı bankanın vadesi neydi?",
+          "expected": {"standalone_query": "Hangi yıl, banka ve ürün için vade soruluyor?", "intent": "clarification", "banks": [], "product_types": [], "field_types": ["vade"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": [], "inherited_fields": [], "needs_clarification": true, "clarification_question": "Hangi yıl, banka ve ürün için vade bilgisini istiyorsunuz?", "topic_change_cleared_fields": [], "isolation_expected": true}
+        }
+      ]
+    }
+  ]
+}

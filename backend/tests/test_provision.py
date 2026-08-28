@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import contextlib
+import io
+import os
 from pathlib import Path
 import sys
 import unittest
@@ -68,6 +71,54 @@ def find_call(connection: StubConnection, fragment: str) -> int:
 
 
 class ProvisionSqlTest(unittest.TestCase):
+    def test_cli_redacts_database_driver_errors(self):
+        provider_secret = "unit-test-secret-" + ("9" * 18)
+        stderr = io.StringIO()
+        with (
+            patch(
+                "provision.main",
+                side_effect=provision.psycopg.OperationalError(
+                    "connection rejected: " + provider_secret
+                ),
+            ),
+            contextlib.redirect_stderr(stderr),
+        ):
+            exit_code = provision.run_cli()
+        self.assertEqual(exit_code, 2)
+        self.assertIn("database operation unavailable", stderr.getvalue())
+        self.assertNotIn(provider_secret, stderr.getvalue())
+
+    def test_settings_accept_existing_db_name_alias(self):
+        environment = {
+            "DB_NAME": "hititfinlex_test",
+            "POSTGRES_ADMIN_USER": "postgres",
+            "POSTGRES_ADMIN_PASSWORD": "admin-password-long",
+            "DB_MIGRATOR_USER": "hititfinlex_migrator",
+            "DB_MIGRATOR_PASSWORD": "migrator-password-long",
+            "DB_USER": "hititfinlex_app",
+            "DB_PASSWORD": "runtime-password-long",
+        }
+        with patch.dict(os.environ, environment, clear=True):
+            loaded = provision.Settings.from_environment()
+        self.assertEqual(loaded.database, "hititfinlex_test")
+
+    def test_settings_reject_conflicting_database_aliases(self):
+        environment = {
+            "POSTGRES_DB": "first_database",
+            "DB_NAME": "second_database",
+            "POSTGRES_ADMIN_USER": "postgres",
+            "POSTGRES_ADMIN_PASSWORD": "admin-password-long",
+            "DB_MIGRATOR_USER": "hititfinlex_migrator",
+            "DB_MIGRATOR_PASSWORD": "migrator-password-long",
+            "DB_USER": "hititfinlex_app",
+            "DB_PASSWORD": "runtime-password-long",
+        }
+        with (
+            patch.dict(os.environ, environment, clear=True),
+            self.assertRaisesRegex(RuntimeError, "identifiers must match"),
+        ):
+            provision.Settings.from_environment()
+
     def test_existing_login_role_clears_every_elevated_flag(self):
         connection = StubConnection(
             lambda query, _parameters: [(1,)] if "SELECT 1 FROM pg_roles" in query else ()
@@ -145,7 +196,44 @@ class ProvisionSqlTest(unittest.TestCase):
         connect_grant = find_call(maintenance, "GRANT CONNECT ON DATABASE")
         self.assertLess(public_revoke, app_revoke)
         self.assertLess(app_revoke, connect_grant)
-        self.assertGreaterEqual(find_call(maintenance, "SET search_path"), 0)
+        search_path_calls = [
+            query
+            for query, _parameters in maintenance.calls
+            if "SET search_path" in query
+        ]
+        self.assertEqual(len(search_path_calls), 2)
+        self.assertTrue(
+            any("hititfinlex_migrator" in query for query in search_path_calls)
+        )
+        self.assertTrue(
+            any("hititfinlex_app" in query for query in search_path_calls)
+        )
+        migrator_search_path = next(
+            query
+            for query in search_path_calls
+            if "hititfinlex_migrator" in query
+        )
+        runtime_search_path = next(
+            query
+            for query in search_path_calls
+            if "hititfinlex_app" in query
+        )
+        self.assertIn("SET search_path TO public, pg_catalog", migrator_search_path)
+        self.assertIn("SET search_path TO pg_catalog, public", runtime_search_path)
+        self.assertGreaterEqual(
+            find_call(
+                target,
+                "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public",
+            ),
+            0,
+        )
+        self.assertGreaterEqual(
+            find_call(
+                target,
+                "CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public",
+            ),
+            0,
+        )
         self.assertGreaterEqual(find_call(target, "REASSIGN OWNED BY"), 0)
         schema_app_revoke = next(
             query

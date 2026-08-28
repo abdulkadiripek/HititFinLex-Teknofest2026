@@ -32,6 +32,7 @@ from classifier_service import (
 from hybrid_search import (
     MODEL_NAME,
     build_lexical_query,
+    close_connection_pool,
     encode_query,
     get_connection,
     inspect_chunk_table,
@@ -71,6 +72,9 @@ from review_service import (
     review_summary,
     set_document_review_status,
 )
+from rag_v2.api_router import router as rag_v2_router
+from rag_v2.service import RagV2Service
+from rag_v2.settings import RagV2Settings
 
 
 load_dotenv()
@@ -110,6 +114,22 @@ EVREN_TIMEOUT_SECONDS = float(os.getenv("EVREN_TIMEOUT_SECONDS", "1800"))
 EVREN_MAX_OUTPUT_TOKENS = int(
     os.getenv("EVREN_MAX_OUTPUT_TOKENS", str(OLLAMA_MAX_OUTPUT_TOKENS))
 )
+_shared_http_client = None
+_shared_http_client_lock = Lock()
+
+
+def get_shared_http_client():
+    global _shared_http_client
+    with _shared_http_client_lock:
+        if _shared_http_client is None:
+            _shared_http_client = httpx.Client(
+                limits=httpx.Limits(
+                    max_connections=20,
+                    max_keepalive_connections=10,
+                    keepalive_expiry=60.0,
+                )
+            )
+        return _shared_http_client
 
 ENTITY_LABEL_TITLES = {
     "ALISVERIS_PUANI": "Alisveris Puani",
@@ -846,7 +866,7 @@ class FactReviewResolutionRequest(BaseModel):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Loading %s on GPU", MODEL_NAME)
+    logger.info("Loading legacy embedding model %s", MODEL_NAME)
     model = load_model()
     app.state.embedding_model = model
     app.state.model_lock = Lock()
@@ -873,8 +893,24 @@ async def lifespan(app: FastAPI):
         app.state.classifier_bundle.device,
     )
 
+    app.state.rag_v2_service = None
+    try:
+        rag_v2_settings = RagV2Settings.from_env()
+        app.state.rag_v2_service = RagV2Service.create(rag_v2_settings)
+        logger.info("RAG V2 shared providers and database pool are ready")
+    except Exception:
+        logger.exception("RAG V2 initialization failed")
+
     yield
 
+    if app.state.rag_v2_service is not None:
+        app.state.rag_v2_service.close()
+    close_connection_pool()
+    global _shared_http_client
+    with _shared_http_client_lock:
+        if _shared_http_client is not None:
+            _shared_http_client.close()
+            _shared_http_client = None
     del app.state.embedding_model
     del app.state.ner_bundle
     del app.state.classifier_bundle
@@ -896,6 +932,7 @@ app = FastAPI(
 app.add_middleware(BodySizeLimitMiddleware)
 app.add_middleware(SlidingWindowRateLimitMiddleware)
 app.add_middleware(CORSMiddleware, **get_cors_settings())
+app.include_router(rag_v2_router)
 
 
 @app.get("/")
@@ -907,6 +944,8 @@ def root():
         "health": "/health",
         "search": "/search",
         "chat": "/chat",
+        "rag_v2_chat": "/rag/v2/chat",
+        "rag_v2_sessions": "/rag/v2/sessions",
         "comparison_options": "/comparison/options",
         "comparison": "/comparison",
         "dashboard": "/dashboard/overview",
@@ -1061,7 +1100,7 @@ def search_results_to_chat_sources(results):
 
 def get_ollama_status():
     try:
-        response = httpx.get(
+        response = get_shared_http_client().get(
             f"{OLLAMA_BASE_URL}/api/tags",
             timeout=5.0,
         )
@@ -1142,12 +1181,12 @@ def call_ollama(query, sources):
         OLLAMA_TIMEOUT_SECONDS,
         connect=10.0,
     )
-    with httpx.Client(timeout=timeout) as client:
-        response = client.post(
-            f"{OLLAMA_BASE_URL}/api/chat",
-            json=payload,
-        )
-        response.raise_for_status()
+    response = get_shared_http_client().post(
+        f"{OLLAMA_BASE_URL}/api/chat",
+        json=payload,
+        timeout=timeout,
+    )
+    response.raise_for_status()
 
     answer = response.json().get("message", {}).get("content", "").strip()
     if not answer:
@@ -1207,9 +1246,10 @@ def call_ollama_history(query, sources):
         },
     }
     timeout = httpx.Timeout(OLLAMA_TIMEOUT_SECONDS, connect=10.0)
-    with httpx.Client(timeout=timeout) as client:
-        response = client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload)
-        response.raise_for_status()
+    response = get_shared_http_client().post(
+        f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=timeout
+    )
+    response.raise_for_status()
     answer = response.json().get("message", {}).get("content", "").strip()
     if not answer:
         raise RuntimeError("Ollama returned an empty historical answer.")
@@ -1225,7 +1265,7 @@ def _evren_headers():
 
 def get_evren_status():
     try:
-        response = httpx.get(
+        response = get_shared_http_client().get(
             f"{EVREN_BASE_URL}/models",
             headers=_evren_headers(),
             timeout=5.0,
@@ -1248,13 +1288,13 @@ def call_evren(query, sources):
         "max_tokens": EVREN_MAX_OUTPUT_TOKENS,
     }
     timeout = httpx.Timeout(EVREN_TIMEOUT_SECONDS, connect=10.0)
-    with httpx.Client(timeout=timeout) as client:
-        response = client.post(
-            f"{EVREN_BASE_URL}/chat/completions",
-            headers=_evren_headers(),
-            json=payload,
-        )
-        response.raise_for_status()
+    response = get_shared_http_client().post(
+        f"{EVREN_BASE_URL}/chat/completions",
+        headers=_evren_headers(),
+        json=payload,
+        timeout=timeout,
+    )
+    response.raise_for_status()
 
     answer = response.json()["choices"][0]["message"]["content"].strip()
     if not answer:
@@ -1308,13 +1348,13 @@ def call_evren_history(query, sources):
         "max_tokens": EVREN_MAX_OUTPUT_TOKENS,
     }
     timeout = httpx.Timeout(EVREN_TIMEOUT_SECONDS, connect=10.0)
-    with httpx.Client(timeout=timeout) as client:
-        response = client.post(
-            f"{EVREN_BASE_URL}/chat/completions",
-            headers=_evren_headers(),
-            json=payload,
-        )
-        response.raise_for_status()
+    response = get_shared_http_client().post(
+        f"{EVREN_BASE_URL}/chat/completions",
+        headers=_evren_headers(),
+        json=payload,
+        timeout=timeout,
+    )
+    response.raise_for_status()
     answer = response.json()["choices"][0]["message"]["content"].strip()
     if not answer:
         raise RuntimeError("EVREN returned an empty historical answer.")

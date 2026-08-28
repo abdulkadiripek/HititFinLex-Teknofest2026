@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -34,7 +35,23 @@ REQUIRED_TABLES = (
     "historical_documents",
     "historical_facts",
     "historical_document_chunks",
+    "rag_chunks",
+    "rag_sessions",
+    "rag_messages",
+    "rag_session_state",
+    "rag_turn_evidence",
 )
+REQUIRED_RAG_INDEX_METHODS = {
+    "rag_chunks_search_vector_idx": "gin",
+    "rag_chunks_product_types_idx": "gin",
+    "rag_chunks_facts_idx": "gin",
+    "rag_chunks_scope_bank_date_idx": "btree",
+    "rag_chunks_classification_idx": "btree",
+    "rag_sessions_expiry_idx": "btree",
+    "rag_messages_session_time_idx": "btree",
+    "rag_session_state_updated_idx": "btree",
+    "rag_turn_evidence_session_time_idx": "btree",
+}
 
 
 def sha256(path: Path) -> str:
@@ -118,7 +135,7 @@ def connect():
 def ensure_history(connection) -> None:
     connection.execute(
         """
-        CREATE TABLE IF NOT EXISTS hititfinlex_schema_migrations (
+        CREATE TABLE IF NOT EXISTS public.hititfinlex_schema_migrations (
             version VARCHAR(32) PRIMARY KEY,
             filename TEXT NOT NULL,
             sha256 CHAR(64) NOT NULL,
@@ -131,7 +148,7 @@ def ensure_history(connection) -> None:
 
 def applied_migrations(connection) -> dict[str, tuple[str, str]]:
     rows = connection.execute(
-        "SELECT version, filename, sha256 FROM hititfinlex_schema_migrations"
+        "SELECT version, filename, sha256 FROM public.hititfinlex_schema_migrations"
     ).fetchall()
     return {str(version): (str(filename), str(checksum)) for version, filename, checksum in rows}
 
@@ -157,7 +174,7 @@ def migrate_up(migrations: list[dict[str, str]]) -> None:
                 connection.execute(sql)
                 connection.execute(
                     """
-                    INSERT INTO hititfinlex_schema_migrations
+                    INSERT INTO public.hititfinlex_schema_migrations
                         (version, filename, sha256)
                     VALUES (%s, %s, %s)
                     """,
@@ -168,8 +185,63 @@ def migrate_up(migrations: list[dict[str, str]]) -> None:
 
 def print_status(migrations: list[dict[str, str]]) -> None:
     with connect() as connection:
-        ensure_history(connection)
-        applied = applied_migrations(connection)
+        history = connection.execute(
+            "SELECT to_regclass('public.hititfinlex_schema_migrations')"
+        ).fetchone()
+        try:
+            applied = applied_migrations(connection) if history and history[0] else {}
+        except Exception as error:
+            if getattr(error, "sqlstate", None) != "42501":
+                raise
+            connection.rollback()
+            markers = {
+                "0001": bool(
+                    connection.execute(
+                        "SELECT to_regclass('public.documents') IS NOT NULL"
+                    ).fetchone()[0]
+                ),
+                "0002": bool(
+                    connection.execute(
+                        """
+                        SELECT EXISTS (
+                            SELECT 1
+                            FROM information_schema.columns
+                            WHERE table_schema = 'public'
+                              AND table_name = 'document_intake_review_queue'
+                              AND column_name = 'base_document_hash'
+                        )
+                        """
+                    ).fetchone()[0]
+                ),
+                "0003": bool(
+                    connection.execute(
+                        "SELECT to_regclass('public.rag_sessions') IS NOT NULL"
+                    ).fetchone()[0]
+                ),
+                "0004": bool(
+                    connection.execute(
+                        """
+                        SELECT EXISTS (
+                            SELECT 1
+                            FROM pg_constraint
+                            WHERE conrelid = 'public.rag_messages'::REGCLASS
+                              AND contype = 'c'
+                              AND pg_get_constraintdef(oid)
+                                  ILIKE '%conversational%'
+                        )
+                        """
+                    ).fetchone()[0]
+                ),
+            }
+            for migration in migrations:
+                state = (
+                    "present-unverified"
+                    if markers.get(migration["version"], False)
+                    else "pending"
+                )
+                print(f"{migration['version']} {state} {migration['file']}")
+            print("history checksums unavailable to the current database role")
+            return
     for migration in migrations:
         state = "applied" if migration["version"] in applied else "pending"
         print(f"{migration['version']} {state} {migration['file']}")
@@ -178,11 +250,31 @@ def print_status(migrations: list[dict[str, str]]) -> None:
 def smoke(migrations: list[dict[str, str]]) -> None:
     migrate_up(migrations)
     with connect() as connection:
+        server_version_num = int(
+            connection.execute(
+                "SELECT current_setting('server_version_num')::INTEGER"
+            ).fetchone()[0]
+        )
+        if server_version_num // 10000 != 18:
+            raise RuntimeError(
+                "PostgreSQL 18 is required; detected server major "
+                f"{server_version_num // 10000}"
+            )
         extension = connection.execute(
             "SELECT extversion FROM pg_extension WHERE extname = 'vector'"
         ).fetchone()
         if extension is None:
             raise RuntimeError("pgvector extension is unavailable")
+        unaccent_extension = connection.execute(
+            "SELECT extversion FROM pg_extension WHERE extname = 'unaccent'"
+        ).fetchone()
+        if unaccent_extension is None:
+            raise RuntimeError("unaccent extension is unavailable")
+        public_unaccent = connection.execute(
+            "SELECT to_regprocedure('public.unaccent(text)') IS NOT NULL"
+        ).fetchone()
+        if not public_unaccent or not public_unaccent[0]:
+            raise RuntimeError("public.unaccent(text) is unavailable")
         missing = []
         for table in REQUIRED_TABLES:
             row = connection.execute("SELECT to_regclass(%s)", (f"public.{table}",)).fetchone()
@@ -204,7 +296,157 @@ def smoke(migrations: list[dict[str, str]]) -> None:
             raise RuntimeError("Missing tables: " + ", ".join(missing))
         if embedding_type is None or embedding_type[0] != "vector(1024)":
             raise RuntimeError(f"Unexpected embedding type: {embedding_type}")
-        print(f"migration smoke passed (pgvector {extension[0]}, vector(1024))")
+        rag_search_type = connection.execute(
+            """
+            SELECT format_type(attribute.atttypid, attribute.atttypmod)
+            FROM pg_attribute AS attribute
+            JOIN pg_class AS relation ON relation.oid = attribute.attrelid
+            JOIN pg_namespace AS namespace ON namespace.oid = relation.relnamespace
+            WHERE namespace.nspname = 'public'
+              AND relation.relname = 'rag_chunks'
+              AND attribute.attname = 'search_vector'
+              AND NOT attribute.attisdropped
+            """
+        ).fetchone()
+        if rag_search_type is None or rag_search_type[0] != "tsvector":
+            raise RuntimeError(f"Unexpected RAG search type: {rag_search_type}")
+        rag_columns = connection.execute(
+            """
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'rag_chunks'
+              AND column_name IN (
+                  'offer_id',
+                  'scope',
+                  'document_id',
+                  'bank_key',
+                  'primary_product',
+                  'product_types',
+                  'product_scores',
+                  'classification_confidence',
+                  'classification_status',
+                  'classification_conflict',
+                  'effective_date',
+                  'campaign_start',
+                  'campaign_end',
+                  'facts',
+                  'search_vector'
+              )
+            """
+        ).fetchall()
+        required_rag_columns = {
+            "offer_id",
+            "scope",
+            "document_id",
+            "bank_key",
+            "primary_product",
+            "product_types",
+            "product_scores",
+            "classification_confidence",
+            "classification_status",
+            "classification_conflict",
+            "effective_date",
+            "campaign_start",
+            "campaign_end",
+            "facts",
+            "search_vector",
+        }
+        missing_rag_columns = required_rag_columns.difference(
+            str(row[0]) for row in rag_columns
+        )
+        if missing_rag_columns:
+            raise RuntimeError(
+                "RAG chunk columns are incomplete: "
+                + ", ".join(sorted(missing_rag_columns))
+            )
+        index_rows = connection.execute(
+            """
+            SELECT index_relation.relname, access_method.amname
+            FROM pg_index AS index_metadata
+            JOIN pg_class AS index_relation
+              ON index_relation.oid = index_metadata.indexrelid
+            JOIN pg_class AS table_relation
+              ON table_relation.oid = index_metadata.indrelid
+            JOIN pg_namespace AS namespace
+              ON namespace.oid = table_relation.relnamespace
+            JOIN pg_am AS access_method
+              ON access_method.oid = index_relation.relam
+            WHERE namespace.nspname = 'public'
+              AND index_relation.relname::TEXT = ANY(%s::TEXT[])
+            """,
+            (list(REQUIRED_RAG_INDEX_METHODS),),
+        ).fetchall()
+        actual_index_methods = {
+            str(index_name): str(method_name)
+            for index_name, method_name in index_rows
+        }
+        mismatched_indexes = sorted(
+            index_name
+            for index_name, method_name in REQUIRED_RAG_INDEX_METHODS.items()
+            if actual_index_methods.get(index_name) != method_name
+        )
+        if mismatched_indexes:
+            raise RuntimeError(
+                "RAG indexes are missing or use an unexpected access method: "
+                + ", ".join(mismatched_indexes)
+            )
+        search_trigger = connection.execute(
+            """
+            SELECT EXISTS (
+                SELECT 1
+                FROM pg_trigger AS trigger_metadata
+                JOIN pg_class AS relation
+                  ON relation.oid = trigger_metadata.tgrelid
+                JOIN pg_namespace AS namespace
+                  ON namespace.oid = relation.relnamespace
+                WHERE namespace.nspname = 'public'
+                  AND relation.relname = 'rag_chunks'
+                  AND trigger_metadata.tgname =
+                      'rag_chunks_search_vector_trigger'
+                  AND NOT trigger_metadata.tgisinternal
+                  AND trigger_metadata.tgenabled <> 'D'
+            )
+            """
+        ).fetchone()
+        if not search_trigger or not search_trigger[0]:
+            raise RuntimeError("RAG search vector trigger is unavailable")
+        session_columns = connection.execute(
+            """
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'rag_sessions'
+              AND column_name IN (
+                  'token_hash', 'owner_hash', 'expires_at', 'revoked_at'
+              )
+            """
+        ).fetchall()
+        if {str(row[0]) for row in session_columns} != {
+            "token_hash",
+            "owner_hash",
+            "expires_at",
+            "revoked_at",
+        }:
+            raise RuntimeError("RAG session security columns are incomplete")
+        conversation_status = connection.execute(
+            """
+            SELECT EXISTS (
+                SELECT 1
+                FROM pg_constraint
+                WHERE conrelid = 'public.rag_messages'::REGCLASS
+                  AND contype = 'c'
+                  AND pg_get_constraintdef(oid) ILIKE '%conversational%'
+            )
+            """
+        ).fetchone()
+        if not conversation_status or not conversation_status[0]:
+            raise RuntimeError("RAG conversational status constraint is unavailable")
+        print(
+            f"migration smoke passed (PostgreSQL "
+            f"{server_version_num // 10000}, pgvector {extension[0]}, "
+            f"unaccent {unaccent_extension[0]}, vector(1024), RAG V2)"
+        )
 
 
 def main() -> None:
@@ -222,5 +464,22 @@ def main() -> None:
         smoke(migrations)
 
 
+def run_cli() -> int:
+    try:
+        main()
+    except (RuntimeError, ValueError, OSError, json.JSONDecodeError) as error:
+        print(f"database migration failed: {error}", file=sys.stderr)
+        return 2
+    except Exception as error:
+        if error.__class__.__module__.split(".", 1)[0] != "psycopg":
+            raise
+        print(
+            "database migration failed: database operation unavailable",
+            file=sys.stderr,
+        )
+        return 2
+    return 0
+
+
 if __name__ == "__main__":
-    main()
+    raise SystemExit(run_cli())
