@@ -27,6 +27,7 @@ cevap üreten bir sistemdir.
 - [Veri seti](#veri-seti)
 - [Modeller](#modeller)
 - [Kurulum](#kurulum)
+  - [Cevap üretimi sağlayıcısını seçin](#cevap-üretimi-sağlayıcısını-seçin)
 - [Veritabanı migration ve geri yükleme](#veritabanı-migration-ve-geri-yükleme)
 - [Sürümlü model ve yedek paketleri](#sürümlü-model-ve-yedek-paketleri)
 - [Çalıştırma](#çalıştırma)
@@ -268,11 +269,68 @@ dizinden bağımsız olarak `backend/.env` dosyasını otomatik yükler; ancak
 `up/status/smoke` için runtime app hesabı değil migrator `DATABASE_URL` değeri
 kullanılmalıdır. `check` bağlantı kurmadan checksum doğrular.
 
-Ollama modelini indirin:
+### Cevap üretimi sağlayıcısını seçin
+
+Asistanın yanıtını hangi modelin üreteceğini `LLM_PROVIDER` belirler. İki yol
+da desteklenir; ikisi arasında geçiş yapmak için yalnızca bu değişkeni
+değiştirip servisi yeniden başlatmak yeterlidir.
+
+**A) Yerel Ollama (varsayılan, çevrimdışı)**
+
+Zincirin tamamı kendi makinenizde kalır; dışarı hiçbir veri çıkmaz.
 
 ```cmd
 ollama pull qwen3.5:9b
 ```
+
+`backend/.env` içinde:
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=qwen3.5:9b
+```
+
+**B) EVREN (harici metin modeli API'si)**
+
+Yalnızca cevap üretimi adımı dışarı taşınır: kullanıcı sorusu ve hibrit
+aramanın getirdiği kaynak pasajları EVREN'e gönderilir. Belgeler, embedding'ler
+ve veritabanı yerelde kalmaya devam eder. Takım anahtarınızı yalnızca Git
+tarafından yok sayılan `backend/.env` dosyasında tutun.
+
+```env
+LLM_PROVIDER=evren
+EVREN_API_KEY=<takim-anahtariniz>
+EVREN_BASE_URL=https://evren-llmapi.ssyz.org.tr/v1
+EVREN_TEXT_MODEL=llm-fast
+```
+
+`.env.example` içindeki `CHANGE_ME_TEAM_EVREN_KEY` bir yer tutucudur ve
+gerçek anahtarınızla değiştirilmelidir; aksi halde EVREN istekleri yetkisiz
+sayılır. Timeout, çıktı sınırı ve embedding ayarlarının tamamı
+`.env.example` içinde varsayılanlarıyla listelidir.
+
+**Hangi modelin servis ettiğini doğrulayın**
+
+Servisi başlattıktan sonra `/health` çıktısındaki üç alan yeterlidir:
+
+```cmd
+curl http://127.0.0.1:8000/health
+```
+
+| Alan | Beklenen |
+| --- | --- |
+| `llm_provider` | `ollama` veya `evren` — o an seçili sağlayıcı |
+| `active_model` | `qwen3.5:9b` veya `llm-fast` — isteklerin gittiği model |
+| `llm_model_ready` | `true` — model erişilebilir; `false` ise anahtar/adres veya Ollama servisi kontrol edilmeli |
+
+Arayüzdeki asistan başlığı da aynı `active_model` değerini gösterir, böylece
+demo sırasında hangi modelin konuştuğu ekrandan görülebilir.
+
+> RAG v2 servisinin ayrıntılı kurulumu (Qdrant koleksiyonu, indeksleme,
+> yönlendirme ve kanıt politikası) için
+> [`RAG_V2_KURULUM.md`](RAG_V2_KURULUM.md), ölçüm sonuçları için
+> [`RAG_V2_SONUC_RAPORU.md`](RAG_V2_SONUC_RAPORU.md) dosyalarına bakın.
 
 ## Veritabanı migration ve geri yükleme
 
