@@ -298,7 +298,7 @@ python smoke_test_intake_database.py
 python smoke_test_review_workflow.py
 python -m unittest -v test_backend_hardening.py
 python db\migrate.py check
-python -m unittest discover -s tests -p "test_*.py"
+python -m unittest discover -s tests -p "test_*.py" -t .
 ```
 
 ## Lisans

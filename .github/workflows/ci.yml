@@ -76,7 +76,10 @@ jobs:
       - run: python backend/db/migrate.py check
       - run: python backend/db/provision.py all
       - run: python backend/db/migrate.py smoke
-      - run: python -m unittest discover -s backend/tests -p "test_*.py"
+      # -t backend: testler rag_v2, evaluation ve db modullerini import ediyor;
+      # ust seviye dizin backend olmadan bunlar sys.path'e girmiyor ve repo
+      # kokundeki db/ klasoru backend/db'yi golgeliyor.
+      - run: python -m unittest discover -s backend/tests -p "test_*.py" -t backend
       - run: python -m unittest -v test_backend_hardening.py
         working-directory: backend
       - run: python -m compileall -q backend
