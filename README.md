@@ -22,6 +22,7 @@ geliştirilmiştir.
 - [Genel bakış](#genel-bakış)
 - [Mimari](#mimari)
 - [Özellikler](#özellikler)
+- [Ekran görüntüleri](#ekran-görüntüleri)
 - [Teknoloji yığını](#teknoloji-yığını)
 - [API sözleşmesi](#api-sözleşmesi)
 - [Proje yapısı](#proje-yapısı)
@@ -73,7 +74,7 @@ flowchart LR
         NER["Türkçe NER\nner_v4_best"]
         CLS["Kampanya + Ürün\nsınıflandırıcıları"]
         HYB["Hibrit Arama\n(BM25 + vektör)"]
-        LLM["Ollama\nqwen3.5:9b"]
+        LLM["Cevap üretimi\nEVREN llm-fast\nveya Ollama qwen3.5:9b"]
     end
 
     subgraph Data["Veri Katmanı"]
@@ -102,14 +103,21 @@ Backend'in referans yapılandırması (kurulum rehberinden alınmıştır):
 | Türkçe NER | `models/ner_v4_best` |
 | Kampanya sınıflandırıcı | `models/classifier_campaign_v1_best` |
 | Ürün sınıflandırıcı | `models/classifier_product_v2_best` |
-| Yerel LLM | Ollama `qwen3.5:9b` |
+| Cevap üretimi (LLM) | `LLM_PROVIDER` ile seçilir: yerel Ollama `qwen3.5:9b` (kod varsayılanı) veya harici EVREN `llm-fast` |
 | Arama stratejisi | Hibrit arama (BM25 + vektör benzerliği) |
 | İnceleme akışı | `human_review_v1` — düşük güvenli belge/fact'ler inceleme kuyruğuna düşer |
 
 > Backend, üretimde GPU'lu (örn. RTX 4090 Laptop) bir Windows makinede
-> çalışacak şekilde tasarlanmıştır; embedding ve sınıflandırma çıkarımı
-> yerelde GPU üzerinde yapılır, LLM cevapları da yerel Ollama üzerinden
-> üretilir — dış bir bulut API'sine bağımlılık yoktur.
+> çalışacak şekilde tasarlanmıştır. **Veri katmanı tamamen yereldir:** belge
+> alımı, embedding üretimi, NER ve sınıflandırma çıkarımı makinenin kendi
+> GPU'sunda yapılır; belgeler ve vektörler yerel PostgreSQL'de kalır.
+>
+> **Cevap üretimi katmanı seçilebilir.** `LLM_PROVIDER=ollama` (kod
+> varsayılanı) tüm zinciri çevrimdışı tutar. `LLM_PROVIDER=evren`
+> seçildiğinde yalnızca son adım — kullanıcı sorusu ve hibrit aramanın
+> getirdiği kaynak pasajları — harici EVREN metin modeli API'sine
+> gönderilir; bu tercih dış veri akışı gözden geçirildikten ve
+> `EVREN_API_KEY` tanımlandıktan sonra bilinçli olarak yapılmalıdır.
 
 ## Özellikler
 
@@ -121,7 +129,7 @@ Arayüz beş ana görünümden oluşur; her görünüm **güncel** ve **tarihsel
 | **Genel bakış** | Belge/banka/fact sayıları, doğrulama oranı, kapsam yüzdesi, en son eklenen belgeler |
 | **Katalog** | Arama, çoklu filtre (banka, ürün türü, güven eşiği, tarih), sıralama ve sayfalama ile güncel + tarihsel belge listesi |
 | **Karşılaştırma** | Ürün türüne göre değişen alanlarla bankalar arası karşılaştırma matrisi (kart kampanyalarında tarih/harcama eşiği/indirim/puan, finansman ürünlerinde tutar/oran/vade/kâr payı vb.) — veride bulunmayan alanlar matrise eklenmez. Son 1 ay / 3 ay / 6 ay / 1 yıl / tüm arşiv seçenekleriyle geçmişe dönük karşılaştırma da yapılabilir |
-| **Asistan** | BGE-M3 + PostgreSQL hibrit arama ve Qwen tabanlı, kaynak göstererek cevap üreten RAG sohbeti; "güncel" veya "tarihsel" kapsam seçilebilir, ürün türü otomatik algılanamazsa panelden elle seçilebilir |
+| **Asistan** | BGE-M3 + PostgreSQL hibrit araması üzerine kurulu, kaynak göstererek cevap üreten RAG sohbeti; "güncel" veya "tarihsel" kapsam seçilebilir, ürün türü otomatik algılanamazsa panelden elle seçilebilir. Yanıtın altında ilgili tüm bankaları tek tabloda gösteren "veritabanı panosu" açılır; oturum bağlamı sunucu tarafında tutulur, "Bağlamı temizle" ve "Yeni sohbet" ile sıfırlanır |
 | **Veri kalitesi** | Sınıflandırma güveni, NER kapsamı, bekleyen belge/fact incelemeleri ve tarihsel embedding durumu |
 
 Her belge ayrıntısında kanıt metni ve ham kaynak URL'si gösterilir; her
@@ -129,6 +137,26 @@ karşılaştırma hücresi kaynağına kadar izlenebilir. Eksik/yapılandırılm
 alanlar "ürün bankada yok" olarak değil, "seçili kaynaklarda yapılandırılmış
 alan yok" şeklinde açıkça ayrıştırılarak gösterilir. Bankalar, marka
 renkleriyle yerel logo rozetleriyle listelenir.
+
+## Ekran görüntüleri
+
+Aşağıdaki görüntüler canlı API'ye bağlı çalışan arayüzden
+`npm run screenshots` ile üretilmiştir (1920×1080).
+
+| Genel bakış | Ürün kataloğu |
+| --- | --- |
+| [![Genel bakış](docs/ekran-goruntuleri/01-genel-bakis.png)](docs/ekran-goruntuleri/01-genel-bakis.png) | [![Ürün kataloğu](docs/ekran-goruntuleri/02-urun-katalogu.png)](docs/ekran-goruntuleri/02-urun-katalogu.png) |
+| Veri evreni, kapsam KPI'ları ve tarihsel arşiv şeridi | Filtre, sıralama ve sayfalama ile güncel + tarihsel belge listesi |
+
+| Karşılaştırma | Akıllı asistan |
+| --- | --- |
+| [![Karşılaştırma](docs/ekran-goruntuleri/03-karsilastirma.png)](docs/ekran-goruntuleri/03-karsilastirma.png) | [![Akıllı asistan](docs/ekran-goruntuleri/04-akilli-asistan.png)](docs/ekran-goruntuleri/04-akilli-asistan.png) |
+| Banka bazında kanıtlı koşul karşılaştırması | Kaynak gösteren RAG yanıtı ve tüm bankaları listeleyen veritabanı panosu |
+
+| Veri kalitesi |
+| --- |
+| [![Veri kalitesi](docs/ekran-goruntuleri/05-veri-kalitesi.png)](docs/ekran-goruntuleri/05-veri-kalitesi.png) |
+| Sınıflandırma güveni, inceleme kuyruğu ve tarihsel embedding durumu |
 
 ## Teknoloji yığını
 
@@ -145,7 +173,8 @@ renkleriyle yerel logo rozetleriyle listelenir.
 - PostgreSQL 18 + pgvector — belge, chunk, embedding ve karşılaştırma fact'leri
 - `sentence-transformers` ile `BAAI/bge-m3` embedding
 - Türkçe NER ve iki sınıflandırıcı (`transformers` tabanlı, GPU üzerinde)
-- Ollama ile yerel LLM (`qwen3.5:9b`) — kaynaklı cevap üretimi
+- Kaynaklı cevap üretimi: harici EVREN `llm-fast` veya yerel Ollama
+  `qwen3.5:9b` — `LLM_PROVIDER` ile seçilir
 
 ## API sözleşmesi
 
@@ -165,6 +194,17 @@ Frontend'in çağırdığı uçlar:
 | `POST /history/comparison` | Belirli bir tarihe kadarki (`as_of`) arşiv karşılaştırma matrisi |
 | `POST /history/chat` | Tarihsel kapsamda RAG asistanı |
 
+Asistanın oturum/bağlam protokolü (RAG v2) ayrı uçlar üzerinden yürür;
+istemci kimliği ve opak oturum kimliği başlıklarla taşınır:
+
+| Uç nokta | Kullanım |
+| --- | --- |
+| `POST /rag/v2/sessions` | Yeni sohbet oturumu açar (opak `session_id` döner) |
+| `POST /rag/v2/chat` | Oturum bağlamıyla kaynaklı yanıt üretir |
+| `GET /rag/v2/session/messages` | Oturumun sahibine ait mesaj geçmişini döner |
+| `POST /rag/v2/session/clear` | Bağlamı temizler, oturumu korur |
+| `DELETE /rag/v2/session` | Oturumu tamamen sonlandırır |
+
 Tam şema için backend çalışırken `http://127.0.0.1:8000/docs` (Swagger UI)
 adresine bakılabilir.
 
@@ -174,11 +214,14 @@ adresine bakılabilir.
 HititFinLex/
 ├── app/                  # Next.js frontend
 │   ├── page.tsx           # Tüm ekranları içeren ana client component
+│   ├── rag-v2.ts          # Asistan oturum protokolü ve yanıt doğrulama yardımcıları
+│   ├── AssistantPanorama.module.css  # Asistan altındaki banka panosu stilleri
 │   ├── layout.tsx         # Metadata, kök layout
 │   └── globals.css
 ├── public/               # Statik varlıklar (favicon, og görseli, banka logoları)
-├── scripts/               # CI/build yardımcı script'leri
-├── tests/                 # Render edilen HTML üzerinde smoke test
+│   └── banks/             # Katılım bankalarının yerel logo dosyaları
+├── scripts/               # CI/build yardımcıları + ekran görüntüsü yakalayıcı
+├── tests/                 # Render edilen HTML ve RAG v2 sözleşmesi üzerinde smoke test
 ├── .github/workflows/     # Windows/Linux CI ve DB migration smoke
 ├── backend/               # FastAPI NLP/RAG servisi (bkz. backend/README.md)
 │   ├── api.py               # REST giriş noktası
@@ -190,6 +233,7 @@ HititFinLex/
 │   └── requirements.txt
 ├── dataset/               # Yayınlanan resmî veri seti paketi (HititFinLex Veri Seti v1.0)
 ├── docs/                  # Şartname kapsamındaki proje dokümantasyonu
+│   └── ekran-goruntuleri/  # README'de kullanılan arayüz ekran görüntüleri
 ├── artifacts/             # Model/DB transfer manifesti ve SHA-256 kullanımı
 ├── compose.yaml           # Yerel pgvector + isteğe bağlı frontend şablonu
 ├── LICENSE                # Apache License 2.0 (tüm repo için)
@@ -300,6 +344,19 @@ Frontend için yalnız browser-visible örnek değerler
 ve `.env.local` dosyaları Git/Docker build context tarafından yok sayılır;
 yalnız example dosyaları özellikle allowlist'e alınmıştır.
 
+Cevap üreten modeli backend tarafında `backend/.env` belirler:
+
+| Değişken | Varsayılan | Açıklama |
+| --- | --- | --- |
+| `LLM_PROVIDER` | `ollama` | `ollama` tüm zinciri yerelde tutar; `evren` cevap üretimini harici EVREN API'sine taşır |
+| `OLLAMA_BASE_URL` / `OLLAMA_MODEL` | `http://127.0.0.1:11434` / `qwen3.5:9b` | Yerel LLM adresi ve modeli |
+| `EVREN_BASE_URL` / `EVREN_TEXT_MODEL` | `.../v1` / `llm-fast` | EVREN uç adresi ve metin modeli |
+| `EVREN_API_KEY` | *(boş)* | `LLM_PROVIDER=evren` için zorunlu; örnek dosyadaki placeholder kasıtlı olarak reddedilir |
+
+`/health` çıktısındaki `llm_provider` ve `active_model` alanları o an hangi
+modelin servis ettiğini gösterir; arayüzdeki asistan başlığı da bu değeri
+yazar.
+
 ## Tekrar üretilebilirlik ve geri yükleme
 
 - Frontend bağımlılıkları `package-lock.json` bütünlük alanlarıyla, backend
@@ -354,6 +411,18 @@ npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
 python backend\db\migrate.py check
 python -m unittest discover -s backend\tests -p "test_*.py"
+```
+
+> `test:smoke`, `app/rag-v2.ts` modülünü doğrudan içe aktardığı için
+> `--experimental-strip-types` bayrağıyla çalışır; bu, deponun Node tabanı
+> olan 22.13'te `.ts` dosyalarının test koşucusu tarafından yüklenmesini
+> sağlar (yeni Node sürümlerinde bayrak zararsızdır).
+
+README'deki ekran görüntüleri, backend ve frontend ayakta iken tek komutla
+yeniden üretilir (headless Edge kullanır, `docs/ekran-goruntuleri/` altına yazar):
+
+```cmd
+npm run screenshots
 ```
 
 GitHub Actions aynı frontend zincirini ve tam npm audit'ini Windows/Linux'ta;

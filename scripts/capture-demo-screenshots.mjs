@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "..");
-const outputDir = join(projectRoot, "docs", "teslim", "ekran-goruntuleri");
+const outputDir = join(projectRoot, "docs", "ekran-goruntuleri");
 const appUrl = process.env.HITITFINLEX_DEMO_URL ?? "http://localhost:3000";
 const edgePath =
   process.env.EDGE_PATH ??
@@ -147,7 +147,16 @@ async function focusElement(client, selector, offset = 105) {
   await pause(500);
 }
 
+// Argüman verilirse yalnızca eşleşen görüntüler yeniden yazılır; böylece tek
+// bir ekranı tazelerken diğer dosyalar baytı baytına aynı kalır.
+// Örn: node scripts/capture-demo-screenshots.mjs akilli-asistan
+const requestedShots = new Set(process.argv.slice(2));
+
 async function capture(client, filename) {
+  if (requestedShots.size > 0 && ![...requestedShots].some((name) => filename.includes(name))) {
+    process.stdout.write(`Atlandı: ${filename}\n`);
+    return;
+  }
   const { data } = await client.send("Page.captureScreenshot", {
     format: "png",
     captureBeyondViewport: false,
@@ -155,6 +164,30 @@ async function capture(client, filename) {
   });
   await writeFile(join(outputDir, filename), Buffer.from(data, "base64"));
   process.stdout.write(`Yazıldı: ${filename}\n`);
+}
+
+// Asistan görünümü sayfa yüksekliğini tam kaplar ve kendi iç kaydırmasını
+// kullanır; sayfayı kaydırmak üst çubuğu kırpıyordu. Bunun yerine sohbet
+// listesini kaydırıp yanıtı çerçeveye oturtuyoruz.
+async function focusChatAnswer(client) {
+  const aligned = await evaluate(
+    client,
+    `(() => {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      const scroller = document.querySelector(".chat-scroll");
+      const card = document.querySelector(".conversation-item");
+      if (!scroller || !card) return false;
+      scroller.scrollTop +=
+        card.getBoundingClientRect().top - scroller.getBoundingClientRect().top - 10;
+      return true;
+    })()`,
+  );
+  if (!aligned) throw new Error("Sohbet yanıtı çerçeveye hizalanamadı.");
+  await evaluate(
+    client,
+    "new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))",
+  );
+  await pause(600);
 }
 
 async function main() {
@@ -199,27 +232,31 @@ async function main() {
       throw new Error("HititFinLex arayüzü ekran görüntüsü için hazır değil.");
     }
 
-    let connectionLabel = "";
+    // Baglanti rozeti arayuzden kaldirildi; hazir olmayi artik gercek veriden
+    // anliyoruz: ilk KPI kartindaki toplam envanter sayisi dolduysa API canli.
+    let inventoryLabel = "";
     for (let attempt = 0; attempt < 90; attempt += 1) {
-      connectionLabel = await evaluate(
+      inventoryLabel = await evaluate(
         client,
-        "document.querySelector('.connection-chip')?.textContent?.trim() ?? ''",
+        "document.querySelector('.kpi-card strong')?.textContent?.trim() ?? ''",
       );
-      if (connectionLabel && connectionLabel !== "Bağlanıyor") break;
+      if (inventoryLabel && inventoryLabel !== "0") break;
       await pause(500);
     }
-    if (!["Canlı veri", "Kısmi hazır"].includes(connectionLabel)) {
-      throw new Error(`Frontend canlı API'ye bağlanamadı: ${connectionLabel || "durum yok"}`);
+    if (!inventoryLabel || inventoryLabel === "0") {
+      throw new Error("Frontend canlı API'den veri alamadı; ekran görüntüsü boş olurdu.");
     }
-    process.stdout.write(`API durumu: ${connectionLabel}\n`);
+    process.stdout.write(`Toplam veri envanteri: ${inventoryLabel}\n`);
 
     await capture(client, "01-genel-bakis.png");
     await clickNavigation(client, "Ürün kataloğu", "Ürün ve belge keşfi");
     await capture(client, "02-urun-katalogu.png");
     await clickNavigation(client, "Karşılaştırma", "Koşulları yan yana görün");
     await clickButtonByText(client, "Tüm bankaları karşılaştır");
-    await waitForSelector(client, ".matrix-panel", 45000);
-    await focusElement(client, ".matrix-panel");
+    // Sonuc alani varsayilan "kart" gorunumunde .finance-card-list, matris
+    // gorunumune gecildiginde .comparison-matrix olarak render edilir.
+    await waitForSelector(client, ".finance-card-list, .comparison-matrix", 45000);
+    await focusElement(client, ".finance-card-list, .comparison-matrix");
     await capture(client, "03-karsilastirma.png");
     await clickNavigation(client, "Akıllı asistan", "HititFinLex Asistan");
     const quickQuestionClicked = await evaluate(
@@ -238,7 +275,7 @@ async function main() {
       "document.querySelector('.chat-error')?.textContent?.trim() ?? ''",
     );
     if (chatError) throw new Error(`Asistan demo yanıtı üretilemedi: ${chatError}`);
-    await focusElement(client, ".conversation-item", 0);
+    await focusChatAnswer(client);
     await capture(client, "04-akilli-asistan.png");
     await clickNavigation(client, "Veri kalitesi", "Kalite ve kapsama görünümü");
     await capture(client, "05-veri-kalitesi.png");
