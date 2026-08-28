@@ -10,6 +10,16 @@
       "version": "0002",
       "file": "0002_review_document_baseline.sql",
       "sha256": "bb388684d971513d51a0a57c94bf8d20bf2bdf5f0ab187d812b63a761f32ec0e"
+    },
+    {
+      "version": "0003",
+      "file": "0003_rag_v2.sql",
+      "sha256": "e530d4da635fbf90994bbd13d1a6d9ac9a548c4078700a4517ddd440dd352a8d"
+    },
+    {
+      "version": "0004",
+      "file": "0004_rag_v2_conversation.sql",
+      "sha256": "518245e36124fba67f4ffb7817541badb86daa005bc022cb8df902dc9811b0b1"
     }
   ]
 }

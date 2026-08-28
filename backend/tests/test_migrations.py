@@ -1,10 +1,17 @@
+import contextlib
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
+
+import psycopg
+
+from db import migrate as migration_runner
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +19,24 @@ MIGRATIONS = ROOT / "db" / "migrations"
 
 
 class MigrationManifestTest(unittest.TestCase):
+    def test_cli_redacts_database_driver_errors(self):
+        provider_secret = "unit-test-secret-" + ("8" * 18)
+        stderr = io.StringIO()
+        with (
+            patch.object(
+                migration_runner,
+                "main",
+                side_effect=psycopg.OperationalError(
+                    "connection rejected: " + provider_secret
+                ),
+            ),
+            contextlib.redirect_stderr(stderr),
+        ):
+            exit_code = migration_runner.run_cli()
+        self.assertEqual(exit_code, 2)
+        self.assertIn("database operation unavailable", stderr.getvalue())
+        self.assertNotIn(provider_secret, stderr.getvalue())
+
     def test_manifest_matches_files(self):
         manifest = json.loads((MIGRATIONS / "manifest.json").read_text("utf-8"))
         entries = manifest["migrations"]
@@ -43,6 +68,62 @@ class MigrationManifestTest(unittest.TestCase):
         self.assertIn("add column base_document_exists boolean", sql)
         self.assertIn("add column base_document_hash char(64)", sql)
         self.assertIn("document_intake_review_base_snapshot_check", sql)
+
+    def test_rag_v2_migration_declares_weighted_lexical_and_session_indexes(self):
+        sql = (MIGRATIONS / "0003_rag_v2.sql").read_text("utf-8").lower()
+        for fragment in (
+            "create extension if not exists unaccent with schema public",
+            "search_vector tsvector",
+            "setweight(",
+            "'simple'::regconfig",
+            "public.unaccent(",
+            "using gin (search_vector)",
+            "using gin (product_types)",
+            "using gin (facts jsonb_path_ops)",
+            "rag_chunks_scope_bank_date_idx",
+            "rag_chunks_classification_idx",
+            "rag_sessions_expiry_idx",
+            "rag_messages_session_time_idx",
+            "rag_session_state_updated_idx",
+            "rag_turn_evidence_session_time_idx",
+        ):
+            self.assertIn(fragment, sql)
+
+    def test_rag_v2_migration_carries_classification_and_state_fields(self):
+        sql = (MIGRATIONS / "0003_rag_v2.sql").read_text("utf-8").lower()
+        for fragment in (
+            "classification_confidence double precision",
+            "classification_status varchar(16)",
+            "primary_product varchar(128)",
+            "product_types text[]",
+            "product_scores jsonb",
+            '"active_banks": []',
+            '"active_products": []',
+            '"active_scope": "current"',
+            '"active_offer_ids": []',
+            '"last_source_ids": []',
+            '"last_document_ids": []',
+            '"last_standalone_query": null',
+        ):
+            self.assertIn(fragment, sql)
+
+    def test_conversation_migration_adds_non_evidentiary_status(self):
+        sql = (
+            MIGRATIONS / "0004_rag_v2_conversation.sql"
+        ).read_text("utf-8").lower()
+        self.assertIn("rag_messages_status_check", sql)
+        self.assertIn("'conversational'", sql)
+        self.assertIn("drop constraint if exists", sql)
+
+    def test_smoke_verifies_postgres_18_extensions_indexes_and_trigger(self):
+        source = (ROOT / "db" / "migrate.py").read_text("utf-8")
+        for fragment in (
+            "server_version_num // 10000 != 18",
+            "public.unaccent(text)",
+            "REQUIRED_RAG_INDEX_METHODS",
+            "rag_chunks_search_vector_trigger",
+        ):
+            self.assertIn(fragment, source)
 
 
 @unittest.skipUnless(
@@ -187,6 +268,42 @@ class ReviewBaselinePostgresTest(unittest.TestCase):
                     raw_text, review_status = cursor.fetchone()
                     self.assertEqual(raw_text, accepted_text)
                     self.assertEqual(review_status, "pending")
+            finally:
+                connection.rollback()
+
+
+@unittest.skipUnless(
+    os.getenv("RAG_V2_TEST_DATABASE_URL"),
+    "RAG_V2_TEST_DATABASE_URL is required for destructive-free migration tests",
+)
+class RagV2PostgresMigrationTest(unittest.TestCase):
+    def test_rag_v2_sql_can_run_twice_in_one_rolled_back_transaction(self):
+        import psycopg
+
+        migration_sql = (MIGRATIONS / "0003_rag_v2.sql").read_text("utf-8")
+        with psycopg.connect(os.environ["RAG_V2_TEST_DATABASE_URL"]) as connection:
+            try:
+                major = int(
+                    connection.execute(
+                        "SELECT current_setting('server_version_num')::INTEGER"
+                    ).fetchone()[0]
+                ) // 10000
+                self.assertEqual(major, 18)
+                connection.execute(migration_sql)
+                connection.execute(migration_sql)
+                relation = connection.execute(
+                    "SELECT to_regclass('public.rag_sessions')"
+                ).fetchone()
+                trigger = connection.execute(
+                    """
+                    SELECT COUNT(*)
+                    FROM pg_trigger
+                    WHERE tgname = 'rag_chunks_search_vector_trigger'
+                      AND NOT tgisinternal
+                    """
+                ).fetchone()
+                self.assertIsNotNone(relation[0])
+                self.assertEqual(int(trigger[0]), 1)
             finally:
                 connection.rollback()
 

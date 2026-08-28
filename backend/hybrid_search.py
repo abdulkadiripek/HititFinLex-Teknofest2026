@@ -1,20 +1,29 @@
 import argparse
+import atexit
 import os
 import re
 import textwrap
+from threading import Lock
 
 import psycopg
 import torch
 from dotenv import load_dotenv
 from pgvector.psycopg import register_vector
 from psycopg import sql
+from psycopg_pool import ConnectionPool
 from sentence_transformers import SentenceTransformer
 
 
+load_dotenv()
+
 MODEL_NAME = "BAAI/bge-m3"
-RRF_CONSTANT = 60
+RRF_CONSTANT = int(os.getenv("RAG_V2_RRF_K", "60"))
+DENSE_WEIGHT = float(os.getenv("RAG_V2_DENSE_WEIGHT", "1.0"))
+LEXICAL_WEIGHT = float(os.getenv("RAG_V2_LEXICAL_WEIGHT", "0.5"))
 MAX_RESULTS = 50
 PREVIEW_LENGTH = 700
+_connection_pool = None
+_connection_pool_lock = Lock()
 
 
 def parse_args():
@@ -35,7 +44,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def get_connection():
+def _connection_parameters():
     required_variables = [
         "DB_HOST",
         "DB_PORT",
@@ -50,15 +59,49 @@ def get_connection():
         names = ", ".join(missing_variables)
         raise RuntimeError(f"Missing environment variables: {names}")
 
-    connection = psycopg.connect(
-        host=os.environ["DB_HOST"],
-        port=int(os.environ["DB_PORT"]),
-        dbname=os.environ["DB_NAME"],
-        user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"],
-    )
+    return {
+        "host": os.environ["DB_HOST"],
+        "port": int(os.environ["DB_PORT"]),
+        "dbname": os.environ["DB_NAME"],
+        "user": os.environ["DB_USER"],
+        "password": os.environ["DB_PASSWORD"],
+    }
+
+
+def _configure_connection(connection):
     register_vector(connection)
-    return connection
+    connection.commit()
+
+
+def get_connection():
+    global _connection_pool
+    with _connection_pool_lock:
+        if _connection_pool is None:
+            minimum = max(1, int(os.getenv("DB_POOL_MIN_SIZE", "1")))
+            maximum = max(minimum, int(os.getenv("DB_POOL_MAX_SIZE", "10")))
+            _connection_pool = ConnectionPool(
+                conninfo="",
+                kwargs=_connection_parameters(),
+                min_size=minimum,
+                max_size=maximum,
+                timeout=float(os.getenv("DB_POOL_TIMEOUT_SECONDS", "10")),
+                configure=_configure_connection,
+                open=False,
+                name="hititfinlex-legacy",
+            )
+            _connection_pool.open(wait=True)
+    return _connection_pool.connection()
+
+
+def close_connection_pool():
+    global _connection_pool
+    with _connection_pool_lock:
+        if _connection_pool is not None:
+            _connection_pool.close()
+            _connection_pool = None
+
+
+atexit.register(close_connection_pool)
 
 
 def inspect_chunk_table(connection):
@@ -95,14 +138,16 @@ def inspect_chunk_table(connection):
 
 
 def load_model():
-    if not torch.cuda.is_available():
-        raise RuntimeError(
-            "CUDA is not available. This script does not use CPU fallback."
-        )
-
-    model = SentenceTransformer(MODEL_NAME, device="cuda")
+    configured_device = os.getenv("LOCAL_EMBEDDING_DEVICE", "").strip().lower()
+    if configured_device not in {"", "cpu", "cuda"}:
+        raise ValueError("LOCAL_EMBEDDING_DEVICE must be cpu or cuda")
+    device = configured_device or ("cuda" if torch.cuda.is_available() else "cpu")
+    if device == "cuda" and not torch.cuda.is_available():
+        device = "cpu"
+    model = SentenceTransformer(MODEL_NAME, device=device)
     model.max_seq_length = 512
-    model.half()
+    if device == "cuda":
+        model.half()
     return model
 
 
@@ -190,11 +235,11 @@ def search_database(
                 semantic_candidates.semantic_similarity,
                 lexical_candidates.lexical_score,
                 COALESCE(
-                    1.0 / (%s + semantic_candidates.semantic_rank),
+                    %s / (%s + semantic_candidates.semantic_rank),
                     0.0
                 )
                 + COALESCE(
-                    1.0 / (%s + lexical_candidates.lexical_rank),
+                    %s / (%s + lexical_candidates.lexical_rank),
                     0.0
                 ) AS hybrid_score
             FROM candidate_ids
@@ -250,7 +295,9 @@ def search_database(
         lexical_query,
         candidate_count,
         candidate_count,
+        DENSE_WEIGHT,
         RRF_CONSTANT,
+        LEXICAL_WEIGHT,
         RRF_CONSTANT,
         top_k,
     )
@@ -321,9 +368,10 @@ def main():
     if not 1 <= args.top_k <= MAX_RESULTS:
         raise ValueError(f"top-k must be between 1 and {MAX_RESULTS}")
 
-    print("Loading model on GPU...")
+    print("Loading embedding model...")
     model = load_model()
-    print("GPU:", torch.cuda.get_device_name(0))
+    device = getattr(model, "device", "unknown")
+    print("Device:", device)
 
     query_vector = encode_query(model, query)
     lexical_query = build_lexical_query(query)

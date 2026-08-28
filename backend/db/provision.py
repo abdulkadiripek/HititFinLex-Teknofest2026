@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -39,6 +40,34 @@ def identifier(name: str) -> str:
     return value
 
 
+def aliased_identifier(*names: str) -> str:
+    supplied = {
+        name: os.getenv(name, "").strip()
+        for name in names
+        if os.getenv(name, "").strip()
+    }
+    if not supplied:
+        raise RuntimeError(
+            "Missing required environment variable; set one of: "
+            + ", ".join(names)
+        )
+    invalid = [
+        name for name, value in supplied.items()
+        if not SAFE_IDENTIFIER.fullmatch(value)
+    ]
+    if invalid:
+        raise RuntimeError(
+            "Unsafe PostgreSQL identifier in: " + ", ".join(invalid)
+        )
+    values = set(supplied.values())
+    if len(values) != 1:
+        raise RuntimeError(
+            "Aliased PostgreSQL identifiers must match: "
+            + ", ".join(names)
+        )
+    return next(iter(values))
+
+
 def password(name: str) -> str:
     value = required(name)
     normalized = value.casefold()
@@ -66,7 +95,7 @@ class Settings:
         settings = cls(
             host=os.getenv("DB_HOST", "127.0.0.1").strip(),
             port=int(os.getenv("DB_PORT", "5432")),
-            database=identifier("POSTGRES_DB"),
+            database=aliased_identifier("POSTGRES_DB", "DB_NAME"),
             admin_user=identifier("POSTGRES_ADMIN_USER"),
             admin_password=password("POSTGRES_ADMIN_PASSWORD"),
             migrator_user=identifier("DB_MIGRATOR_USER"),
@@ -265,6 +294,15 @@ def bootstrap(settings: Settings) -> None:
         connection.execute(
             sql.SQL(
                 "ALTER ROLE {} IN DATABASE {} "
+                "SET search_path TO public, pg_catalog"
+            ).format(
+                sql.Identifier(settings.migrator_user),
+                sql.Identifier(settings.database),
+            )
+        )
+        connection.execute(
+            sql.SQL(
+                "ALTER ROLE {} IN DATABASE {} "
                 "SET search_path TO pg_catalog, public"
             ).format(
                 sql.Identifier(settings.app_user),
@@ -277,7 +315,12 @@ def bootstrap(settings: Settings) -> None:
         secret=settings.admin_password,
     )
     with psycopg.connect(admin_target, autocommit=True) as connection:
-        connection.execute("CREATE EXTENSION IF NOT EXISTS vector")
+        connection.execute(
+            "CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public"
+        )
+        connection.execute(
+            "CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public"
+        )
         connection.execute(
             sql.SQL("REASSIGN OWNED BY {} TO {}").format(
                 sql.Identifier(settings.app_user),
@@ -685,5 +728,20 @@ def main() -> None:
         verify_runtime_role(settings)
 
 
+def run_cli() -> int:
+    try:
+        main()
+    except psycopg.Error:
+        print(
+            "database provisioning failed: database operation unavailable",
+            file=sys.stderr,
+        )
+        return 2
+    except (RuntimeError, ValueError) as error:
+        print(f"database provisioning failed: {error}", file=sys.stderr)
+        return 2
+    return 0
+
+
 if __name__ == "__main__":
-    main()
+    raise SystemExit(run_cli())

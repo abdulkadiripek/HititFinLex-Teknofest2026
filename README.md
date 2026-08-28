@@ -410,8 +410,12 @@ npm run build   # Node tabanlı, süre sınırlandırılmış doğrulanmış bui
 npm run test    # build + render edilen HTML üzerinde smoke test
 npm run lint
 python backend\db\migrate.py check
-python -m unittest discover -s backend\tests -p "test_*.py"
+python -m unittest discover -s backend\tests -p "test_*.py" -t backend
 ```
+
+> Backend testleri `rag_v2`, `evaluation` ve `db` modüllerini içe aktarır;
+> `-t backend` üst seviye dizini belirtmezseniz bu modüller `sys.path`'e
+> girmez ve repo kökündeki `db/` klasörü `backend/db`'yi gölgeler.
 
 > `test:smoke`, `app/rag-v2.ts` modülünü doğrudan içe aktardığı için
 > `--experimental-strip-types` bayrağıyla çalışır; bu, deponun Node tabanı

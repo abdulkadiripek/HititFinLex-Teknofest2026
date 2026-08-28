@@ -9,6 +9,7 @@ from unittest.mock import patch
 import torch
 from fastapi import FastAPI, HTTPException, Security
 from fastapi.testclient import TestClient
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
 
 from api_security import (
@@ -16,6 +17,7 @@ from api_security import (
     BodySizeLimitMiddleware,
     SlidingWindowRateLimitMiddleware,
     ensure_admin_api_key,
+    get_cors_settings,
     require_admin_api_key,
 )
 from classifier_service import (
@@ -183,6 +185,32 @@ class QueryCaptureConnection:
 
 
 class SecurityTests(unittest.TestCase):
+    def test_cors_preflight_allows_rag_session_headers(self):
+        app = FastAPI()
+        app.add_middleware(CORSMiddleware, **get_cors_settings())
+
+        @app.get("/session")
+        async def session_endpoint():
+            return {"ok": True}
+
+        response = TestClient(app).options(
+            "/session",
+            headers={
+                "Origin": "http://localhost:3000",
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": (
+                    "x-rag-session-id,x-rag-client-id"
+                ),
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        allowed_headers = response.headers.get(
+            "Access-Control-Allow-Headers", ""
+        ).casefold()
+        self.assertIn("x-rag-session-id", allowed_headers)
+        self.assertIn("x-rag-client-id", allowed_headers)
+
     def test_admin_key_fails_closed_and_uses_constant_time_comparison_path(self):
         with patch.dict(os.environ, {ADMIN_API_KEY_ENV: ""}, clear=False):
             with self.assertRaises(HTTPException) as missing:

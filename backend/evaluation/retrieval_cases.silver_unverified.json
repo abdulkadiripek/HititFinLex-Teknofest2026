@@ -1,0 +1,297 @@
+{
+  "schema_version": "1.0",
+  "dataset_label": "silver_unverified",
+  "corpus_path": "data/ara/dokumanlar.jsonl",
+  "annotation_method": "Exact bank, page-title, and source-URL matching against the checked-in current corpus. Human gold review has not been performed.",
+  "relevance_judgment_scope": "One intended source is labeled for each exact-page query. Unjudged corpus records are not asserted to be irrelevant.",
+  "cases": [
+    {
+      "case_id": "ret_001_adil_products",
+      "label": "silver_unverified",
+      "query": "Adil Katılım hangi katılım bankacılığı ürün ve hizmetlerini sunuyor?",
+      "route": {"intent": "lookup", "banks": ["Adil Katilim"], "product_types": [], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["adil_katilim-790dd5f0a379"],
+      "relevance_grades": {"adil_katilim-790dd5f0a379": 1},
+      "source_labels": [{"record_key": "adil_katilim-790dd5f0a379", "bank_key": "adil_katilim", "page_title": "Katılım Bankacılığı Ürün ve Hizmetleri", "source_url": "https://www.adilkatilim.com.tr/katilim-bankaciligi/urun-ve-hizmetler"}]
+    },
+    {
+      "case_id": "ret_002_adil_definition",
+      "label": "silver_unverified",
+      "query": "Adil Katılım katılım bankacılığını nasıl tanımlıyor?",
+      "route": {"intent": "lookup", "banks": ["Adil Katilim"], "product_types": [], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["adil_katilim-100195cd5222"],
+      "relevance_grades": {"adil_katilim-100195cd5222": 1},
+      "source_labels": [{"record_key": "adil_katilim-100195cd5222", "bank_key": "adil_katilim", "page_title": "Katılım Bankacılığı Nedir?", "source_url": "https://www.adilkatilim.com.tr/katilim-bankaciligi/katilim-bankaciligi-nedir"}]
+    },
+    {
+      "case_id": "ret_003_adil_documents",
+      "label": "silver_unverified",
+      "query": "Adil Katılım murabaha ve katılma hesabı icazet belgeleri nelerdir?",
+      "route": {"intent": "list", "banks": ["Adil Katilim"], "product_types": [], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["adil_katilim-baf4292d0c82"],
+      "relevance_grades": {"adil_katilim-baf4292d0c82": 1},
+      "source_labels": [{"record_key": "adil_katilim-baf4292d0c82", "bank_key": "adil_katilim", "page_title": "Belgeler | Adil Katılım", "source_url": "https://www.adilkatilim.com.tr/katilim-bankaciligi/belgeler"}]
+    },
+    {
+      "case_id": "ret_004_albaraka_digital_profit_share",
+      "label": "silver_unverified",
+      "query": "Albaraka dijital katılma hesabına özel paylaşım oranları nedir?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": ["YATIRIM_URUNU"], "field_types": ["rate"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-ccb86d59dcff"],
+      "relevance_grades": {"albaraka-ccb86d59dcff": 1},
+      "source_labels": [{"record_key": "albaraka-ccb86d59dcff", "bank_key": "albaraka", "page_title": "Dijital Katılma Hesabı’na Özel Paylaşım Oranları!", "source_url": "https://www.albaraka.com.tr/tr/kampanyalar/detay/dijital-katilma-hesabina-ozel-paylasim-oranlari-10"}]
+    },
+    {
+      "case_id": "ret_005_albaraka_interim_profit",
+      "label": "silver_unverified",
+      "query": "Albaraka ara dönem kâr payı hesabının özellikleri nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": ["YATIRIM_URUNU"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-905356593b63"],
+      "relevance_grades": {"albaraka-905356593b63": 1},
+      "source_labels": [{"record_key": "albaraka-905356593b63", "bank_key": "albaraka", "page_title": "Ara Dönem Kâr Payı", "source_url": "https://www.albaraka.com.tr/tr/bireysel/hesaplar/katilma-hesaplari/ara-donem-kar-payi"}]
+    },
+    {
+      "case_id": "ret_006_albaraka_elus",
+      "label": "silver_unverified",
+      "query": "Albaraka Elektronik Ürün Senedi ELÜS nedir?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": ["YATIRIM_URUNU"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-576990ead434"],
+      "relevance_grades": {"albaraka-576990ead434": 1},
+      "source_labels": [{"record_key": "albaraka-576990ead434", "bank_key": "albaraka", "page_title": "Elektronik Ürün Senedi (ELÜS)", "source_url": "https://www.albaraka.com.tr/tr/kobi/yatirim/elektronik-urun-senedi-elus"}]
+    },
+    {
+      "case_id": "ret_007_albaraka_ispark",
+      "label": "silver_unverified",
+      "query": "Albaraka ücretsiz İSPARK otopark kampanyasının koşulları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-f45a8acd8399"],
+      "relevance_grades": {"albaraka-f45a8acd8399": 1},
+      "source_labels": [{"record_key": "albaraka-f45a8acd8399", "bank_key": "albaraka", "page_title": "Ücretsiz İSPARK Otopark Kampanyası | Albarakalılara Özel", "source_url": "https://www.albaraka.com.tr/tr/kampanyalar/detay/albarakalilara-ozel-ucretsiz-ispark-kampanyasi-1"}]
+    },
+    {
+      "case_id": "ret_008_albaraka_bes_collateral",
+      "label": "silver_unverified",
+      "query": "Albaraka BES teminatlı finansman nasıl çalışır?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": [], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-478447c96eb0"],
+      "relevance_grades": {"albaraka-478447c96eb0": 1},
+      "source_labels": [{"record_key": "albaraka-478447c96eb0", "bank_key": "albaraka", "page_title": "BES Teminatlı Finansman", "source_url": "https://www.albaraka.com.tr/tr/bireysel/finansmanlar/birikimlerinizi-koruyan-bes-teminatli-finansman-albarakada"}]
+    },
+    {
+      "case_id": "ret_009_albaraka_personal_finance",
+      "label": "silver_unverified",
+      "query": "Albaraka ihtiyaç finansmanının başvuru özellikleri nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Albaraka Turk"], "product_types": ["IHTIYAC_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["albaraka-3a73682512d0"],
+      "relevance_grades": {"albaraka-3a73682512d0": 1},
+      "source_labels": [{"record_key": "albaraka-3a73682512d0", "bank_key": "albaraka", "page_title": "İhtiyaç Finansmanı", "source_url": "https://www.albaraka.com.tr/tr/bireysel/finansmanlar/ihtiyac"}]
+    },
+    {
+      "case_id": "ret_010_dunya_invite_gold",
+      "label": "silver_unverified",
+      "query": "Dünya Katılım Davet Et Altın Kazan kampanyası nasıl işler?",
+      "route": {"intent": "lookup", "banks": ["Dunya Katilim"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["dunya_katilim-1ea4bfcd5302"],
+      "relevance_grades": {"dunya_katilim-1ea4bfcd5302": 1},
+      "source_labels": [{"record_key": "dunya_katilim-1ea4bfcd5302", "bank_key": "dunya_katilim", "page_title": "Davet Et, Altın Kazan!", "source_url": "https://dunyakatilim.com.tr/kampanyalar/davetetkazan"}]
+    },
+    {
+      "case_id": "ret_011_dunya_first_home_guide",
+      "label": "silver_unverified",
+      "query": "Dünya Katılım ilk konut için ne kadar finansman kullanılabileceğini nasıl açıklıyor?",
+      "route": {"intent": "lookup", "banks": ["Dunya Katilim"], "product_types": ["KONUT_FINANSMANI"], "field_types": ["amount"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["dunya_katilim-23c49527e081"],
+      "relevance_grades": {"dunya_katilim-23c49527e081": 1},
+      "source_labels": [{"record_key": "dunya_katilim-23c49527e081", "bank_key": "dunya_katilim", "page_title": "Konut Finansmanı Rehberi: İlk Konut İçin Ne Kadar Finansman Kullanabilirim?", "source_url": "https://dunyakatilim.com.tr/blog/konut-finansmani-rehberi-ilk-konut-icin-ne-kadar-finansman-kullanabilirim"}]
+    },
+    {
+      "case_id": "ret_012_dunya_green_vehicle",
+      "label": "silver_unverified",
+      "query": "Dünya Katılım çevre dostu araç finansmanının özellikleri nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Dunya Katilim"], "product_types": ["TASIT_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["dunya_katilim-89c3d8fed62d"],
+      "relevance_grades": {"dunya_katilim-89c3d8fed62d": 1},
+      "source_labels": [{"record_key": "dunya_katilim-89c3d8fed62d", "bank_key": "dunya_katilim", "page_title": "Çevre Dostu Araç Finansmanı", "source_url": "https://dunyakatilim.com.tr/kendim-icin/finansmanlar/arac-finansmanlari/cevre-dostu-arac-finansmani"}]
+    },
+    {
+      "case_id": "ret_013_dunya_enerya",
+      "label": "silver_unverified",
+      "query": "Dünya Katılım Enerya ihtiyaç finansmanı nedir?",
+      "route": {"intent": "lookup", "banks": ["Dunya Katilim"], "product_types": ["IHTIYAC_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["dunya_katilim-59bfd0676814"],
+      "relevance_grades": {"dunya_katilim-59bfd0676814": 1},
+      "source_labels": [{"record_key": "dunya_katilim-59bfd0676814", "bank_key": "dunya_katilim", "page_title": "Enerya İhtiyaç Finansmanı", "source_url": "https://dunyakatilim.com.tr/kendim-icin/finansmanlar/ihtiyac-finansmanlari/enerya-ihtiyac-finansmani"}]
+    },
+    {
+      "case_id": "ret_014_dunya_platinum_account",
+      "label": "silver_unverified",
+      "query": "Dünya Katılım platin hesabında fiziki teslim koşulları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Dunya Katilim"], "product_types": ["YATIRIM_URUNU"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["dunya_katilim-273b92bbbd52"],
+      "relevance_grades": {"dunya_katilim-273b92bbbd52": 1},
+      "source_labels": [{"record_key": "dunya_katilim-273b92bbbd52", "bank_key": "dunya_katilim", "page_title": "Platin Hesapları", "source_url": "https://dunyakatilim.com.tr/kendim-icin/hesaplar/cari-hesaplar/platin-hesaplari"}]
+    },
+    {
+      "case_id": "ret_015_hayat_biz_card_invite",
+      "label": "silver_unverified",
+      "query": "Hayat Finans Biz Kart Arkadaşını Getir Kazan kampanyası nedir?",
+      "route": {"intent": "lookup", "banks": ["Hayat Finans"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["hayat_finans-f99e5ff0e127"],
+      "relevance_grades": {"hayat_finans-f99e5ff0e127": 1},
+      "source_labels": [{"record_key": "hayat_finans-f99e5ff0e127", "bank_key": "hayat_finans", "page_title": "Biz Kart Arkadaşını Getir & Kazan", "source_url": "https://hayatfinans.com.tr/kampanyalar/biz-kart-ile-arkadasini-getir-kazan"}]
+    },
+    {
+      "case_id": "ret_016_hayat_advantage_account_invite",
+      "label": "silver_unverified",
+      "query": "Hayat Finans arkadaşını davet et avantajlı hesap kampanyasının ödülü nedir?",
+      "route": {"intent": "lookup", "banks": ["Hayat Finans"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["hayat_finans-689d52235da1"],
+      "relevance_grades": {"hayat_finans-689d52235da1": 1},
+      "source_labels": [{"record_key": "hayat_finans-689d52235da1", "bank_key": "hayat_finans", "page_title": "Arkadaşını Davet Et, Avantajlı Hesapla Kazanmaya Başla!", "source_url": "https://hayatfinans.com.tr/kampanyalar/arkadasini-getir-avantajli-hesap-ac-nakit-odul-kazan"}]
+    },
+    {
+      "case_id": "ret_017_kuveyt_idefix",
+      "label": "silver_unverified",
+      "query": "Kuveyt Türk İdefix 3.000 TL indirim kampanyasının harcama koşulu nedir?",
+      "route": {"intent": "lookup", "banks": ["Kuveyt Turk"], "product_types": ["KART_KAMPANYASI"], "field_types": ["spending_threshold", "reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["kuveyt_turk-bcd8184de720"],
+      "relevance_grades": {"kuveyt_turk-bcd8184de720": 1},
+      "source_labels": [{"record_key": "kuveyt_turk-bcd8184de720", "bank_key": "kuveyt_turk", "page_title": "İdefix'te 3.000 TL'ye Varan İndirim Fırsatı!", "source_url": "https://www.kuveytturk.com.tr/kampanyalar/kendim-icin/kart-kampanyalari/idefixte-3000-tlye-varan-indirim-firsati"}]
+    },
+    {
+      "case_id": "ret_018_kuveyt_kobi_hgs",
+      "label": "silver_unverified",
+      "query": "Kuveyt Türk araç finansmanı onaylanan KOBİ HGS kampanyasının şartları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Kuveyt Turk"], "product_types": ["TASIT_FINANSMANI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["kuveyt_turk-aef9b19c905f"],
+      "relevance_grades": {"kuveyt_turk-aef9b19c905f": 1},
+      "source_labels": [{"record_key": "kuveyt_turk-aef9b19c905f", "bank_key": "kuveyt_turk", "page_title": "Araç Finansmanı Onaylanan KOBİ’lere HGS Kampanyası", "source_url": "https://www.kuveytturk.com.tr/kampanyalar/isim-icin/kobi-kampanyalari/arac-finansmani-onaylanan-kobilere-hgs-kampanyasi"}]
+    },
+    {
+      "case_id": "ret_019_kuveyt_export_miles",
+      "label": "silver_unverified",
+      "query": "Kuveyt Türk e-ihracat gönderilerinde mil kazanma kampanyası nedir?",
+      "route": {"intent": "lookup", "banks": ["Kuveyt Turk"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["kuveyt_turk-674da0b75ca1"],
+      "relevance_grades": {"kuveyt_turk-674da0b75ca1": 1},
+      "source_labels": [{"record_key": "kuveyt_turk-674da0b75ca1", "bank_key": "kuveyt_turk", "page_title": "Kuveyt Türk ile E-İhracat Gönderilerinizde Mil Kazanın!", "source_url": "https://www.kuveytturk.com.tr/kampanyalar/isim-icin/kart-kampanyalari/kuveyt-turk-ile-e-ihracat-gonderilerinizde-mil-kazanin"}]
+    },
+    {
+      "case_id": "ret_020_tom_store_finance",
+      "label": "silver_unverified",
+      "query": "TOM Katılım mağazadan alışveriş kredisi nasıl kullanılır?",
+      "route": {"intent": "lookup", "banks": ["T.O.M. Katilim"], "product_types": [], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["tom_bank-da74c29da555"],
+      "relevance_grades": {"tom_bank-da74c29da555": 1},
+      "source_labels": [{"record_key": "tom_bank-da74c29da555", "bank_key": "tom_bank", "page_title": "Mağazadan Alışveriş Kredisi", "source_url": "https://www.tombank.com.tr/magazadan-alisveris-kredisi.html"}]
+    },
+    {
+      "case_id": "ret_021_turkiye_finans_home",
+      "label": "silver_unverified",
+      "query": "Türkiye Finans konut finansmanının özellikleri nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Turkiye Finans"], "product_types": ["KONUT_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["turkiye_finans-eab79b1ac350"],
+      "relevance_grades": {"turkiye_finans-eab79b1ac350": 1},
+      "source_labels": [{"record_key": "turkiye_finans-eab79b1ac350", "bank_key": "turkiye_finans", "page_title": "Konut Finansmanı (Konut Kredisi)*", "source_url": "https://www.turkiyefinans.com.tr/tr-tr/bireysel/konut-finansmani/Sayfalar/konut-finansmani.aspx"}]
+    },
+    {
+      "case_id": "ret_022_turkiye_finans_ready_limit",
+      "label": "silver_unverified",
+      "query": "Türkiye Finans Hazır Limit ihtiyaç finansmanı nedir?",
+      "route": {"intent": "lookup", "banks": ["Turkiye Finans"], "product_types": ["IHTIYAC_FINANSMANI"], "field_types": ["amount"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["turkiye_finans-dfa88fdecbd7"],
+      "relevance_grades": {"turkiye_finans-dfa88fdecbd7": 1},
+      "source_labels": [{"record_key": "turkiye_finans-dfa88fdecbd7", "bank_key": "turkiye_finans", "page_title": "Hazır Limit | İhtiyaç Finansmanı | Bireysel", "source_url": "https://www.turkiyefinans.com.tr/tr-tr/bireysel/ihtiyac-finansmani/Sayfalar/hazir-limit.aspx"}]
+    },
+    {
+      "case_id": "ret_023_turkiye_finans_extra_limit",
+      "label": "silver_unverified",
+      "query": "Türkiye Finans eXtra Limit ihtiyaç finansmanı nasıl kullanılır?",
+      "route": {"intent": "lookup", "banks": ["Turkiye Finans"], "product_types": ["IHTIYAC_FINANSMANI"], "field_types": ["amount"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["turkiye_finans-ed68141dab9e"],
+      "relevance_grades": {"turkiye_finans-ed68141dab9e": 1},
+      "source_labels": [{"record_key": "turkiye_finans-ed68141dab9e", "bank_key": "turkiye_finans", "page_title": "İhtiyaç Finansmanı: eXtra Limit", "source_url": "https://www.turkiyefinans.com.tr/tr-tr/bireysel/ihtiyac-finansmani/Sayfalar/extra-limit.aspx"}]
+    },
+    {
+      "case_id": "ret_024_turkiye_finans_digital_vehicle",
+      "label": "silver_unverified",
+      "query": "Türkiye Finans dijital taşıt finansmanı nedir?",
+      "route": {"intent": "lookup", "banks": ["Turkiye Finans"], "product_types": ["TASIT_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["turkiye_finans-0b6b9f44a65e"],
+      "relevance_grades": {"turkiye_finans-0b6b9f44a65e": 1},
+      "source_labels": [{"record_key": "turkiye_finans-0b6b9f44a65e", "bank_key": "turkiye_finans", "page_title": "Dijital Taşıt Finansmanı", "source_url": "https://www.turkiyefinans.com.tr/tr-tr/bireysel/tasit-finansmani/Sayfalar/dijital-tasit-finansmani.aspx"}]
+    },
+    {
+      "case_id": "ret_025_vakif_vialand",
+      "label": "silver_unverified",
+      "query": "Vakıf Katılım Vialand yüzde 25 indirim kampanyasının koşulları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Vakif Katilim"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["vakif_katilim-3c8ddbc0b12a"],
+      "relevance_grades": {"vakif_katilim-3c8ddbc0b12a": 1},
+      "source_labels": [{"record_key": "vakif_katilim-3c8ddbc0b12a", "bank_key": "vakif_katilim", "page_title": "Vialand’da %25 İndirim!", "source_url": "https://www.vakifkatilim.com.tr/tr/kendim-icin/kampanyalar/detay/vialandda-25-indirim"}]
+    },
+    {
+      "case_id": "ret_026_vakif_espressolab",
+      "label": "silver_unverified",
+      "query": "Vakıf Katılım Espressolab hediye kahve kampanyası nedir?",
+      "route": {"intent": "lookup", "banks": ["Vakif Katilim"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["vakif_katilim-acc264662889"],
+      "relevance_grades": {"vakif_katilim-acc264662889": 1},
+      "source_labels": [{"record_key": "vakif_katilim-acc264662889", "bank_key": "vakif_katilim", "page_title": "Espressolab Hediye Kahve Kampanyası", "source_url": "https://www.vakifkatilim.com.tr/tr/kendim-icin/kampanyalar/detay/espressolab-hediye-kahve-kampanyasi"}]
+    },
+    {
+      "case_id": "ret_027_vakif_home",
+      "label": "silver_unverified",
+      "query": "Vakıf Katılım bireysel konut finansmanının özellikleri nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Vakif Katilim"], "product_types": ["KONUT_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["vakif_katilim-0b6914541e57"],
+      "relevance_grades": {"vakif_katilim-0b6914541e57": 1},
+      "source_labels": [{"record_key": "vakif_katilim-0b6914541e57", "bank_key": "vakif_katilim", "page_title": "Konut Finansmanı | Bireysel", "source_url": "https://www.vakifkatilim.com.tr/tr/kendim-icin/finansmanlar/konut-finansmani"}]
+    },
+    {
+      "case_id": "ret_028_vakif_deferred_vehicle",
+      "label": "silver_unverified",
+      "query": "Vakıf Katılım 3 ay ertelemeli taşıt finansmanının vadesi ve koşulları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Vakif Katilim"], "product_types": ["TASIT_FINANSMANI"], "field_types": ["maturity"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["vakif_katilim-df3f10a4207f"],
+      "relevance_grades": {"vakif_katilim-df3f10a4207f": 1},
+      "source_labels": [{"record_key": "vakif_katilim-df3f10a4207f", "bank_key": "vakif_katilim", "page_title": "3 Ay Ertelemeli Taşıt Finansmanı", "source_url": "https://www.vakifkatilim.com.tr/tr/kendim-icin/kampanyalar/detay/3-ay-ertelemeli-tasit-finansmani"}]
+    },
+    {
+      "case_id": "ret_029_ziraat_eid_campaign",
+      "label": "silver_unverified",
+      "query": "Ziraat Katılım Bankkart Kurban Bayramı kampanyasının ödülü nedir?",
+      "route": {"intent": "lookup", "banks": ["Ziraat Katilim"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["ziraat_katilim-857b8f194cba"],
+      "relevance_grades": {"ziraat_katilim-857b8f194cba": 1},
+      "source_labels": [{"record_key": "ziraat_katilim-857b8f194cba", "bank_key": "ziraat_katilim", "page_title": "Ziraat Katılım Bankkart Kurban Bayramı Kampanyası", "source_url": "https://www.ziraatkatilim.com.tr/bireysel/kampanyalar/ziraat-katilim-bankkart-kurban-bayrami-kampanyasi"}]
+    },
+    {
+      "case_id": "ret_030_ziraat_fathers_day",
+      "label": "silver_unverified",
+      "query": "Ziraat Katılım Bankkart Babalar Günü kampanyasının koşulları nelerdir?",
+      "route": {"intent": "lookup", "banks": ["Ziraat Katilim"], "product_types": ["KART_KAMPANYASI"], "field_types": ["reward"], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["ziraat_katilim-4e37f3f16ba7"],
+      "relevance_grades": {"ziraat_katilim-4e37f3f16ba7": 1},
+      "source_labels": [{"record_key": "ziraat_katilim-4e37f3f16ba7", "bank_key": "ziraat_katilim", "page_title": "Ziraat Katılım Bankkart Babalar Günü Kampanyası", "source_url": "https://www.ziraatkatilim.com.tr/bireysel/kampanyalar/ziraat-katilim-bankkart-babalargunu-kampanyasi"}]
+    },
+    {
+      "case_id": "ret_031_ziraat_eximbank",
+      "label": "silver_unverified",
+      "query": "Ziraat Katılım Eximbank destekli finansmanları nelerdir?",
+      "route": {"intent": "list", "banks": ["Ziraat Katilim"], "product_types": ["TICARI_FINANSMAN"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["ziraat_katilim-d087fc90bb66"],
+      "relevance_grades": {"ziraat_katilim-d087fc90bb66": 1},
+      "source_labels": [{"record_key": "ziraat_katilim-d087fc90bb66", "bank_key": "ziraat_katilim", "page_title": "Eximbank Destekli Finansmanlar", "source_url": "https://www.ziraatkatilim.com.tr/ticari/finansman-urunleri/finansman_is_birlikleri/eximbank-destekli-finansmanlar"}]
+    },
+    {
+      "case_id": "ret_032_ziraat_mortgaged_personal",
+      "label": "silver_unverified",
+      "query": "Ziraat Katılım ipotekli bireysel finansman nedir?",
+      "route": {"intent": "lookup", "banks": ["Ziraat Katilim"], "product_types": ["IHTIYAC_FINANSMANI"], "field_types": [], "scope": "current", "year": null, "date_from": null, "date_to": null, "offer_ids": []},
+      "relevant_record_keys": ["ziraat_katilim-6f9dc94854cd"],
+      "relevance_grades": {"ziraat_katilim-6f9dc94854cd": 1},
+      "source_labels": [{"record_key": "ziraat_katilim-6f9dc94854cd", "bank_key": "ziraat_katilim", "page_title": "İpotekli Bireysel Finansman", "source_url": "https://www.ziraatkatilim.com.tr/bireysel/finansman-urunleri/ihtiyac-finansmani/ipotekli-bireysel-finansman"}]
+    }
+  ]
+}
